@@ -211,6 +211,77 @@ main{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px
 .tabs button{border:0;background:transparent;padding:9px 13px;font-weight:800;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;font-size:14px}
 .tabs button[aria-selected="true"]{color:var(--navy);border-color:var(--blue)}
 .tabs button .n{font-size:11px;background:var(--soft);border-radius:999px;padding:0 6px;margin-left:4px;color:var(--muted)}
+/* Planificador: lista de fechas que se abre en su sitio, con pasos numerados en vez de pestañas */
+.alist{display:flex;flex-direction:column;gap:8px}
+.mhead{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:10px 4px 0}
+.acard{background:var(--surface);border-radius:18px;box-shadow:0 1px 0 var(--line);overflow:hidden;scroll-margin-top:76px}
+.acard>.item{width:100%;border-radius:0;box-shadow:none;grid-template-columns:86px minmax(0,1fr) 40px}
+.acard>.item:hover{box-shadow:none;background:var(--soft)}
+.acard>.item .chev{align-self:center;justify-self:center}
+.acard.past:not(.open)>.item{opacity:.6}
+.acard.open{box-shadow:0 0 0 2.5px var(--blue),0 18px 40px -24px rgba(11,31,58,.5)}
+.chev{color:var(--muted);font-size:15px;font-weight:800}
+.abody{background:var(--bg);padding:14px;display:flex;flex-direction:column;gap:10px;border-top:2px solid var(--soft)}
+.abody .closer{align-self:center}
+.plan{display:flex;flex-direction:column;gap:10px;min-width:0}
+.ptools{padding:0 4px}
+.psec{background:var(--surface);border-radius:16px;box-shadow:0 1px 0 var(--line);min-width:0}
+.ph{display:grid;grid-template-columns:30px minmax(0,1fr) 24px;gap:12px;align-items:center;width:100%;border:0;background:transparent;text-align:left;padding:12px 14px;border-radius:16px}
+.ph:hover{background:var(--soft)}
+.psec.open .ph{border-radius:16px 16px 0 0}
+.pn{width:30px;height:30px;border-radius:50%;background:var(--soft);color:var(--navy);display:grid;place-items:center;font-weight:800;font-family:var(--f-display);font-size:13px}
+.psec.open .pn{background:var(--blue);color:#fff}
+.pt{min-width:0;display:flex;flex-direction:column}
+.pt b{font-size:15.5px;color:var(--navy);line-height:1.3}
+.pt small{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pb{padding:12px 14px 16px;display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--soft);min-width:0}
+.sub2{display:flex;flex-direction:column;gap:10px;border-top:2px dashed var(--line);padding-top:12px;margin-top:4px;min-width:0}
+.roles,.sugg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.rolec{background:var(--bg);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;border-left:5px solid var(--line);min-width:0}
+.rolec.ok{background:#e9f8f1;border-left-color:var(--ok)}
+.rolec .rh{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px;align-items:center}
+.rolec .rn{font-weight:800;color:var(--navy);border:1.5px dashed transparent;background:transparent;border-radius:8px;padding:2px 6px;width:100%;min-width:0}
+.rolec .rn:hover,.rolec .rn:focus{border-color:var(--line);background:var(--surface);outline:none}
+.rolec .rd{font-size:12.5px;color:var(--muted);line-height:1.35;padding:0 6px}
+.rolec .btn{align-self:flex-start}
+.sg{border:1.5px dashed var(--line);background:transparent;border-radius:14px;padding:8px 12px;text-align:left;display:flex;flex-direction:column;gap:2px}
+.sg:hover{border-color:var(--blue);background:var(--surface)}
+.sg b{color:var(--navy);font-size:14.5px}
+.sg small{color:var(--muted);font-size:12.5px;line-height:1.35}
+.momx{flex-direction:column;gap:2px}
+@media (max-width:560px){.acard>.item{grid-template-columns:70px minmax(0,1fr) 28px}.abody{padding:8px}.pb{padding:10px 10px 14px}.ph{padding:11px 10px;gap:9px}.mom{grid-template-columns:64px minmax(0,1fr)}.momx{grid-column:1/-1;flex-direction:row;justify-content:flex-end}}
+/* Tareas por prioridad, banco de ideas en tarjetas, día desplegado en la agenda y listas de personas */
+.acard>.item .stub.cnt b{font-size:30px}
+.gbody{background:var(--surface);padding:4px 14px 12px;border-top:2px solid var(--soft);display:flex;flex-direction:column;gap:12px;min-width:0}
+.trow .tdesc{display:none;font-size:13.5px;color:var(--ink);opacity:.8;line-height:1.4;margin-top:2px;overflow-wrap:anywhere}
+@media (hover:none){.trow .tdesc{display:block}}
+.trow .x.del{font-size:15px;opacity:.55}
+.trow .x.del:hover{opacity:1;background:#ffe3e8}
+.ctip{white-space:pre-line}
+.ideagrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.idea{background:var(--ic,#f2edff);border-radius:16px 16px 16px 4px;padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.idea .tx{font-weight:800;color:var(--navy);line-height:1.35;overflow-wrap:anywhere}
+.idea .by{font-size:12.5px;color:var(--muted)}
+.idea .go{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:auto;padding-top:6px}
+.idea .go .lbl{width:100%}
+.idea .btn.sm{background:#ffffffc0}
+.cal .day{cursor:pointer}
+.cal .day:hover{background:var(--soft)}
+.cal .day.sel,.cal .day.sel:hover{background:#e3ecff;box-shadow:inset 0 0 0 2.5px var(--blue)}
+.daybox{grid-column:1/-1;background:var(--bg);border-top:2.5px solid var(--blue);border-bottom:2.5px solid var(--blue);padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.daybox h3{margin:0;font-size:17px;color:var(--navy)}
+.daybox .evs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.plist{padding:6px 14px;gap:0}
+.prow{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.prow:last-child{border-bottom:0}
+.prow .pn2{border:0;background:none;padding:0;text-align:left;font-weight:800;color:var(--navy);overflow-wrap:anywhere}
+.prow .pn2:hover{color:var(--blue);text-decoration:underline}
+.prow select{width:auto;padding:5px 8px;font-size:13.5px;font-weight:700}
+.impprev{display:flex;flex-direction:column;gap:10px}
+.impprev table{border-collapse:collapse;width:100%;font-size:13.5px}
+.impprev td,.impprev th{text-align:left;padding:4px 8px;border-bottom:1px solid var(--line)}
+.impprev .f select{padding:5px 8px;font-size:13.5px}
+@media (max-width:560px){.gbody{padding:4px 8px 10px}.prow{grid-template-columns:30px minmax(0,1fr)}.prow select{grid-column:2}.daybox{padding:10px 8px}}
 
 /* Tablas editables */
 .tscroll{overflow-x:auto}
@@ -465,6 +536,7 @@ details>summary{cursor:pointer;font-weight:800;color:var(--navy)}
   <main id="main"><div class="view"><div class="empty">Cargando el centro de mando…</div></div></main>
 </div>
 <datalist id="dl-corr"></datalist>
+<datalist id="dl-pers"></datalist>
 <div id="drawerHost"></div>
 <button class="fab" id="fab" type="button" aria-label="Crear algo nuevo" data-a="fab">+</button>
 <div id="fabmenu" hidden></div>
@@ -482,14 +554,16 @@ function mkDB(){
   const subs={};const maps={};
   const snap=(c)=>({docs:Object.entries(maps[c]).map(([id,data])=>({id,data:()=>data})),metadata:{fromCache:false}});
   const emit=c=>(subs[c]||[]).forEach(f=>{try{f.ok(snap(c))}catch(e){console.error(e)}});
+  const et={};const emitSoon=c=>{if(et[c])return;et[c]=setTimeout(()=>{et[c]=0;emit(c)},60)};
   let chan=null;
   function ensureChan(){if(chan)return;
     chan=sb.channel('docs-all').on('postgres_changes',{event:'*',schema:'public',table:'docs'},p=>{
       const r=p.eventType==='DELETE'?p.old:p.new;const c=r&&r.col;if(!c||!maps[c])return;
-      if(p.eventType==='DELETE'){if(r.id)delete maps[c][r.id]}else maps[c][r.id]=r.data;emit(c)}).subscribe();}
+      if(p.eventType==='DELETE'){if(r.id)delete maps[c][r.id]}else maps[c][r.id]=r.data;emitSoon(c)}).subscribe();}
   async function load(c){let all=[],from=0;for(;;){const {data,error}=await sb.from('docs').select('id,data').eq('col',c).range(from,from+999);if(error)throw error;all=all.concat(data);if(data.length<1000)break;from+=1000}
     maps[c]={};all.forEach(r=>maps[c][r.id]=r.data);emit(c)}
   return {
+    async setMany(c,list){const {error}=await sb.from('docs').upsert(list.map(o=>({col:c,id:o.id,data:o})));if(error)throw error;if(maps[c])list.forEach(o=>maps[c][o.id]=o)},
     collection(c){return {onSnapshot(ok,err){(subs[c]=subs[c]||[]).push({ok,err});ensureChan();if(!maps[c]){maps[c]={};load(c).catch(e=>err&&err(e))}else ok(snap(c));return ()=>{}}}},
     doc(k){const i=k.indexOf('/'),c=k.slice(0,i),id=k.slice(i+1);return {
       async set(o){const {error}=await sb.from('docs').upsert({col:c,id,data:o});if(error)throw error;if(maps[c])maps[c][id]=o},
@@ -614,6 +688,11 @@ function loadCache(){try{const o=JSON.parse(localStorage.getItem(LKEY)||localSto
 let cacheT;function saveCache(){clearTimeout(cacheT);cacheT=setTimeout(()=>{try{localStorage.setItem(LKEY,JSON.stringify(S))}catch(e){}},600)}
 function put(col,o,ms=700){o.proyecto=PROYECTO;o.actualizado=new Date().toISOString();if(!o.creado)o.creado=o.actualizado;S[col][o.id]=o;saveCache();if(DB)queue(col,o.id,ms)}
 function del(col,id){delete S[col][id];saveCache();if(DB)queue(col,id,0)}
+/* Guardado en bloque (importar una lista): un solo envío por cada 200 registros en vez de uno por persona */
+async function putMany(col,list){const now=new Date().toISOString();list.forEach(o=>{o.proyecto=PROYECTO;o.actualizado=now;if(!o.creado)o.creado=now;S[col][o.id]=o});saveCache();if(!DB)return list.length;
+  const ks=list.map(o=>col+'/'+o.id);ks.forEach(k=>writing.add(k));setSync('saving');let n=0;
+  try{for(;n<list.length;n+=200)await DB.setMany(col,list.slice(n,n+200).map(clone));setSync('ok');return list.length}
+  catch(e){list.slice(n).forEach(o=>delete S[col][o.id]);saveCache();setSync('err');return n}finally{ks.forEach(k=>writing.delete(k))}}
 function queue(col,id,ms){const k=col+'/'+id;clearTimeout(pending.get(k));pending.set(k,setTimeout(()=>flush(col,id),ms))}
 async function flush(col,id){const k=col+'/'+id;if(writing.has(k)){queue(col,id,400);return}
   pending.delete(k);writing.add(k);setSync('saving');
@@ -652,21 +731,21 @@ function migrate(){if(migrated||!GEOI.size)return;migrated=true;
     c.corrs.forEach(x=>{const code=(GEOI.get(x.id)||{}).circ;if(!code||!(x.lideres||[]).length)return;const doc=S.circuitos['c'+code]||{id:'c'+code,codigo:code,lideres:{}};doc.lideres=doc.lideres||{};doc.lideres[x.id]=x.lideres[0];put('circuitos',doc,200)});
     del('circuitos',c.id)})}
 
-const SCHEMA_VERSION=3;
+const SCHEMA_VERSION=5;
 function ensureSchema(){const s=S.config.esquema;if(s&&s.version>=SCHEMA_VERSION&&s.app)return;
   put('config',{id:'esquema',version:SCHEMA_VERSION,app:'GitHub Pages + Supabase (proyecto une-juventud)',descripcion:'Centro de Mando UNE Juventud. Un documento por registro, con proyecto, creado y actualizado. Fechas AAAA-MM-DD, horas HH:MM (24 h). Corregimientos por código INEC de 6 dígitos (ID_CORR). Circuitos electorales con código "8-6" (provincia-número).',
    colecciones:{
-    personas:'id, nombre, telefono, grupo (c0 = círculo 0 | lider = líder territorial | aliado = apoyo externo), habilidades[], provincia, ultimoContacto, notas',
-    tareas:'id, codigo (LUG-MMDD-NN), titulo, responsableId, apoyo[personaId] (máx. 2), fecha (entrega), fechaSeguimiento, tareaMadreId (subtareas), propuestaPor, hora, prioridad (alta|media|baja), estado (pendiente|curso|hecha|bloqueada|cancelada), tipo (tarea|seguimiento|visita), corrId (opcional), actividadId (opcional, vínculo secundario), origen {tipo: reunion|actividad|campana|visita|libre, id}, comunicadoPor, notas, hechaEl',
+    personas:'id, nombre, telefono, grupo (c0 = círculo 0 | lider = líder territorial | aliado = gente con la que nos hemos reunido o que apoya, sin ser del círculo 0 | simpatizante = la base general, entra por importación de listas), habilidades[], provincia, lugar (corregimiento o comunidad, texto), ultimoContacto, notas, importado (fecha, si entró por lista)',
+    tareas:'id, codigo (LUG-MMDD-NN), titulo, entregable (qué se espera recibir, texto corto), responsableId, apoyo[personaId] (máx. 2), fecha (entrega), fechaSeguimiento, tareaMadreId (subtareas), propuestaPor, hora, prioridad (alta|media|baja), estado (pendiente|curso|hecha|bloqueada|cancelada), tipo (tarea|seguimiento|visita), corrId (opcional), actividadId (opcional, vínculo secundario), origen {tipo: reunion|actividad|campana|visita|libre, id}, comunicadoPor, notas, hechaEl',
     series:'Reuniones programadas. id, nombre, tipo, dia (0 domingo … 6 sábado), hora, horaFin, frecuencia (semanal|quincenal|mensual), desde (fecha ancla), lugar, participantes[personaId], color, activa',
     reuniones:'id, titulo, serieId, fecha, hora, horaFin, lugar, tipo, estado (programada|terminada), temas[{id,texto,ok,notas,actividadId}], asistentes[{personaId|nombre, presente}], ideas[{texto,autor}], apuntes, transcripcion, minuta {generada, resumen}',
-    actividades:'id, nombre, tipo (masiva|cerrada|equipo), estado, desde, hasta, hora, lugar, corrId, objetivo, metaAsistencia, roles[{id,rol,personaId}], momentos[{id,nombre,hora,rolId,necesita}], itinerario[{id,hora,rolId,accion,detalle}], materiales[{id,item,cant,porPersona,unidad,costo,fuente,responsableId,listo}], ideas[], evaluacion {asistencia,nuevos,logros,mejorar}',
+    actividades:'id, nombre, tipo (masiva|cerrada|equipo), estado, desde, hasta, hora, lugar, corrId, objetivo, metaAsistencia, roles[{id,rol,personaId | nombre (texto, si no está en personas)}], participantes[{personaId | nombre, confirmado}] (quiénes más van), momentos[{id,nombre,hora,rolId,necesita}], itinerario[{id,hora,rolId,accion,detalle}], materiales[{id,item,cant,porPersona,unidad,costo,fuente,responsableId,listo}], ideas[], evaluacion {asistencia,nuevos,logros,mejorar}',
     horarios:'id, nombre, tipo (semanal|jornada|gira|turnos), cols[], rows[], celdas {"fila-col": [nombres]}, notas',
     visitas:'id, corrId, fecha, hora, responsableId, objetivo, estado (programada|realizada|cancelada), jovenes, notas, tareaId',
     territorio:'id = ID_CORR; destacados, notas, foda {f,d,o,a} (notas del equipo), pedirAnalisis (bool). Electores y circuito vienen del archivo geo.json (Tribunal Electoral 2024).',
     circuitos:'id = "c" + código (ej. c8-6); codigo, coordinadorId, lideres {corrId: personaId}',
     analisis:'id = ID_CORR, prov-<provincia> o _nacional; nivel, fecha, resumen, alertas[], noticias[{titulo,fuente,url,fecha,tema}], foda {o[],a[]}, pestel {p,e,s,t,ec,l}. Lo escribe la tarea diaria.',
-    ideas:'Banco de ideas. id, texto, autor, fecha, origen {tipo: reunion|actividad|libre, id}, estado (nueva|convertida|descartada), tareaId. Las ideas también viven dentro de su reunión o actividad.',
+    ideas:'Banco de ideas. id, texto, autor, fecha, origen {tipo: reunion|actividad|libre, id}, estado (nueva|convertida|descartada), tareaId, destino {tipo: actividad|reunion, id} (si pasó a una actividad o reunión; la actividad guarda ideaId y el tema de la reunión guarda ideaId). Las ideas también viven dentro de su reunión o actividad.',
     metas:'id, nombre, unidad, meta, actual, fechaLimite, historial[{fecha,valor}], logros[{fecha,texto}]',
     config:'esquema, general {ultimoRespaldo, ultimoReporte, importadoTablero}'}},0)}
 
@@ -688,7 +767,10 @@ const provSlug=p=>'prov-'+slug(p);
 const pname=id=>(S.personas[id]&&S.personas[id].nombre)||'';
 function personOptions(sel,emptyLabel='Sin asignar'){const ps=L('personas').sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||'','es'));
   const grp=(g,lab)=>{const xs=ps.filter(p=>(p.grupo||'c0')===g);return xs.length?`<optgroup label="${lab}">${xs.map(p=>`<option value="${p.id}" ${p.id===sel?'selected':''}>${esc(p.nombre||'Sin nombre')}</option>`).join('')}</optgroup>`:''};
-  return `<option value="">${emptyLabel}</option>`+grp('c0','Círculo 0')+grp('lider','Líderes territoriales')+grp('aliado','Aliados')}
+  const cur=sel&&S.personas[sel]&&S.personas[sel].grupo==='simpatizante'?`<option value="${sel}" selected>${esc(S.personas[sel].nombre||'Sin nombre')}</option>`:'';
+  return `<option value="">${emptyLabel}</option>`+cur+grp('c0','Círculo 0')+grp('lider','Líderes territoriales')+grp('aliado','Aliados')}
+const GRUPOS={c0:'Círculo 0',lider:'Líder territorial',aliado:'Aliado',simpatizante:'Simpatizante'};
+const byName=(a,b)=>(a.nombre||'').localeCompare(b.nombre||'','es');
 const isOpen=t=>t.estado!=='hecha'&&t.estado!=='cancelada';
 const isLate=t=>isOpen(t)&&t.fecha&&t.fecha<today();
 const prioRank={alta:0,media:1,baja:2};
@@ -702,9 +784,11 @@ function originLabel(t){const o=t.origen||{};
   return ''}
 function taskRow(t,{showOrigin=true}={}){const late=isLate(t);const o=t.origen||{};
   const linkable=['reunion','actividad','visita'].includes(o.tipo)&&o.id;
+  const desc=t.entregable||t.notas||'';const tip=[t.entregable?'Entrega: '+t.entregable:'',t.notas||''].filter(Boolean).join('\n').slice(0,320);
   return `<div class="trow ${t.estado==='hecha'?'done':''}">
    <input type="checkbox" aria-label="Marcar como hecha" data-a="toggleTask" data-id="${t.id}" ${t.estado==='hecha'?'checked':''}>
-   <div><div class="tt" data-a="editTask" data-id="${t.id}">${esc(t.titulo||'Sin título')}</div>
+   <div ${tip?`data-tip="${esc(tip)}"`:''}><div class="tt" data-a="editTask" data-id="${t.id}">${esc(t.titulo||'Sin título')}</div>
+    ${desc?`<div class="tdesc">${t.entregable?'<b>Entrega:</b> ':''}${esc(desc.length>160?desc.slice(0,160)+'…':desc)}</div>`:''}
     <div class="meta">
      ${t.tipo==='seguimiento'?'<span class="pill s-curso">Seguimiento</span>':''}${t.tipo==='visita'?'<span class="pill s-hecha">Visita</span>':''}
      <span class="pill p-${t.prioridad||'media'}">${PRIOS[t.prioridad||'media']}</span>
@@ -715,7 +799,7 @@ function taskRow(t,{showOrigin=true}={}){const late=isLate(t);const o=t.origen||
      ${showOrigin&&o.tipo==='campana'?'<span class="pill camp">Campaña</span>':''}
      ${showOrigin&&linkable?`<button class="olink" data-a="goOrigin" data-id="${t.id}">${esc(originLabel(t))}</button>`:''}
     </div></div>
-   <div class="acts">${t.responsableId&&isOpen(t)?`<button class="btn sm ghost" data-a="waTask" data-id="${t.id}">Cobrar</button>`:''}</div>
+   <div class="acts">${t.responsableId&&isOpen(t)?`<button class="btn sm ghost" data-a="waTask" data-id="${t.id}">Cobrar</button>`:''}<button class="x del" data-a="askDel" data-col="tareas" data-id="${t.id}" aria-label="Eliminar tarea" title="Eliminar tarea">🗑</button></div>
   </div>`}
 function quickTaskForm(tipo,id,extra=''){return `<form class="row" data-a-submit="quickTask" data-tipo="${tipo}" data-oid="${id||''}" ${extra}>
   <input class="in" name="titulo" placeholder="Nueva tarea…" style="flex:2 1 220px" required>
@@ -763,7 +847,7 @@ function openSerieOccurrence(sid,d){let r=reuOfSerie(sid,d);if(r)return r;const 
   put('reuniones',r,0);return r}
 
 /* ---------- Estado de la interfaz ---------- */
-const UI={view:'inicio',act:null,reu:null,hor:null,actFilter:'proximas',reuFilter:'todas',cal:{mode:'mes',date:today()},actTab:'resumen',
+const UI={view:'inicio',act:null,reu:null,hor:null,actFilter:'proximas',reuFilter:'todas',cal:{mode:'mes',date:today()},asec:{basico:true,equipo:true},rsec:{},tsec:{},estQ:'',estN:60,sinAll:false,
   tf:{estado:'abiertas',origen:'todas',resp:'',q:''},est:'c0',habF:'',mapMode:'cobertura',mapCirc:null,mapSel:null,heat:'semanas',open:{},hopen:{},popen:{},copen:{},actView:'lista',restore:null,drawer:null};
 const VIEWS_META=[
  ['Hoy',[['inicio','Inicio']]],
@@ -778,7 +862,8 @@ function renderNav(){const late=L('tareas').filter(isLate).length;const seg=L('p
     return `<a href="#${k}" ${UI.view===k?'aria-current="page"':''}>${ico(k)}<span>${n}</span>${b?`<span class="b">${b}</span>`:''}</a>`}).join('')}</div>`).join('')}
 function go(view,extra={}){Object.assign(UI,extra);UI.drawer=null;if(location.hash!=='#'+view)location.hash=view;else{UI.view=view;render();window.scrollTo(0,0)}}
 window.addEventListener('hashchange',()=>{const v=location.hash.slice(1);UI.view=VIEWS[v]?v:'inicio';UI.drawer=null;render();window.scrollTo(0,0)});
-function render(){renderNav();const v=VIEWS[UI.view]||VIEWS.inicio;$('#main').innerHTML=`<div class="view">${v()}</div>`;renderDrawer();if(UI.view==='mapa')mountMap()}
+let dlPers='';
+function render(){renderNav();const dl=L('personas').map(p=>p.nombre).filter(Boolean).sort((a,b)=>a.localeCompare(b,'es')).map(n=>`<option value="${esc(n)}"></option>`).join('');if(dl!==dlPers){dlPers=dl;$('#dl-pers').innerHTML=dl}const v=VIEWS[UI.view]||VIEWS.inicio;$('#main').innerHTML=`<div class="view">${v()}</div>`;renderDrawer();if(UI.view==='mapa')mountMap()}
 
 /* ---------- Inicio ---------- */
 function vInicio(){const T=today(),ts=L('tareas');const late=ts.filter(isLate),hoy=ts.filter(t=>isOpen(t)&&t.fecha===T);
@@ -834,6 +919,13 @@ function itemsOn(d){const out=[];
   return out.sort((a,b)=>(a.h||'99').localeCompare(b.h||'99'))}
 const KC={tarea:'var(--k-tarea)',seg:'var(--k-seg)',act:'var(--k-act)',reu:'var(--k-reu)',vis:'var(--k-vis)',fer:'var(--k-fer)',lid:'var(--k-seg)',serie:'var(--k-serie)'};
 function evBtn(x){return `<button class="wev ${x.lnk||x.k==='act'||x.k==='reu'||x.k==='serie'?'lnk':''} ${x.done?'done':''}" style="--c:${KC[x.k]}" data-a="openItem" data-k="${x.k}" data-id="${x.id}" data-d="${x.d||''}"><b>${esc(x.t)}</b>${x.h?`<span class="tm">${tm(x.h)}</span>`:''}</button>`}
+/* Mes: al tocar un día se despliega debajo de su semana todo lo que hay ese día */
+const KNAME={tarea:'Tarea',seg:'Seguimiento',act:'Actividad',reu:'Reunión',serie:'Reunión programada',vis:'Visita',lid:'Contactar'};
+function dayBox(d){const its=itemsOn(d);const fer=its.find(x=>x.k==='fer');let ev=its.filter(x=>x.k!=='fer');const lids=ev.filter(x=>x.k==='lid');
+  if(lids.length>3)ev=ev.filter(x=>x.k!=='lid').concat({k:'lid',id:'',t:`Contactar a ${lids.length} enlaces`});
+  return `<div class="daybox" id="daybox"><div class="row between"><h3>${flong(d)}${fer?` <span class="muted small">· ${esc(fer.t)}</span>`:''}</h3><button class="x" data-a="calSel" data-d="${d}" aria-label="Cerrar el día">×</button></div>
+   ${ev.length?`<div class="evs">${ev.map(x=>`<button class="wev ${x.lnk||x.k==='act'||x.k==='reu'||x.k==='serie'?'lnk':''} ${x.done?'done':''}" style="--c:${KC[x.k]}" data-a="openItem" data-k="${x.k}" data-id="${x.id}" data-d="${x.d||''}"><span class="tm">${KNAME[x.k]||''}${x.h?' · '+tm(x.h):''}${x.done?' · hecha':''}</span><b>${esc(x.t)}</b></button>`).join('')}</div>`:'<span class="muted small">No hay nada este día.</span>'}
+   <div class="row"><button class="btn sm pri" data-a="newTask" data-d="${d}">+ Tarea</button><button class="btn sm" data-a="newTask" data-d="${d}" data-seg="1">+ Seguimiento</button><button class="btn sm" data-a="newVisit" data-d="${d}">+ Visita</button><button class="btn sm ghost" data-a="calDay" data-d="${d}">Ver el día por horas</button></div></div>`}
 function vAgenda(){const c=UI.cal;const d0=pd(c.date);
   const title=c.mode==='mes'?`${cap(MESES[d0.getMonth()])} ${d0.getFullYear()}`:c.mode==='semana'?`Semana ${weekNo(c.date)}`:fshort(c.date);
   let body='';
@@ -842,9 +934,10 @@ function vAgenda(){const c=UI.cal;const d0=pd(c.date);
     for(let w=0;w<6;w++){if(w>=4&&pd(cur).getMonth()!==m)break;
       body+=`<button class="wk" data-a="calWeek" data-d="${cur}" title="Ver semana ${weekNo(cur)}">${weekNo(cur)}</button>`;
       for(let i=0;i<7;i++){const dd=addDays(cur,i);const its=itemsOn(dd);const fer=its.find(x=>x.k==='fer');const ev=its.filter(x=>x.k!=='fer');
-        body+=`<div class="day ${pd(dd).getMonth()!==m?'out':''} ${dd===today()?'today':''}"><button class="dn" data-a="calDay" data-d="${dd}" aria-label="Ver ${flong(dd)}">${pd(dd).getDate()}</button>${fer?`<span class="fer">${esc(fer.t)}</span>`:''}
+        body+=`<div class="day ${pd(dd).getMonth()!==m?'out':''} ${dd===today()?'today':''} ${dd===c.sel?'sel':''}" data-a="calSel" data-d="${dd}"><button class="dn" data-a="calSel" data-d="${dd}" aria-expanded="${dd===c.sel}" aria-label="Ver lo que hay el ${flong(dd)}">${pd(dd).getDate()}</button>${fer?`<span class="fer">${esc(fer.t)}</span>`:''}
          ${ev.slice(0,3).map(x=>`<button class="ev ${x.lnk?'lnk':''} ${x.done?'done':''}" style="--c:${KC[x.k]}" data-a="openItem" data-k="${x.k}" data-id="${x.id}" data-d="${x.d||''}" title="${esc(x.t)}">${x.h?tm(x.h).replace(':00','')+' ':''}${esc(x.t)}</button>`).join('')}
-         ${ev.length>3?`<button class="more" data-a="calDay" data-d="${dd}">+${ev.length-3} más</button>`:''}</div>`}
+         ${ev.length>3?`<button class="more" data-a="calSel" data-d="${dd}">+${ev.length-3} más</button>`:''}</div>`}
+      if(c.sel&&c.sel>=cur&&c.sel<=addDays(cur,6))body+=dayBox(c.sel);
       cur=addDays(cur,7)}
     body+='</div>'}
   else if(c.mode==='semana'){const m0=monday(c.date);body=`<div class="week">${[0,1,2,3,4,5,6].map(i=>{const dd=addDays(m0,i);const its=itemsOn(dd);
@@ -855,7 +948,7 @@ function vAgenda(){const c=UI.cal;const d0=pd(c.date);
   return `<div class="vhead"><div class="t"><span class="eyebrow">Agenda</span><h1>${title}</h1></div>
    <div class="row"><div class="seg" role="group" aria-label="Vista">${['mes','semana','dia'].map(m=>`<button data-a="calMode" data-m="${m}" aria-pressed="${c.mode===m}">${m==='dia'?'Día':cap(m)}</button>`).join('')}</div>
    <button class="btn" data-a="calMove" data-n="-1" aria-label="Anterior">‹</button><button class="btn" data-a="calToday">Hoy</button><button class="btn" data-a="calMove" data-n="1" aria-label="Siguiente">›</button></div></div>
-  <div class="row between"><div class="legend">${[['tarea','Tarea'],['seg','Seguimiento'],['act','Actividad'],['reu','Reunión'],['serie','Reunión programada'],['vis','Visita']].map(([k,n])=>`<span><i style="--c:${KC[k]}"></i>${n}</span>`).join('')}<span><u>Subrayado</u>: abre su reunión o actividad</span></div>
+  <div class="row between"><div class="legend">${[['tarea','Tarea'],['seg','Seguimiento'],['act','Actividad'],['reu','Reunión'],['serie','Reunión programada'],['vis','Visita']].map(([k,n])=>`<span><i style="--c:${KC[k]}"></i>${n}</span>`).join('')}<span><u>Subrayado</u>: abre su reunión o actividad</span>${c.mode==='mes'?'<span><b>Toca un día</b> para ver todo lo que tiene</span>':''}</div>
    <div class="row"><button class="btn sm pri" data-a="newTask" data-d="${c.date}">+ Tarea</button><button class="btn sm" data-a="newTask" data-d="${c.date}" data-seg="1">+ Seguimiento</button><button class="btn sm" data-a="newVisit" data-d="${c.date}">+ Visita</button></div></div>
   ${body}`}
 
@@ -881,132 +974,188 @@ function vHorarios(){const hs=L('horarios').sort((a,b)=>(a.creado||'').localeCom
 function actStub(x){const col=ACT_COL[x.tipo]||'#7a4fe0';if(!x.desde)return `<span class="stub" style="--c:${col}"><small>Sin</small><b>—</b><small>fecha</small></span>`;const a=pd(x.desde),r=x.hasta&&x.hasta!==x.desde?pd(x.hasta):null;
   if(!r)return `<span class="stub" style="--c:${col}"><small>${D3[a.getDay()]}</small><b>${a.getDate()}</b><small>${M3[a.getMonth()]}</small></span>`;
   return `<span class="stub" style="--c:${col}"><small>${D3[a.getDay()]}–${D3[r.getDay()]}</small><b class="rg">${a.getDate()}–${r.getDate()}</b><small>${M3[a.getMonth()]}${r.getMonth()!==a.getMonth()?'–'+M3[r.getMonth()]:''}</small></span>`}
+/* Lista de fechas: al tocar una, su planificador se abre ahí mismo (sin columna al lado ni pestañas) */
+function monthHead(d){if(!d)return 'Sin fecha';const x=pd(d);return cap(MESES[x.getMonth()])+' '+x.getFullYear()}
+const chev=o=>`<span class="chev" aria-hidden="true">${o?'▴':'▾'}</span>`;
+const roleWho=r=>pname(r.personaId)||r.nombre||'';
+const whoName=x=>x.personaId?pname(x.personaId):(x.nombre||'');
+const findPersona=n=>{n=norm(n);return n?L('personas').find(p=>norm(p.nombre)===n):null};
+const pl=(n,s,p)=>n+' '+(n===1?s:p);
+const splitNames=s=>String(s||'').split(/[,;\n]/).map(x=>x.trim()).filter(Boolean);
+function showCard(id){const c=document.getElementById('card-'+id);if(c)c.scrollIntoView({block:'start',behavior:'smooth'})}
+function psec(kind,key,n,title,sum,body){const open=!!UI[kind][key];
+  return `<section class="psec ${open?'open':''}"><button class="ph" data-a="togSec" data-k="${kind}" data-s="${key}" aria-expanded="${open}"><span class="pn">${n}</span><span class="pt"><b>${title}</b><small>${sum}</small></span>${chev(open)}</button>${open?`<div class="pb">${body()}</div>`:''}</section>`}
 function vActividades(){const T=today();let as=L('actividades');
   as=UI.actFilter==='proximas'?as.filter(a=>(a.hasta||a.desde||T)>=T):UI.actFilter==='pasadas'?as.filter(a=>(a.hasta||a.desde||T)<T):as;
   as.sort((a,b)=>(a.desde||'9').localeCompare(b.desde||'9')*(UI.actFilter==='pasadas'?-1:1));
-  if(!UI.act||!S.actividades[UI.act])UI.act=as[0]&&as[0].id;const a=S.actividades[UI.act];
+  if(UI.act&&!S.actividades[UI.act])UI.act=null;let mh=null;
   return `<div class="vhead"><div class="t"><span class="eyebrow">Ejecutar</span><h1>Actividades</h1></div><div class="seg">${[['proximas','Próximas'],['pasadas','Pasadas'],['todas','Todas']].map(([k,n])=>`<button data-a="actFilter" data-f="${k}" aria-pressed="${UI.actFilter===k}">${n}</button>`).join('')}</div></div>
-  <div class="split"><div class="list"><form class="add" data-a-submit="newAct"><input class="in" name="nombre" placeholder="Nueva actividad" required><input class="in" type="date" name="fecha" style="flex:0 1 150px" aria-label="Fecha"><button class="btn pri">Crear</button></form>
-   <div class="items">${as.map(x=>{const n=tasksOf('actividad',x.id);const done=n.filter(t=>!isOpen(t)).length;
-     return `<button class="item ${(x.hasta||x.desde)<T?'past':''}" data-a="selAct" data-id="${x.id}" ${x.id===UI.act?'aria-current="true"':''}>${actStub(x)}
-      <span class="body"><span class="nm">${esc(x.nombre||'Sin nombre')}</span>${x.objetivo?`<span class="desc">${esc(x.objetivo)}</span>`:''}<span class="sub"><span>${ACT_TYPES[x.tipo]||''}</span><span>${ACT_ESTADOS[x.estado||'idea']}</span>${n.length?`<span class="num">${done}/${n.length} tareas</span>`:''}</span></span></button>`}).join('')||'<div class="empty">No hay actividades en este filtro.</div>'}</div></div>
-  ${a?actDetail(a):'<div class="empty">Crea una actividad para planificarla.</div>'}</div>`}
+  <form class="add" data-a-submit="newAct"><input class="in" name="nombre" placeholder="Nueva actividad: escribe el nombre" required><input class="in" type="date" name="fecha" style="flex:0 1 160px" aria-label="Fecha"><button class="btn pri">Crear</button></form>
+  <p class="muted small">Toca una fecha para abrir su planificador. Tócala otra vez para cerrarlo.</p>
+  <div class="alist">${as.map(x=>{const open=x.id===UI.act;const n=tasksOf('actividad',x.id);const done=n.filter(t=>!isOpen(t)).length;const rs=x.roles||[];const m=monthHead(x.desde);const head=m!==mh?`<div class="mhead">${m}</div>`:'';mh=m;
+    return `${head}<div class="acard ${open?'open':''} ${(x.hasta||x.desde)<T?'past':''}" id="card-${x.id}"><button class="item" data-a="selAct" data-id="${x.id}" aria-expanded="${open}">${actStub(x)}
+      <span class="body"><span class="nm">${esc(x.nombre||'Sin nombre')}</span>${x.objetivo&&!open?`<span class="desc">${esc(x.objetivo)}</span>`:''}<span class="sub"><span>${ACT_TYPES[x.tipo]||''}</span><span>${ACT_ESTADOS[x.estado||'idea']}</span>${rs.length?`<span class="num">Equipo ${rs.filter(roleWho).length}/${rs.length}</span>`:''}${n.length?`<span class="num">${done}/${n.length} tareas</span>`:''}</span></span>${chev(open)}</button>
+      ${open?`<div class="abody">${actPlan(x)}<button class="btn sm ghost closer" data-a="selAct" data-id="${x.id}">Cerrar ▴</button></div>`:''}</div>`}).join('')||'<div class="empty">No hay actividades en este filtro.</div>'}</div>`}
 function fullRange(a,b){if(!a)return 'Sin fecha';if(!b||b===a)return fshort(a);const A=pd(a),B=pd(b);return A.getMonth()===B.getMonth()?`${cap(DIAS[A.getDay()])} ${A.getDate()} al ${DIAS[B.getDay()]} ${B.getDate()} de ${MESES[B.getMonth()]}`:`${fshort(a)} al ${fshort(b).toLowerCase()}`}
 function actReuniones(a){const out=[];L('reuniones').forEach(r=>(r.temas||[]).forEach(t=>{if(t.actividadId===a.id)out.push({r,t})}));return out.sort((x,y)=>(y.r.fecha||'').localeCompare(x.r.fecha||''))}
 function budgetOf(a){const n=+a.metaAsistencia||0;let total=0,compra=0,aporte=0;(a.materiales||[]).forEach(m=>{const q=(+m.cant||0)*(m.porPersona?n:1);const st=q*(+m.costo||0);total+=st;if((m.fuente||'compra')==='compra')compra+=st;else aporte+=st});return {total,compra,aporte,n,porPersona:n?compra/n:0}}
-function actDetail(a){const id=a.id,F=p=>`actividades|${id}|${p}`;const roles=a.roles||[];const tab=UI.actTab;const ts=tasksOf('actividad',id);const reus=actReuniones(a);
-  const T=[['resumen','Resumen'],['momentos','Momentos',(a.momentos||[]).length],['itinerario','Itinerario',(a.itinerario||[]).length],['materiales','Materiales y presupuesto',(a.materiales||[]).length],['tareas','Tareas',ts.filter(isOpen).length],['ideas','Ideas',(a.ideas||[]).length],['reuniones','En reuniones',reus.length],['evaluacion','Evaluación']];
-  let body='';
-  if(tab==='resumen'){const resp={};ts.forEach(t=>{const n=pname(t.responsableId)||'Sin responsable';(resp[n]=resp[n]||[]).push(t)});
-    const missing=SUGG_ROLES.filter(([r])=>!roles.some(x=>x.rol===r));
-    body=`<div class="grid4">
-     <div class="f"><label for="at">Tipo</label><select id="at" data-f="${F('tipo')}" data-rr>${Object.entries(ACT_TYPES).map(([k,v])=>`<option value="${k}" ${a.tipo===k?'selected':''}>${v}</option>`).join('')}</select></div>
-     <div class="f"><label for="ae">Estado</label><select id="ae" data-f="${F('estado')}" data-rr>${Object.entries(ACT_ESTADOS).map(([k,v])=>`<option value="${k}" ${a.estado===k?'selected':''}>${v}</option>`).join('')}</select></div>
-     <div class="f"><label for="ad">Desde</label><input id="ad" type="date" data-f="${F('desde')}" data-rr value="${a.desde||''}"></div>
-     <div class="f"><label for="ah">Hasta</label><input id="ah" type="date" data-f="${F('hasta')}" data-rr value="${a.hasta||''}"></div>
+/* Planificador de una actividad: pasos numerados que se abren y cierran. Cada paso dice en una línea cómo va. */
+function actPlan(a,{title=false}={}){const id=a.id,F=p=>`actividades|${id}|${p}`;const roles=a.roles||[];const ts=tasksOf('actividad',id);const reus=actReuniones(a);
+  const part=a.participantes||[];const ms=a.momentos||[];const mats=a.materiales||[];const ev=a.evaluacion||{};const b=budgetOf(a);
+  const it=(a.itinerario||[]).slice().sort((x,y)=>(x.hora||'').localeCompare(y.hora||''));
+  const rolOpts=sel=>roles.map(r=>`<option value="${r.id}" ${r.id===sel?'selected':''}>${esc(r.rol)}${roleWho(r)?' · '+esc(roleWho(r)):''}</option>`).join('');
+  const when=a.desde?fshort(a.desde)+(a.hasta&&a.hasta!==a.desde?' al '+fshort(a.hasta).toLowerCase():''):'Sin fecha';
+  const sBasico=[a.desde?fdate(a.desde)+(a.hasta&&a.hasta!==a.desde?' al '+fdate(a.hasta):''):'Falta la fecha',a.hora?tm(a.hora):'',a.lugar?esc(a.lugar):'Falta el lugar',a.metaAsistencia?'esperamos '+fmt(a.metaAsistencia):''].filter(Boolean).join(' · ');
+  const sEquipo=(roles.length?`${roles.filter(roleWho).length} de ${roles.length} roles con nombre`:'Todavía sin roles')+(part.length?` · ${part.length} más van`:'');
+  const sProg=ms.length||it.length?`${pl(ms.length,"momento","momentos")} · ${pl(it.length,"paso","pasos")} con hora`:'Sin programa todavía';
+  const sMat=mats.length?`${mats.length} en la lista · ${money(b.total)} · ${mats.filter(m=>m.listo).length} listos`:'Sin lista todavía';
+  const sTar=ts.length?`${ts.filter(isOpen).length} por hacer · ${ts.filter(t=>!isOpen(t)).length} hechas`:'Sin pendientes anotados';
+  const sIdeas=(a.ideas||[]).length||reus.length?`${pl((a.ideas||[]).length,"idea","ideas")} · hablada en ${pl(reus.length,"reunión","reuniones")}`:'Nada todavía';
+  const sEval=ev.asistencia!=null?`Asistieron ${fmt(ev.asistencia)}${ev.nuevos?' · '+fmt(ev.nuevos)+' nuevos':''}`:'Se llena cuando termine la actividad';
+
+  const basico=()=>`<div class="f"><label for="an">Nombre de la actividad</label><input id="an" data-f="${F('nombre')}" data-mirror value="${esc(a.nombre||'')}" placeholder="Nombre de la actividad"></div>
+    <div class="grid4">
+     <div class="f"><label for="ad">Fecha</label><input id="ad" type="date" data-f="${F('desde')}" data-rr value="${a.desde||''}"></div>
+     <div class="f"><label for="ah">Hasta (si dura más de un día)</label><input id="ah" type="date" data-f="${F('hasta')}" data-rr value="${a.hasta||''}"></div>
      <div class="f"><label for="ahr">Hora</label><input id="ahr" type="time" data-f="${F('hora')}" value="${a.hora||''}"></div>
      <div class="f"><label for="al">Lugar</label><input id="al" data-f="${F('lugar')}" value="${esc(a.lugar||'')}"></div>
      <div class="f"><label for="ac">Corregimiento</label><input id="ac" list="dl-corr" data-corr="${F('corrId')}" value="${esc(corrLabel(a.corrId))}" placeholder="Buscar…"></div>
-     <div class="f"><label for="am">Meta de asistencia</label><input id="am" type="number" min="0" data-f="${F('metaAsistencia')}" data-t="num" data-rr value="${a.metaAsistencia??''}"></div></div>
-    <div class="f"><label for="ao">Objetivo del evento</label><textarea id="ao" data-f="${F('objetivo')}" placeholder="Qué queremos lograr y cómo sabremos que salió bien">${esc(a.objetivo||'')}</textarea></div>
-    <div class="cols even"><section class="flat"><header><h3>Roles y responsables</h3><div class="row">${missing.length?`<button class="btn sm" data-a="addSuggRoles" data-id="${id}">+ Roles sugeridos</button>`:''}<button class="btn sm ghost" data-a="addRole" data-id="${id}">+ Rol</button></div></header>
-      ${roles.length?`<div class="tscroll"><table class="ed" style="min-width:420px"><tbody>${roles.map((r,i)=>`<tr><td style="width:44%"><input data-f="${F('roles.'+i+'.rol')}" value="${esc(r.rol)}" aria-label="Rol"></td><td><select data-f="${F('roles.'+i+'.personaId')}" data-rr aria-label="Responsable">${personOptions(r.personaId,'Elegir persona')}</select></td>
-       <td style="width:80px"><button class="btn sm ghost" data-a="waRole" data-id="${id}" data-r="${r.id}">Enviar</button></td><td style="width:34px"><button class="x" data-a="delRow" data-col="actividades" data-id="${id}" data-arr="roles" data-i="${i}" aria-label="Quitar rol">×</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Define quién hace qué con los roles sugeridos.</div>'}</section>
-     <section class="flat"><header><h3>Quién tiene tareas</h3><button class="btn sm ghost" data-a="actTab" data-t="tareas">Ver tareas →</button></header>
-      ${Object.keys(resp).length?Object.entries(resp).map(([n,xs])=>`<div class="row" style="align-items:flex-start;flex-wrap:nowrap">${avatar(n)}<div><b>${esc(n)}</b><div class="small muted">${xs.map(t=>`${t.estado==='hecha'?'✓ ':''}${esc(t.titulo)}`).join(' · ')}</div></div></div>`).join(''):'<span class="muted small">Todavía no hay tareas.</span>'}</section></div>`}
-  else if(tab==='momentos'){const ms=a.momentos||[];
-    body=`<p class="muted small">La estructura del evento, momento a momento. En cada uno anota qué se necesita y pásalo a la lista de materiales.</p>
+     <div class="f"><label for="am">Cuántas personas esperamos</label><input id="am" type="number" min="0" data-f="${F('metaAsistencia')}" data-t="num" data-rr value="${a.metaAsistencia??''}"></div>
+     <div class="f"><label for="at">Tipo</label><select id="at" data-f="${F('tipo')}" data-rr>${Object.entries(ACT_TYPES).map(([k,v])=>`<option value="${k}" ${a.tipo===k?'selected':''}>${v}</option>`).join('')}</select></div>
+     <div class="f"><label for="ae">Estado</label><select id="ae" data-f="${F('estado')}" data-rr>${Object.entries(ACT_ESTADOS).map(([k,v])=>`<option value="${k}" ${a.estado===k?'selected':''}>${v}</option>`).join('')}</select></div></div>
+    <div class="f"><label for="ao">Para qué es (objetivo)</label><textarea id="ao" data-f="${F('objetivo')}" placeholder="Qué queremos lograr y cómo sabremos que salió bien">${esc(a.objetivo||'')}</textarea></div>`;
+
+  const equipo=()=>{const missing=SUGG_ROLES.filter(([r])=>!roles.some(x=>x.rol===r));const desc=Object.fromEntries(SUGG_ROLES);
+    return `<p class="muted small">Cada tarjeta es un rol. Escribe el nombre de quien lo lleva: si ya está en Estructura aparece al escribir; si no, queda el nombre tal como lo pongas.</p>
+    ${roles.length?`<div class="roles">${roles.map((r,i)=>`<div class="rolec ${roleWho(r)?'ok':''}">
+      <div class="rh"><input class="rn" data-f="${F('roles.'+i+'.rol')}" value="${esc(r.rol)}" aria-label="Rol"><button class="x" data-a="delRow" data-col="actividades" data-id="${id}" data-arr="roles" data-i="${i}" aria-label="Quitar rol">×</button></div>
+      ${desc[r.rol]?`<small class="rd">${esc(desc[r.rol])}</small>`:''}
+      <input class="in" list="dl-pers" data-pick="${F('roles.'+i)}" value="${esc(roleWho(r))}" placeholder="¿Quién? Escribe un nombre" aria-label="Quién lleva este rol">
+      ${roleWho(r)?`<button class="btn sm ghost" data-a="waRole" data-id="${id}" data-r="${r.id}">Enviarle su parte</button>`:''}</div>`).join('')}</div>`:''}
+    <div class="lbl">${roles.length?'Más roles':'Roles sugeridos'} · toca uno para agregarlo</div>
+    <div class="sugg">${missing.map(([r,d])=>`<button class="sg" data-a="addSugg" data-id="${id}" data-r="${esc(r)}"><b>+ ${esc(r)}</b><small>${esc(d)}</small></button>`).join('')}<button class="sg" data-a="addRole" data-id="${id}"><b>+ Otro rol</b><small>Uno que no está en la lista</small></button></div>
+    ${missing.length>1?`<div class="row"><button class="btn sm" data-a="addSuggRoles" data-id="${id}">Agregar todos los sugeridos</button></div>`:''}
+    <div class="sub2"><h3>Quiénes más van <span class="muted num">${part.filter(p=>p.confirmado).length}/${part.length} confirmados</span></h3>
+     <div class="chips">${part.map((x,i)=>{const n=whoName(x);return `<span class="chip ${x.confirmado?'on':''}"><button data-a="togPart" data-id="${id}" data-i="${i}" style="display:flex;gap:6px;align-items:center;color:inherit;padding:0" aria-pressed="${!!x.confirmado}">${avatar(n)}${esc(n)}</button><button data-a="delRow" data-col="actividades" data-id="${id}" data-arr="participantes" data-i="${i}" aria-label="Quitar">×</button></span>`}).join('')||'<span class="muted small">Anota aquí a voluntarios e invitados. Toca un nombre cuando confirme.</span>'}</div>
+     <form class="row" data-a-submit="addPart" data-id="${id}"><input class="in" name="nombres" list="dl-pers" placeholder="Escribe un nombre (o varios separados por coma)" style="flex:1 1 220px" required><button class="btn sm pri">Agregar</button></form></div>`};
+
+  const programa=()=>`<p class="muted small">Primero los momentos del evento, en orden, y qué se necesita en cada uno. Abajo, si hace falta, el paso a paso con hora para enviarle a cada quien su parte.</p>
     ${ms.length?`<div class="moments">${ms.map((m,i)=>`<div class="mom" data-n="${i+1}"><input type="text" data-f="${F('momentos.'+i+'.hora')}" value="${esc(m.hora||'')}" placeholder="Hora" aria-label="Hora">
-      <div><input class="nm" data-f="${F('momentos.'+i+'.nombre')}" value="${esc(m.nombre||'')}" aria-label="Momento"><div class="grid2" style="gap:4px"><select data-f="${F('momentos.'+i+'.rolId')}" aria-label="Responsable"><option value="">Responsable…</option>${roles.map(r=>`<option value="${r.id}" ${r.id===m.rolId?'selected':''}>${esc(r.rol)}${r.personaId?' · '+esc(pname(r.personaId)):''}</option>`).join('')}</select>
+      <div><input class="nm" data-f="${F('momentos.'+i+'.nombre')}" value="${esc(m.nombre||'')}" aria-label="Momento"><div class="grid2" style="gap:4px"><select data-f="${F('momentos.'+i+'.rolId')}" aria-label="Responsable"><option value="">Responsable…</option>${rolOpts(m.rolId)}</select>
        <textarea data-f="${F('momentos.'+i+'.necesita')}" placeholder="Qué se necesita (separa con comas)" aria-label="Qué se necesita">${esc(m.necesita||'')}</textarea></div></div>
-      <div class="row" style="flex-direction:column;gap:2px"><button class="btn sm ghost" data-a="momToMat" data-id="${id}" data-i="${i}" title="Pasar lo que se necesita a materiales">→ Materiales</button><button class="x" data-a="delRow" data-col="actividades" data-id="${id}" data-arr="momentos" data-i="${i}" aria-label="Quitar momento">×</button></div></div>`).join('')}</div>`:''}
-    <div class="row">${ms.length?'':`<button class="btn pri sm" data-a="momTemplate" data-id="${id}">Usar la estructura sugerida (${ACT_TYPES[a.tipo||'masiva']})</button>`}<button class="btn sm" data-a="addMom" data-id="${id}">+ Momento</button></div>`}
-  else if(tab==='itinerario'){const it=(a.itinerario||[]).slice().sort((x,y)=>(x.hora||'').localeCompare(y.hora||''));
-    body=`<div class="row between"><div class="seg">${[['lista','Lista general'],['actor','Por actor']].map(([k,n])=>`<button data-a="actView" data-v="${k}" aria-pressed="${UI.actView===k}">${n}</button>`).join('')}</div><button class="btn sm pri" data-a="addStep" data-id="${id}">+ Paso</button></div>
-    ${UI.actView==='lista'?(it.length?`<div class="tscroll"><table class="ed"><thead><tr><th style="width:110px">Hora</th><th style="width:26%">Actor</th><th>Acción</th><th>Detalle</th><th style="width:36px"></th></tr></thead><tbody>
+      <div class="row momx"><button class="btn sm ghost" data-a="momToMat" data-id="${id}" data-i="${i}" title="Pasar lo que se necesita a la lista de qué llevar">→ Qué llevar</button><button class="x" data-a="delRow" data-col="actividades" data-id="${id}" data-arr="momentos" data-i="${i}" aria-label="Quitar momento">×</button></div></div>`).join('')}</div>`:''}
+    <div class="row">${ms.length?'':`<button class="btn pri sm" data-a="momTemplate" data-id="${id}">Usar la estructura sugerida (${ACT_TYPES[a.tipo||'masiva']})</button>`}<button class="btn sm" data-a="addMom" data-id="${id}">+ Momento</button></div>
+    <div class="sub2"><div class="row between"><h3>Paso a paso con hora</h3><div class="row"><div class="seg">${[['lista','Todo junto'],['actor','Por persona']].map(([k,n])=>`<button data-a="actView" data-v="${k}" aria-pressed="${UI.actView===k}">${n}</button>`).join('')}</div><button class="btn sm pri" data-a="addStep" data-id="${id}">+ Paso</button></div></div>
+    ${UI.actView==='lista'?(it.length?`<div class="tscroll"><table class="ed"><thead><tr><th style="width:110px">Hora</th><th style="width:26%">Quién</th><th>Qué hace</th><th>Detalle</th><th style="width:36px"></th></tr></thead><tbody>
       ${it.map(s=>{const i=a.itinerario.indexOf(s);return `<tr><td><input type="time" data-f="${F('itinerario.'+i+'.hora')}" value="${s.hora||''}" aria-label="Hora"></td>
-       <td><select data-f="${F('itinerario.'+i+'.rolId')}" aria-label="Actor"><option value="">Todos</option>${roles.map(r=>`<option value="${r.id}" ${r.id===s.rolId?'selected':''}>${esc(r.rol)}${r.personaId?' · '+esc(pname(r.personaId)):''}</option>`).join('')}</select></td>
+       <td><select data-f="${F('itinerario.'+i+'.rolId')}" aria-label="Quién"><option value="">Todos</option>${rolOpts(s.rolId)}</select></td>
        <td><input class="need" data-f="${F('itinerario.'+i+'.accion')}" value="${esc(s.accion||'')}" placeholder="Qué hace" aria-label="Acción"></td><td><input data-f="${F('itinerario.'+i+'.detalle')}" value="${esc(s.detalle||'')}" placeholder="Lugar, materiales, nota" aria-label="Detalle"></td>
-       <td><button class="x" data-a="delRow" data-col="actividades" data-id="${id}" data-arr="itinerario" data-i="${i}" aria-label="Quitar paso">×</button></td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty">Agrega los pasos con hora y actor. En "Por actor" le envías a cada uno su parte.</div>')
+       <td><button class="x" data-a="delRow" data-col="actividades" data-id="${id}" data-arr="itinerario" data-i="${i}" aria-label="Quitar paso">×</button></td></tr>`}).join('')}</tbody></table></div>`:'<span class="muted small">Agrega los pasos con hora y quién los hace. En "Por persona" le envías a cada uno su parte.</span>')
     :`<div class="actors">${[...roles,{id:'',rol:'Todos'}].map(r=>{const st=it.filter(s=>(s.rolId||'')===r.id);if(!r.id&&!st.length)return '';
-      return `<div class="actor"><div class="row between"><b>${esc(r.rol)}</b>${r.id?`<button class="btn sm" data-a="waRole" data-id="${id}" data-r="${r.id}">Enviar</button>`:''}</div><span class="small muted">${esc(pname(r.personaId)||'Sin responsable')}</span>
-       ${st.length?`<ol>${st.map(s=>`<li><b class="h">${s.hora?tm(s.hora):'--'}</b> ${esc(s.accion||'')}${s.detalle?` <span class="muted">· ${esc(s.detalle)}</span>`:''}</li>`).join('')}</ol>`:'<span class="small muted">Sin pasos asignados</span>'}</div>`}).join('')}</div>`}`}
-  else if(tab==='materiales'){const ms=a.materiales||[];const b=budgetOf(a);const kit=(KIT[a.tipo||'masiva']||[]).filter(k=>!ms.some(m=>norm(m.item)===norm(k[0])));
-    body=`<div class="budget"><div><span>Total estimado</span><b>${money(b.total)}</b></div><div><span>Hay que comprar</span><b>${money(b.compra)}</b></div><div><span>Aportes y préstamos</span><b>${money(b.aporte)}</b></div><div><span>Costo por asistente</span><b>${b.n?money(b.porPersona):'—'}</b></div>
+      return `<div class="actor"><div class="row between"><b>${esc(r.rol)}</b>${r.id?`<button class="btn sm" data-a="waRole" data-id="${id}" data-r="${r.id}">Enviar</button>`:''}</div><span class="small muted">${esc(roleWho(r)||'Sin responsable')}</span>
+       ${st.length?`<ol>${st.map(s=>`<li><b class="h">${s.hora?tm(s.hora):'--'}</b> ${esc(s.accion||'')}${s.detalle?` <span class="muted">· ${esc(s.detalle)}</span>`:''}</li>`).join('')}</ol>`:'<span class="small muted">Sin pasos asignados</span>'}</div>`}).join('')}</div>`}</div>`;
+
+  const materiales=()=>{const kit=(KIT[a.tipo||'masiva']||[]).filter(k=>!mats.some(m=>norm(m.item)===norm(k[0])));
+    return `<div class="budget"><div><span>Total estimado</span><b>${money(b.total)}</b></div><div><span>Hay que comprar</span><b>${money(b.compra)}</b></div><div><span>Aportes y préstamos</span><b>${money(b.aporte)}</b></div><div><span>Costo por asistente</span><b>${b.n?money(b.porPersona):'—'}</b></div>
      <div class="row" style="margin-left:auto"><button class="btn sm" data-a="budgetPdf" data-id="${id}">Presupuesto PDF</button></div></div>
-    ${!b.n?'<div class="note warn small">Pon la meta de asistencia en Resumen para calcular lo que va "por persona".</div>':''}
-    <div class="tscroll"><table class="ed" style="min-width:860px"><thead><tr><th>Material</th><th style="width:76px" class="r">Cant.</th><th style="width:84px">×persona</th><th style="width:90px">Unidad</th><th style="width:96px" class="r">Costo unit.</th><th style="width:110px">Fuente</th><th style="width:150px">Responsable</th><th style="width:96px" class="r">Subtotal</th><th style="width:44px">Listo</th><th style="width:34px"></th></tr></thead><tbody>
-     ${ms.map((m,i)=>{const q=(+m.cant||0)*(m.porPersona?b.n:1);return `<tr><td><input data-f="${F('materiales.'+i+'.item')}" value="${esc(m.item||'')}" aria-label="Material"></td><td><input class="r" type="number" min="0" step="any" data-f="${F('materiales.'+i+'.cant')}" data-t="num" data-rr value="${m.cant??''}" aria-label="Cantidad"></td>
+    ${!b.n?'<div class="note warn small">Pon cuántas personas esperamos en "Lo básico" para calcular lo que va "por persona".</div>':''}
+    ${mats.length?`<div class="tscroll"><table class="ed" style="min-width:860px"><thead><tr><th>Material</th><th style="width:76px" class="r">Cant.</th><th style="width:84px">×persona</th><th style="width:90px">Unidad</th><th style="width:96px" class="r">Costo unit.</th><th style="width:110px">Fuente</th><th style="width:150px">Responsable</th><th style="width:96px" class="r">Subtotal</th><th style="width:44px">Listo</th><th style="width:34px"></th></tr></thead><tbody>
+     ${mats.map((m,i)=>{const q=(+m.cant||0)*(m.porPersona?b.n:1);return `<tr><td><input data-f="${F('materiales.'+i+'.item')}" value="${esc(m.item||'')}" aria-label="Material"></td><td><input class="r" type="number" min="0" step="any" data-f="${F('materiales.'+i+'.cant')}" data-t="num" data-rr value="${m.cant??''}" aria-label="Cantidad"></td>
       <td><label class="small"><input type="checkbox" data-f="${F('materiales.'+i+'.porPersona')}" data-t="bool" data-rr ${m.porPersona?'checked':''}> ${m.porPersona?'= '+fmt(q):''}</label></td>
       <td><input data-f="${F('materiales.'+i+'.unidad')}" value="${esc(m.unidad||'')}" aria-label="Unidad"></td><td><input class="r" type="number" min="0" step="0.01" data-f="${F('materiales.'+i+'.costo')}" data-t="num" data-rr value="${m.costo??''}" aria-label="Costo unitario"></td>
       <td><select data-f="${F('materiales.'+i+'.fuente')}" data-rr aria-label="Fuente">${Object.entries(FUENTES).map(([k,v])=>`<option value="${k}" ${(m.fuente||'compra')===k?'selected':''}>${v}</option>`).join('')}</select></td>
       <td><select data-f="${F('materiales.'+i+'.responsableId')}" aria-label="Responsable">${personOptions(m.responsableId,'—')}</select></td>
       <td class="r num">${money(q*(+m.costo||0))}</td><td><input type="checkbox" data-f="${F('materiales.'+i+'.listo')}" data-t="bool" ${m.listo?'checked':''} aria-label="Listo"></td>
       <td><button class="x" data-a="delRow" data-col="actividades" data-id="${id}" data-arr="materiales" data-i="${i}" aria-label="Quitar">×</button></td></tr>`}).join('')}</tbody>
-     <tfoot><tr><td colspan="7">Total</td><td class="r num">${money(b.total)}</td><td colspan="2"></td></tr></tfoot></table></div>
+     <tfoot><tr><td colspan="7">Total</td><td class="r num">${money(b.total)}</td><td colspan="2"></td></tr></tfoot></table></div>`:''}
     <div class="row"><button class="btn sm pri" data-a="addMat" data-id="${id}">+ Material</button>${kit.length?`<span class="small muted">Sugeridos:</span>${kit.slice(0,8).map(k=>`<button class="tag" data-a="addKit" data-id="${id}" data-k="${esc(k[0])}">+ ${esc(k[0])}</button>`).join('')}`:''}</div>
-    <p class="small muted">Los costos sugeridos son referencias para arrancar; ajústalos con tus cotizaciones. Marca "×persona" cuando la cantidad depende de cuántos asistan.</p>`}
-  else if(tab==='tareas'){body=`${quickTaskForm('actividad',id)}<div class="tlist">${ts.map(t=>taskRow(t,{showOrigin:true})).join('')||'<span class="muted small">Sin tareas todavía.</span>'}</div>`}
-  else if(tab==='ideas'){body=ideasBlock('actividades',a)}
-  else if(tab==='reuniones'){body=reus.length?`<div class="timeline">${reus.map(({r,t})=>`<div class="tl"><div class="d">${fshort(r.fecha)}<small>${esc(r.titulo||'Reunión')}</small></div><div><b>${esc(t.texto)}</b>${t.notas?`<p class="small" style="white-space:pre-wrap">${esc(t.notas)}</p>`:'<p class="small muted">Sin notas</p>'}<button class="olink small" data-a="openReu" data-id="${r.id}">Abrir la reunión</button></div></div>`).join('')}</div>`:'<div class="empty">Cuando en una reunión vinculen un tema a esta actividad, lo que se habló aparece aquí solo.</div>'}
-  else if(tab==='evaluacion'){const ev=a.evaluacion||{};body=`<div class="grid2"><div class="f"><label for="ea">Asistencia real</label><input id="ea" type="number" min="0" data-f="${F('evaluacion.asistencia')}" data-t="num" value="${ev.asistencia??''}"></div>
+    <p class="small muted">Los costos sugeridos son referencias para arrancar; ajústalos con tus cotizaciones. Marca "×persona" cuando la cantidad depende de cuántos asistan.</p>`};
+
+  const tareas=()=>`<p class="muted small">Lo que hay que resolver antes del día: qué, quién y para cuándo.</p>${quickTaskForm('actividad',id)}<div class="tlist">${ts.map(t=>taskRow(t,{showOrigin:false})).join('')||'<span class="muted small">Sin pendientes todavía.</span>'}</div>`;
+
+  const ideas=()=>`${ideasBlock('actividades',a)}
+    <div class="sub2"><h3>Lo que se habló en reuniones</h3>${reus.length?`<div class="timeline">${reus.map(({r,t})=>`<div class="tl"><div class="d">${fshort(r.fecha)}<small>${esc(r.titulo||'Reunión')}</small></div><div><b>${esc(t.texto)}</b>${t.notas?`<p class="small" style="white-space:pre-wrap">${esc(t.notas)}</p>`:'<p class="small muted">Sin notas</p>'}<button class="olink small" data-a="openReu" data-id="${r.id}">Abrir la reunión</button></div></div>`).join('')}</div>`:'<span class="muted small">Cuando en una reunión vinculen un tema a esta actividad, lo que se habló aparece aquí solo.</span>'}</div>`;
+
+  const evaluacion=()=>`<div class="grid2"><div class="f"><label for="ea">Cuántos asistieron</label><input id="ea" type="number" min="0" data-f="${F('evaluacion.asistencia')}" data-t="num" value="${ev.asistencia??''}"></div>
      <div class="f"><label for="en">Jóvenes nuevos captados</label><input id="en" type="number" min="0" data-f="${F('evaluacion.nuevos')}" data-t="num" value="${ev.nuevos??''}"></div>
-     <div class="f"><label for="el">Logros</label><textarea id="el" data-f="${F('evaluacion.logros')}">${esc(ev.logros||'')}</textarea></div>
-     <div class="f"><label for="em">Qué mejorar</label><textarea id="em" data-f="${F('evaluacion.mejorar')}">${esc(ev.mejorar||'')}</textarea></div></div>`}
-  return `<div class="detail"><div class="dhead" style="--c:${ACT_COL[a.tipo]||'#1e5eff'}">
-   <div class="row between"><span class="when">${a.desde?fshort(a.desde)+(a.hasta&&a.hasta!==a.desde?' al '+fshort(a.hasta).toLowerCase():''):'Sin fecha'}${a.lugar?' · '+esc(a.lugar):''}</span>
-    <div class="row"><button class="btn sm" data-a="actPdf" data-id="${id}">Ficha PDF</button><button class="btn sm danger" data-a="askDel" data-col="actividades" data-id="${id}">Eliminar</button></div></div>
-   <input class="title-in" data-f="${F('nombre')}" value="${esc(a.nombre||'')}" placeholder="Nombre de la actividad" aria-label="Nombre"></div>
-   <div class="tabs" role="tablist">${T.map(([k,n,c])=>`<button role="tab" aria-selected="${tab===k}" data-a="actTab" data-t="${k}">${n}${c?`<span class="n">${c}</span>`:''}</button>`).join('')}</div>
-   <div class="flat">${body}</div></div>`}
+     <div class="f"><label for="el">Qué salió bien</label><textarea id="el" data-f="${F('evaluacion.logros')}">${esc(ev.logros||'')}</textarea></div>
+     <div class="f"><label for="em">Qué mejorar</label><textarea id="em" data-f="${F('evaluacion.mejorar')}">${esc(ev.mejorar||'')}</textarea></div></div>`;
+
+  return `<div class="plan">${title?`<h2>${esc(a.nombre||'Actividad')}</h2>`:''}
+   <div class="row between ptools"><span class="when">${when}${a.lugar?' · '+esc(a.lugar):''}</span><div class="row"><button class="btn sm" data-a="actPdf" data-id="${id}">Ficha PDF</button><button class="btn sm danger" data-a="askDel" data-col="actividades" data-id="${id}">Eliminar</button></div></div>
+   ${psec('asec','basico',1,'Lo básico: cuándo, dónde y para qué',sBasico,basico)}
+   ${psec('asec','equipo',2,'Quién hace qué',sEquipo,equipo)}
+   ${psec('asec','programa',3,'Programa del día',sProg,programa)}
+   ${psec('asec','materiales',4,'Qué llevar y cuánto cuesta',sMat,materiales)}
+   ${psec('asec','tareas',5,'Pendientes antes del día',sTar,tareas)}
+   ${psec('asec','ideas',6,'Ideas y lo hablado en reuniones',sIdeas,ideas)}
+   ${psec('asec','evaluacion',7,'Después: cómo salió',sEval,evaluacion)}</div>`}
+function actDetail(a){return actPlan(a,{title:true})}
 function ideasBlock(col,o){return `<form class="row" data-a-submit="addIdea" data-col="${col}" data-id="${o.id}"><input class="in" name="texto" placeholder="Escribe la idea" style="flex:2 1 180px" required><input class="in" name="autor" placeholder="De quién" style="flex:1 1 110px"><button class="ideabtn">Idea</button></form>
   <ul class="ideas">${(o.ideas||[]).map((x,i)=>`<li><span>${esc(x.texto)}${x.autor?`<span class="by">${esc(x.autor)}</span>`:''}</span><span class="row"><button class="btn sm" data-a="ideaTask" data-col="${col}" data-id="${o.id}" data-i="${i}">Volver tarea</button><button class="x" data-a="delRow" data-col="${col}" data-id="${o.id}" data-arr="ideas" data-i="${i}" aria-label="Quitar idea">×</button></span></li>`).join('')}</ul>`}
 
 /* ---------- Reuniones ---------- */
+const reuSecs=r=>r&&r.estado==='terminada'?{temas:true,acuerdos:true}:{asist:true,temas:true,acuerdos:true};
 function vReuniones(){let rs=L('reuniones').sort((a,b)=>((b.fecha||'')+(b.hora||'')).localeCompare((a.fecha||'')+(a.hora||'')));
   if(UI.reuFilter==='abiertas')rs=rs.filter(r=>r.estado!=='terminada');if(UI.reuFilter==='terminadas')rs=rs.filter(r=>r.estado==='terminada');
-  if(!UI.reu||!S.reuniones[UI.reu])UI.reu=(rs.find(r=>r.estado!=='terminada'&&r.fecha>=today())||rs[0]||{}).id;const r=S.reuniones[UI.reu];
+  if(UI.reu&&!S.reuniones[UI.reu])UI.reu=null;let mh=null;
   const ser=L('series').sort((a,b)=>(a.creado||'').localeCompare(b.creado||''));
   return `<div class="vhead"><div class="t"><span class="eyebrow">Ejecutar</span><h1>Reuniones</h1></div><div class="seg">${[['todas','Todas'],['abiertas','Abiertas'],['terminadas','Con minuta']].map(([k,n])=>`<button data-a="reuFilter" data-f="${k}" aria-pressed="${UI.reuFilter===k}">${n}</button>`).join('')}</div></div>
   <section class="flat"><header><h2>Programadas</h2><span class="small muted">Se repiten solas en la agenda hasta que las cambies</span></header>
    <div class="series">${ser.map(s=>{const nx=nextOf(s);return `<div class="serie" style="--sc:${s.color||'#e0457b'}"><b>${esc(s.nombre)}</b><small>${esc(serieLabel(s))}${s.lugar?' · '+esc(s.lugar):''}</small>${nx?`<span class="nx">Próxima: ${fdate(nx)}</span>`:'<span class="nx">Sin próxima fecha</span>'}
-     <div class="row">${nx?`<button class="btn sm" data-a="openSerie" data-id="${s.id}" data-d="${nx}">Abrir próxima</button>`:''}<button class="btn sm" data-a="editSerie" data-id="${s.id}">Editar</button></div></div>`}).join('')}
+     <div class="row">${nx?`<button class="btn sm" data-a="openSerie" data-id="${s.id}" data-d="${nx}">Abrir próxima</button>`:''}<button class="btn sm" data-a="editSerie" data-id="${s.id}">${s.dia==null||s.dia===''?'Poner día y hora':'Editar'}</button></div></div>`}).join('')}
     <button class="serie newser" data-a="editSerie" data-id=""><b>+ Reunión programada</b><small>Ej. redes, formación, coordinadores</small></button></div></section>
-  <div class="split"><div class="list"><form class="add" data-a-submit="newReu"><input class="in" name="titulo" placeholder="Reunión puntual" required><input class="in" type="date" name="fecha" style="flex:0 1 150px" aria-label="Fecha"><button class="btn pri">Crear</button></form>
-   <div class="items">${rs.map(x=>{const s=S.series[x.serieId];return `<button class="item" data-a="selReu" data-id="${x.id}" ${x.id===UI.reu?'aria-current="true"':''}><span class="stub" style="--c:${x.estado==='terminada'?'#0f9b67':(s&&s.color)||'#00a3b8'}">${x.fecha?`<small>${D3[pd(x.fecha).getDay()]}</small><b>${pd(x.fecha).getDate()}</b><small>${M3[pd(x.fecha).getMonth()]}</small>`:'<b>—</b>'}</span>
-     <span class="body"><span class="nm">${esc(x.titulo||'Reunión')}</span><span class="desc">${esc([x.hora?tm(x.hora):'',x.lugar||'',(x.temas||[]).map(t=>t.texto).join(' · ')].filter(Boolean).join(' — ')||'Sin temas todavía')}</span><span class="sub"><span>${(x.asistentes||[]).filter(a=>a.presente).length} presentes</span><span>${x.estado==='terminada'?'Minuta lista':'Abierta'}</span></span></span></button>`}).join('')||'<div class="empty">Abre una reunión programada o crea una puntual.</div>'}</div></div>
-  ${r?reuDetail(r):'<div class="empty">Elige una reunión.</div>'}</div>`}
-function reuDetail(r){const id=r.id,F=p=>`reuniones|${id}|${p}`;const att=r.asistentes||[];const pres=att.filter(a=>a.presente).length;const closed=r.estado==='terminada';const s=S.series[r.serieId];
-  const avail=L('personas').filter(p=>!att.some(a=>a.personaId===p.id));
+  <form class="add" data-a-submit="newReu"><input class="in" name="titulo" placeholder="Nueva reunión: escribe el nombre" required><input class="in" type="date" name="fecha" style="flex:0 1 160px" aria-label="Fecha"><button class="btn pri">Crear</button></form>
+  <p class="muted small">Toca una fecha para abrir la reunión. Tócala otra vez para cerrarla.</p>
+  <div class="alist">${rs.map(x=>{const open=x.id===UI.reu;const s=S.series[x.serieId];const m=monthHead(x.fecha);const head=m!==mh?`<div class="mhead">${m}</div>`:'';mh=m;
+    return `${head}<div class="acard ${open?'open':''}" id="card-${x.id}"><button class="item" data-a="selReu" data-id="${x.id}" aria-expanded="${open}"><span class="stub" style="--c:${x.estado==='terminada'?'#0f9b67':(s&&s.color)||'#00a3b8'}">${x.fecha?`<small>${D3[pd(x.fecha).getDay()]}</small><b>${pd(x.fecha).getDate()}</b><small>${M3[pd(x.fecha).getMonth()]}</small>`:'<b>—</b>'}</span>
+     <span class="body"><span class="nm">${esc(x.titulo||'Reunión')}</span>${open?'':`<span class="desc">${esc([x.hora?tm(x.hora):'',x.lugar||'',(x.temas||[]).map(t=>t.texto).join(' · ')].filter(Boolean).join(' — ')||'Sin temas todavía')}</span>`}<span class="sub"><span>${(x.asistentes||[]).filter(a=>a.presente).length} presentes</span><span>${pl((x.temas||[]).length,"tema","temas")}</span><span>${x.estado==='terminada'?'Minuta lista':'Abierta'}</span></span></span>${chev(open)}</button>
+     ${open?`<div class="abody">${reuPlan(x)}<button class="btn sm ghost closer" data-a="selReu" data-id="${x.id}">Cerrar ▴</button></div>`:''}</div>`}).join('')||'<div class="empty">Abre una reunión programada o crea una nueva arriba.</div>'}</div>`}
+function reuPlan(r,{title=false}={}){const id=r.id,F=p=>`reuniones|${id}|${p}`;const att=r.asistentes||[];const pres=att.filter(a=>a.presente).length;const closed=r.estado==='terminada';const s=S.series[r.serieId];const temas=r.temas||[];const ts=tasksOf('reunion',id);
   const prev=r.prevId&&S.reuniones[r.prevId]?S.reuniones[r.prevId]:(r.serieId?L('reuniones').filter(x=>x.serieId===r.serieId&&x.fecha<r.fecha).sort((a,b)=>b.fecha.localeCompare(a.fecha))[0]:null);
   const prevOpen=prev?tasksOf('reunion',prev.id).filter(isOpen):[];
   const acts=L('actividades').filter(a=>(a.hasta||a.desde||'9')>=addDays(r.fecha||today(),-30)).sort((a,b)=>(a.desde||'').localeCompare(b.desde||''));
-  return `<div class="detail"><div class="dhead" style="--c:${closed?'#0f9b67':(s&&s.color)||'#00a3b8'}">
-   <div class="row between"><span class="when">${r.fecha?fshort(r.fecha):'Sin fecha'}${r.hora?' · '+tm(r.hora):''}${s?' · Programada':''}${closed?' · Terminada':''}</span>
-    <div class="row">${closed?`<button class="btn sm pri" data-a="reuPdf" data-id="${id}">Descargar minuta</button><button class="btn sm" data-a="reopenReu" data-id="${id}">Reabrir</button>`:''}<button class="btn sm danger" data-a="askDel" data-col="reuniones" data-id="${id}">Eliminar</button></div></div>
-   <input class="title-in" data-f="${F('titulo')}" value="${esc(r.titulo||'')}" aria-label="Título">
-   <div class="grid4"><div class="f"><label for="rf">Fecha</label><input id="rf" type="date" data-f="${F('fecha')}" data-rr value="${r.fecha||''}"></div>
-    <div class="f"><label for="rh">Inicio</label><input id="rh" type="time" data-f="${F('hora')}" value="${r.hora||''}"></div>
-    <div class="f"><label for="rhf">Fin</label><input id="rhf" type="time" data-f="${F('horaFin')}" value="${r.horaFin||''}"></div>
-    <div class="f"><label for="rl">Lugar o enlace</label><input id="rl" data-f="${F('lugar')}" value="${esc(r.lugar||'')}"></div></div></div>
-  ${prevOpen.length?`<section class="note"><b>Pendientes de la reunión anterior (${fdate(prev.fecha)})</b><div class="tlist">${prevOpen.map(t=>taskRow(t,{showOrigin:false})).join('')}</div></section>`:''}
-  <div class="live">
-   <section class="panel"><header><h3>Asistencia <span class="muted num">${pres}/${att.length}</span></h3><button class="btn sm ghost" data-a="addAllTeam" data-id="${id}">+ Todo el círculo 0</button></header>
-    <div class="chips">${att.map((x,i)=>{const n=x.personaId?pname(x.personaId):x.nombre;return `<span class="chip ${x.presente?'on':''}"><button data-a="togAtt" data-id="${id}" data-i="${i}" style="display:flex;gap:6px;align-items:center;color:inherit;padding:0" aria-pressed="${!!x.presente}">${avatar(n)}${esc(n)}</button><button data-a="delRow" data-col="reuniones" data-id="${id}" data-arr="asistentes" data-i="${i}" aria-label="Quitar">×</button></span>`}).join('')||'<span class="muted small">Agrega a los participantes y toca su nombre para marcarlo presente.</span>'}</div>
-    <form class="row" data-a-submit="addAtt" data-id="${id}"><select class="in" name="pid" style="flex:1 1 150px" aria-label="Persona"><option value="">Del equipo…</option>${avail.map(p=>`<option value="${p.id}">${esc(p.nombre)}</option>`).join('')}</select><input class="in" name="nombre" placeholder="u otro nombre" style="flex:1 1 110px"><button class="btn sm">Agregar</button></form>
-    <h3 style="margin-top:6px">Ideas</h3>${ideasBlock('reuniones',r)}</section>
-   <section class="panel"><header><h3>Orden del día</h3><span class="small muted">Vincula un tema a una actividad y lo hablado queda en ella</span></header>
-    ${(r.temas||[]).map((t,i)=>`<div class="topic ${t.ok?'ok':''}"><div class="th"><input type="checkbox" data-f="${F('temas.'+i+'.ok')}" data-t="bool" data-rr ${t.ok?'checked':''} aria-label="Tema tratado"><b>${esc(t.texto)}</b><button class="x" data-a="delRow" data-col="reuniones" data-id="${id}" data-arr="temas" data-i="${i}" aria-label="Quitar tema">×</button></div>
+  const sBasico=[r.fecha?fdate(r.fecha):'Falta la fecha',r.hora?tm(r.hora)+(r.horaFin?' a '+tm(r.horaFin):''):'',r.lugar?esc(r.lugar):'Falta el lugar'].filter(Boolean).join(' · ');
+  const sAsist=att.length?`${pres} presentes de ${att.length} en la lista`:'Todavía sin nombres';
+  const sTemas=temas.length?`${pl(temas.length,"tema","temas")} · ${temas.filter(t=>t.ok).length} tratados`:'Sin temas todavía';
+  const sAcu=ts.length?`${pl(ts.length,"acuerdo","acuerdos")} · ${ts.filter(isOpen).length} por hacer`:'Sin acuerdos todavía';
+  const sIdeas=(r.ideas||[]).length?`${pl(r.ideas.length,"idea","ideas")}`:'Ninguna todavía';
+  const sAp=r.apuntes||r.transcripcion?'Con apuntes':'Vacío';
+
+  const basico=()=>`<div class="f"><label for="rt">Nombre de la reunión</label><input id="rt" data-f="${F('titulo')}" data-mirror value="${esc(r.titulo||'')}"></div>
+    <div class="grid4"><div class="f"><label for="rf">Fecha</label><input id="rf" type="date" data-f="${F('fecha')}" data-rr value="${r.fecha||''}"></div>
+    <div class="f"><label for="rh">Empieza</label><input id="rh" type="time" data-f="${F('hora')}" value="${r.hora||''}"></div>
+    <div class="f"><label for="rhf">Termina</label><input id="rhf" type="time" data-f="${F('horaFin')}" value="${r.horaFin||''}"></div>
+    <div class="f"><label for="rl">Lugar o enlace</label><input id="rl" data-f="${F('lugar')}" value="${esc(r.lugar||'')}"></div></div>`;
+
+  const asist=()=>`<p class="muted small">Escribe los nombres y toca cada uno para marcar si vino (azul = presente).</p>
+    <div class="chips">${att.map((x,i)=>{const n=whoName(x);return `<span class="chip ${x.presente?'on':''}"><button data-a="togAtt" data-id="${id}" data-i="${i}" style="display:flex;gap:6px;align-items:center;color:inherit;padding:0" aria-pressed="${!!x.presente}">${avatar(n)}${esc(n)}</button><button data-a="delRow" data-col="reuniones" data-id="${id}" data-arr="asistentes" data-i="${i}" aria-label="Quitar">×</button></span>`}).join('')||'<span class="muted small">Todavía no hay nadie en la lista.</span>'}</div>
+    <form class="row" data-a-submit="addAtt" data-id="${id}"><input class="in" name="nombres" list="dl-pers" placeholder="Escribe un nombre (o varios separados por coma)" style="flex:1 1 220px" required><button class="btn sm pri">Agregar</button><button type="button" class="btn sm ghost" data-a="addAllTeam" data-id="${id}">+ Todo el círculo 0</button></form>`;
+
+  const temasB=()=>`<p class="muted small">Un tema por línea. Marca la casilla cuando se trate y anota lo que se habló. Si el tema es de una actividad, vincúlalo y queda guardado en ella.</p>
+    ${temas.map((t,i)=>`<div class="topic ${t.ok?'ok':''}"><div class="th"><input type="checkbox" data-f="${F('temas.'+i+'.ok')}" data-t="bool" data-rr ${t.ok?'checked':''} aria-label="Tema tratado"><b>${esc(t.texto)}</b><button class="x" data-a="delRow" data-col="reuniones" data-id="${id}" data-arr="temas" data-i="${i}" aria-label="Quitar tema">×</button></div>
       <textarea data-f="${F('temas.'+i+'.notas')}" placeholder="Lo que se habló de este tema">${esc(t.notas||'')}</textarea>
       <div class="row link"><select class="in" style="width:auto;flex:1 1 200px;padding:5px 9px" data-f="${F('temas.'+i+'.actividadId')}" data-rr aria-label="Actividad vinculada"><option value="">Sin actividad vinculada</option>${acts.map(a=>`<option value="${a.id}" ${a.id===t.actividadId?'selected':''}>${esc(a.nombre||'Actividad')} · ${fdate(a.desde)}</option>`).join('')}</select>
        ${t.actividadId?`<button class="olink" data-a="drawerAct" data-id="${t.actividadId}">Ver actividad</button>`:''}<button class="btn sm ghost" data-a="topicTask" data-id="${id}" data-i="${i}">+ Tarea</button></div></div>`).join('')}
-    <form class="row" data-a-submit="addTopic" data-id="${id}"><input class="in" name="texto" placeholder="Nuevo tema" style="flex:1" required><button class="btn sm pri">Agregar</button></form>
-    <details><summary>Apuntes generales y transcripción</summary><div class="flat" style="margin-top:8px"><textarea class="in" style="min-height:140px" data-f="${F('apuntes')}" placeholder="Lo que no cabe en un tema">${esc(r.apuntes||'')}</textarea><textarea class="in" style="min-height:100px" data-f="${F('transcripcion')}" placeholder="Pega aquí la transcripción de la grabación">${esc(r.transcripcion||'')}</textarea></div></details>
-   </section></div>
-  <section class="panel"><header><h3>Acuerdos y tareas</h3><span class="small muted">Quedan en la agenda con enlace a esta reunión</span></header>
-   ${quickTaskForm('reunion',id)}<div class="tlist">${tasksOf('reunion',id).map(t=>taskRow(t,{showOrigin:false})).join('')||'<span class="muted small">Sin acuerdos todavía.</span>'}</div></section>
-  ${closed?'':`<div class="note row between"><span>Al terminar se guarda la minuta con asistencia, temas, ideas y acuerdos, y lo hablado de cada tema queda en su actividad.</span><button class="btn pri" data-a="closeReu" data-id="${id}">Terminar y generar minuta</button></div>`}
-  </div>`}
+    <form class="row" data-a-submit="addTopic" data-id="${id}"><input class="in" name="texto" placeholder="Nuevo tema" style="flex:1" required><button class="btn sm pri">Agregar</button></form>`;
+
+  const acuerdos=()=>`<p class="muted small">Cada acuerdo es una tarea: qué, quién y para cuándo. Quedan en la agenda con enlace a esta reunión.</p>${quickTaskForm('reunion',id)}<div class="tlist">${ts.map(t=>taskRow(t,{showOrigin:false})).join('')||'<span class="muted small">Sin acuerdos todavía.</span>'}</div>`;
+
+  const apuntes=()=>`<div class="f"><label for="rap">Apuntes generales</label><textarea id="rap" style="min-height:140px" data-f="${F('apuntes')}" placeholder="Lo que no cabe en un tema">${esc(r.apuntes||'')}</textarea></div>
+    <div class="f"><label for="rtr">Transcripción</label><textarea id="rtr" style="min-height:100px" data-f="${F('transcripcion')}" placeholder="Pega aquí la transcripción de la grabación">${esc(r.transcripcion||'')}</textarea></div>`;
+
+  return `<div class="plan">${title?`<h2>${esc(r.titulo||'Reunión')}</h2>`:''}
+   <div class="row between ptools"><span class="when">${r.fecha?fshort(r.fecha):'Sin fecha'}${r.hora?' · '+tm(r.hora):''}${s?' · Programada':''}${closed?' · Terminada':''}</span>
+    <div class="row">${closed?`<button class="btn sm pri" data-a="reuPdf" data-id="${id}">Descargar minuta</button><button class="btn sm" data-a="reopenReu" data-id="${id}">Reabrir</button>`:''}<button class="btn sm danger" data-a="askDel" data-col="reuniones" data-id="${id}">Eliminar</button></div></div>
+   ${prevOpen.length?`<section class="note"><b>Pendientes de la reunión anterior (${fdate(prev.fecha)})</b><div class="tlist">${prevOpen.map(t=>taskRow(t,{showOrigin:false})).join('')}</div></section>`:''}
+   ${psec('rsec','basico',1,'Cuándo y dónde',sBasico,basico)}
+   ${psec('rsec','asist',2,'Quiénes vinieron',sAsist,asist)}
+   ${psec('rsec','temas',3,'De qué se habló',sTemas,temasB)}
+   ${psec('rsec','acuerdos',4,'Acuerdos: quién quedó en qué',sAcu,acuerdos)}
+   ${psec('rsec','ideas',5,'Ideas que salieron',sIdeas,()=>ideasBlock('reuniones',r))}
+   ${psec('rsec','apuntes',6,'Apuntes y transcripción',sAp,apuntes)}
+   ${closed?'':`<div class="note row between"><span>Al terminar se guarda la minuta con asistencia, temas, ideas y acuerdos, y lo hablado de cada tema queda en su actividad.</span><button class="btn pri" data-a="closeReu" data-id="${id}">Terminar y generar minuta</button></div>`}</div>`}
+function reuDetail(r){return reuPlan(r,{title:true})}
 
 /* ---------- Tareas ---------- */
 function vTareas(){const f=UI.tf,T=today();let ts=L('tareas');
@@ -1015,37 +1164,66 @@ function vTareas(){const f=UI.tf,T=today();let ts=L('tareas');
   if(f.resp)ts=ts.filter(t=>t.responsableId===f.resp);
   if(f.q){const q=norm(f.q);ts=ts.filter(t=>norm(t.titulo).includes(q)||norm(t.notas).includes(q))}
   ts.sort(sortTasks);const camp=L('tareas').filter(t=>t.origen&&t.origen.tipo==='campana'&&isOpen(t));
-  const lane=(p,c)=>{const xs=ts.filter(t=>(t.prioridad||'media')===p);return `<section class="panel lane" style="--c:${c}"><header><h3>Prioridad ${PRIOS[p].toLowerCase()}</h3><span class="muted num">${xs.length}</span></header><div class="tlist">${xs.map(t=>taskRow(t)).join('')||'<span class="muted small">Nada aquí.</span>'}</div></section>`};
+  const lane=(p,c)=>{const xs=ts.filter(t=>(t.prioridad||'media')===p);const open=xs.length>0&&(!!UI.tsec[p]||!!f.q);const late=xs.filter(isLate).length,sin=xs.filter(t=>isOpen(t)&&!t.responsableId).length;
+    return `<div class="acard ${open?'open':''}"><button class="item" data-a="togSec" data-k="tsec" data-s="${p}" aria-expanded="${open}" ${xs.length?'':'disabled'}><span class="stub cnt" style="--c:${c}"><small>${PRIOS[p]}</small><b>${xs.length}</b></span>
+      <span class="body"><span class="nm">Prioridad ${PRIOS[p].toLowerCase()}</span><span class="sub"><span>${xs.length?pl(xs.length,'tarea','tareas'):'Nada aquí'}</span>${late?`<span class="late" style="color:var(--bad);font-weight:800">${pl(late,'vencida','vencidas')}</span>`:''}${sin?`<span>${sin} sin responsable</span>`:''}${xs.length&&!open?'<span>Toca para ver cuáles son</span>':''}</span></span>${xs.length?chev(open):'<span></span>'}</button>
+      ${open?`<div class="gbody"><div class="tlist">${xs.map(t=>taskRow(t)).join('')}</div></div>`:''}</div>`};
   return `<div class="vhead"><div class="t"><span class="eyebrow">Ejecutar</span><h1>Tareas</h1></div><div class="row"><button class="btn pri" data-a="newTask">Nueva tarea</button><button class="btn" data-a="newTask" data-camp="1">Tarea de campaña</button></div></div>
   ${camp.length?`<div class="note"><b>Campaña: ${camp.length} pendientes.</b> ${camp.slice(0,3).map(t=>esc(t.titulo)).join(' · ')} <button class="olink" data-a="tf" data-k="origen" data-v="campana">Ver solo campaña</button></div>`:''}
   <div class="row"><div class="seg">${[['abiertas','Abiertas'],['vencidas','Vencidas'],['hoy','Hoy'],['semana','7 días'],['hechas','Hechas'],['todas','Todas']].map(([k,n])=>`<button data-a="tf" data-k="estado" data-v="${k}" aria-pressed="${f.estado===k}">${n}</button>`).join('')}</div>
    <div class="seg">${[['todas','Todo'],['campana','Campaña'],['reunion','Reuniones'],['actividad','Actividades'],['visita','Visitas'],['libre','Libres']].map(([k,n])=>`<button data-a="tf" data-k="origen" data-v="${k}" aria-pressed="${f.origen===k}">${n}</button>`).join('')}</div>
    <select class="in" style="width:auto" data-tf="resp" aria-label="Responsable">${personOptions(f.resp,'Todos los responsables')}</select>
    <input class="in" style="width:200px" type="search" placeholder="Buscar" value="${esc(f.q)}" data-tf="q" aria-label="Buscar tareas"></div>
-  <div class="lanes">${lane('alta','var(--pop)')}${lane('media','var(--sun)')}${lane('baja','var(--blue)')}</div>
-  ${ideasBank()}`}
+  <div class="alist">${lane('alta','var(--pop)')}${lane('media','#c77800')}${lane('baja','var(--blue)')}${ideasBank()}</div>`}
 function allIdeas(){const out=[],seen=new Set();L('ideas').forEach(i=>{seen.add(norm(i.texto)+'|'+((i.origen||{}).id||''));out.push({...i,src:'ideas'})});
-  [['reuniones','reunion'],['actividades','actividad']].forEach(([c,t])=>L(c).forEach(o=>(o.ideas||[]).forEach(x=>{const k=norm(x.texto)+'|'+o.id;if(!seen.has(k)){seen.add(k);out.push({id:'',texto:x.texto,autor:x.autor,fecha:(o.fecha||o.desde||''),origen:{tipo:t,id:o.id},estado:'nueva',src:c})}})));
+  [['reuniones','reunion'],['actividades','actividad']].forEach(([c,t])=>L(c).forEach(o=>(o.ideas||[]).forEach((x,ix)=>{if(x.banco)return;const k=norm(x.texto)+'|'+o.id;if(!seen.has(k)){seen.add(k);out.push({id:'',key:c+'|'+o.id+'|'+ix,texto:x.texto,autor:x.autor,fecha:(o.fecha||o.desde||''),origen:{tipo:t,id:o.id},estado:'nueva',src:c})}})));
   return out.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''))}
+/* Devuelve la idea del banco; si solo vivía dentro de una reunión o actividad, la crea en el banco para poder moverla */
+function ideaDoc(key){if(S.ideas[key])return S.ideas[key];const [c,oid,ix]=String(key||'').split('|');const o=S[c]&&S[c][oid];const x=o&&(o.ideas||[])[+ix];if(!x)return null;
+  const i={id:uid('i'),texto:x.texto,autor:x.autor||'',fecha:o.fecha||o.desde||today(),origen:{tipo:c==='actividades'?'actividad':'reunion',id:oid},estado:'nueva'};put('ideas',i,0);return i}
+function ideaDest(i){const d=i.destino||{};
+  if(d.tipo==='actividad'&&S.actividades[d.id])return `<button class="olink" data-a="drawerAct" data-id="${d.id}">Actividad: ${esc(S.actividades[d.id].nombre||'sin nombre')}</button>`;
+  if(d.tipo==='reunion'&&S.reuniones[d.id])return `<button class="olink" data-a="openReu" data-id="${d.id}">Reunión: ${esc(S.reuniones[d.id].titulo||fdate(S.reuniones[d.id].fecha))}</button>`;
+  if(i.tareaId&&S.tareas[i.tareaId])return `<button class="olink" data-a="editTask" data-id="${i.tareaId}">Tarea: ${esc(S.tareas[i.tareaId].titulo||'sin título')}</button>`;
+  return ''}
+const shortTx=s=>{s=String(s||'');return s.length>70?s.slice(0,67).trim()+'…':s};
+const IDEA_COL=['#f2edff','#fff4dc','#e6fbfd','#ffe8ee','#e9f8f1'];
 function ideaOrigin(i){const o=i.origen||{};if(o.tipo==='reunion'&&S.reuniones[o.id])return `<button class="olink" data-a="openReu" data-id="${o.id}">Reunión: ${esc(S.reuniones[o.id].titulo||fdate(S.reuniones[o.id].fecha))}</button>`;if(o.tipo==='actividad'&&S.actividades[o.id])return `<button class="olink" data-a="drawerAct" data-id="${o.id}">Actividad: ${esc(S.actividades[o.id].nombre||'')}</button>`;return ''}
 function ideasBank(){const xs=allIdeas();const f=UI.ideaF||'nueva';const ys=xs.filter(i=>f==='todas'||(i.estado||'nueva')===f);
-  return `<section class="flat"><header><h2>Banco de ideas <span class="muted num" style="font-size:14px">${xs.length}</span></h2><div class="seg">${[['nueva','Nuevas'],['convertida','Ya son tarea'],['descartada','Descartadas'],['todas','Todas']].map(([k,n])=>`<button data-a="ideaF" data-v="${k}" aria-pressed="${f===k}">${n}</button>`).join('')}</div></header>
-   <form class="row" data-a-submit="bankIdea"><input class="in" name="texto" placeholder="Nueva idea" style="flex:2 1 220px" required><input class="in" name="autor" placeholder="De quién" style="flex:1 1 140px"><button class="ideabtn">Idea</button></form>
-   <ul class="ideas">${ys.map(i=>`<li><span>${esc(i.texto)}<span class="by">${esc(i.autor||'Sin autor')}${i.fecha?' · '+fdate(i.fecha):''} ${ideaOrigin(i)}</span></span><span class="row">${i.id&&i.estado!=='convertida'?`<button class="btn sm" data-a="bankTask" data-id="${i.id}">Volver tarea</button>`:''}${i.id&&i.estado==='nueva'?`<button class="btn sm ghost" data-a="bankDrop" data-id="${i.id}">Descartar</button>`:''}</span></li>`).join('')||'<span class="muted small">Nada en este filtro.</span>'}</ul></section>`}
+  const nuevas=xs.filter(i=>(i.estado||'nueva')==='nueva').length;const open=!!UI.tsec.ideas;
+  const card=(i,n)=>{const st=i.estado||'nueva',k=esc(i.id||i.key),or=ideaOrigin(i),ds=ideaDest(i);
+    return `<div class="idea" style="--ic:${IDEA_COL[n%IDEA_COL.length]}"><span class="tx">${esc(i.texto)}</span><span class="by">${esc(i.autor||'Sin autor')}${i.fecha?' · '+fdate(i.fecha):''}</span>${or?`<span class="by">Salió en ${or}</span>`:''}
+     ${st==='convertida'?`<span class="by">Ya pasó a ${ds||'una tarea'}</span>`:''}
+     ${st==='descartada'?`<div class="go"><span class="by">Descartada</span><button class="btn sm" data-a="bankBack" data-key="${k}">Recuperar</button></div>`:''}
+     ${st==='nueva'?`<div class="go"><span class="lbl">Pasarla a</span><button class="btn sm" data-a="bankTask" data-key="${k}">Tarea</button><button class="btn sm" data-a="bankAct" data-key="${k}">Actividad</button><button class="btn sm" data-a="bankReu" data-key="${k}">Reunión</button><button class="btn sm ghost" data-a="bankDrop" data-key="${k}">Descartar</button></div>`:''}</div>`};
+  return `<div class="mhead">Ideas</div><div class="acard ${open?'open':''}"><button class="item" data-a="togSec" data-k="tsec" data-s="ideas" aria-expanded="${open}"><span class="stub cnt" style="--c:var(--k-act)"><small>Ideas</small><b>${nuevas}</b></span>
+     <span class="body"><span class="nm">Banco de ideas</span><span class="sub"><span>${nuevas===1?'1 idea nueva por decidir':nuevas+' ideas nuevas por decidir'}</span><span>${xs.length} en total</span>${open?'':'<span>Toca para verlas</span>'}</span></span>${chev(open)}</button>
+    ${open?`<div class="gbody" style="padding-top:12px"><div class="seg" style="align-self:flex-start">${[['nueva','Nuevas'],['convertida','Ya en marcha'],['descartada','Descartadas'],['todas','Todas']].map(([k,n])=>`<button data-a="ideaF" data-v="${k}" aria-pressed="${f===k}">${n}</button>`).join('')}</div>
+     <form class="row" data-a-submit="bankIdea"><input class="in" name="texto" placeholder="Nueva idea" style="flex:2 1 220px" required><input class="in" name="autor" placeholder="De quién" style="flex:1 1 140px"><button class="ideabtn">Guardar idea</button></form>
+     <div class="ideagrid">${ys.map(card).join('')||'<span class="muted small">Nada en este filtro.</span>'}</div></div>`:''}</div>`}
 
 /* ---------- Estructura ---------- */
-function vEstructura(){return `<div class="vhead"><div class="t"><span class="eyebrow">Equipo</span><h1>Estructura</h1></div>
-  <div class="seg">${[['c0','Círculo 0'],['lideres','Líderes territoriales']].map(([k,n])=>`<button data-a="est" data-v="${k}" aria-pressed="${UI.est===k}">${n}</button>`).join('')}</div></div>
-  ${UI.est==='c0'?vC0():vLideres()}`}
+function vEstructura(){const n=g=>L('personas').filter(p=>(p.grupo||'c0')===g).length;
+  return `<div class="vhead"><div class="t"><span class="eyebrow">Equipo</span><h1>Estructura</h1></div>
+  <div class="seg">${[['c0','Círculo 0','c0'],['lideres','Líderes territoriales','lider'],['aliados','Aliados','aliado'],['simp','Simpatizantes','simpatizante']].map(([k,t,g])=>`<button data-a="est" data-v="${k}" aria-pressed="${UI.est===k}">${t} <span class="num">${fmt(n(g))}</span></button>`).join('')}</div></div>
+  ${UI.est==='c0'?vC0():UI.est==='lideres'?vLideres():UI.est==='aliados'?vGrupo('aliado'):vGrupo('simpatizante')}`}
+/* Fila de una persona con su grupo a la mano: así se pasa de simpatizante a líder, aliado o círculo 0 sin abrir nada */
+function prow(p){return `<div class="prow">${avatar(p.nombre)}<div><button class="pn2" data-a="personModal" data-id="${p.id}">${esc(p.nombre||'Sin nombre')}</button><div class="small muted">${[p.telefono||'Sin teléfono',p.lugar,p.provincia].filter(Boolean).map(esc).join(' · ')}</div></div>
+  <select class="in" data-grp="${p.id}" aria-label="Grupo de ${esc(p.nombre||'esta persona')}">${Object.entries(GRUPOS).map(([k,t])=>`<option value="${k}" ${(p.grupo||'c0')===k?'selected':''}>${t}</option>`).join('')}</select></div>`}
+const GDESC={aliado:'Personas con las que nos hemos reunido un par de veces o que nos apoyan, pero que no son parte del círculo 0.',simpatizante:'Toda la base. Busca un nombre y cámbiale el grupo cuando pase a ser líder territorial, aliado o del círculo 0.'};
+function vGrupo(g){const all=L('personas').filter(p=>p.grupo===g).sort(byName);const q=norm(UI.estQ);
+  const ps=q?all.filter(p=>norm(p.nombre).includes(q)||String(p.telefono||'').replace(/\D/g,'').includes(q.replace(/\D/g,'')||'¬')||norm(p.lugar).includes(q)||norm(p.provincia).includes(q)):all;const N=UI.estN||60;
+  return `<p class="muted">${GDESC[g]}</p>
+  <div class="row between"><input class="in" style="flex:1 1 220px;max-width:380px" type="search" placeholder="Buscar por nombre, teléfono o lugar" value="${esc(UI.estQ||'')}" data-q="estQ" aria-label="Buscar personas">
+   <div class="row"><span class="muted small num">${q?`${fmt(ps.length)} de ${fmt(all.length)}`:pl(all.length,'persona','personas')}</span>${g==='simpatizante'?'<button class="btn sm" data-a="importModal">Importar lista</button>':''}<button class="btn sm pri" data-a="personModal" data-g="${g}">+ Registrar persona</button></div></div>
+  ${ps.length?`<div class="panel plist">${ps.slice(0,N).map(prow).join('')}</div>${ps.length>N?`<button class="btn" data-a="estMore" style="align-self:center">Mostrar más (faltan ${fmt(ps.length-N)})</button>`:''}`
+   :`<div class="empty">${q?'Nadie con ese nombre en este grupo.':g==='simpatizante'?'Todavía no hay simpatizantes. Registra uno o importa una lista completa desde Excel.<button class="btn sm pri" data-a="importModal">Importar lista</button>':'Todavía no hay aliados. Regístralos aquí o pásalos desde Simpatizantes cambiándoles el grupo.'}</div>`}`}
 function vC0(){let ps=L('personas').filter(p=>(p.grupo||'c0')==='c0').sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||'','es'));
   const counts={};HABS.forEach(h=>counts[h]=ps.filter(p=>(p.habilidades||[]).includes(h)).length);
   if(UI.habF)ps=ps.filter(p=>(p.habilidades||[]).includes(UI.habF));
-  const al=L('personas').filter(p=>p.grupo==='aliado');
   return `<div class="row between"><div class="chips"><button class="tag" data-a="habF" data-v="" aria-pressed="${!UI.habF}">Todos</button>${HABS.map(h=>`<button class="tag" data-a="habF" data-v="${h}" aria-pressed="${UI.habF===h}">${h} <span class="num">${counts[h]}</span></button>`).join('')}</div>
-   <button class="btn sm pri" data-a="personModal" data-g="c0">+ Registrar persona</button></div>
-  <div class="people">${ps.map(p=>pcard(p)).join('')||'<div class="empty">Nadie con este filtro todavía.</div>'}</div>
-  <section class="flat"><header><h2>Aliados y apoyos</h2><button class="btn sm ghost" data-a="personModal" data-g="aliado">+ Aliado</button></header>
-   ${al.length?`<div class="chips">${al.map(p=>`<span class="chip">${avatar(p.nombre)}<button data-a="personModal" data-id="${p.id}" style="color:inherit;padding:0 6px 0 0;font-weight:700">${esc(p.nombre)}${p.notas?` <span class="muted">· ${esc(p.notas)}</span>`:''}</button></span>`).join('')}</div>`:'<span class="muted small">Quienes prestan transporte, toldas, espacios o aportes.</span>'}</section>`}
+   <div class="row"><button class="btn sm" data-a="importModal">Importar lista</button><button class="btn sm pri" data-a="personModal" data-g="c0">+ Registrar persona</button></div></div>
+  <div class="people">${ps.map(p=>pcard(p)).join('')||'<div class="empty">Nadie con este filtro todavía.</div>'}</div>`}
 function pcard(p){const F=k=>`personas|${p.id}|${k}`;const open=L('tareas').filter(t=>t.responsableId===p.id&&isOpen(t)).length;
   return `<div class="pcard"><div class="nmr">${avatar(p.nombre)}<input class="nm" data-f="${F('nombre')}" value="${esc(p.nombre||'')}" aria-label="Nombre"><button class="x" data-a="personModal" data-id="${p.id}" aria-label="Editar">✎</button></div>
     <div class="row small muted"><span class="num">${esc(p.telefono||'Sin teléfono')}</span>${p.provincia?`<span>· ${esc(p.provincia)}</span>`:''}</div>
@@ -1053,7 +1231,11 @@ function pcard(p){const F=k=>`personas|${p.id}|${k}`;const open=L('tareas').filt
     <div class="row between small"><span class="muted">${open} tareas abiertas</span><span class="row">${open?`<button class="olink" data-a="tfResp" data-id="${p.id}">Ver</button>`:''}<button class="btn sm ghost" data-a="newTask" data-resp="${p.id}">+ Tarea</button></span></div></div>`}
 function vLideres(){if(!GEO)return '<div class="empty">Cargando circuitos…</div>';
   const covered=code=>{const c=S.circuitos['c'+code];return c&&c.lideres?Object.values(c.lideres).filter(x=>S.personas[x]).length:0};
-  return `<p class="muted">Los ${Object.keys(GEO.circ).length} circuitos electorales del país con sus corregimientos en orden. Asigna un líder a cada corregimiento; el seguimiento cada 2 semanas se activa solo.</p>
+  const asg=new Set();L('circuitos').forEach(c=>Object.values(c.lideres||{}).forEach(x=>asg.add(x)));const sin=L('personas').filter(p=>p.grupo==='lider'&&!asg.has(p.id)).sort(byName);
+  return `<section class="flat"><header><h2>Líderes sin corregimiento asignado <span class="muted num" style="font-size:14px">${sin.length}</span></h2><button class="btn sm pri" data-a="personModal" data-g="lider">+ Registrar líder</button></header>
+   ${sin.length?`<p class="muted small">Ya están marcados como líderes, pero todavía no cubren un corregimiento. Para asignarlos, abre su circuito abajo y escribe su nombre en el corregimiento que les toca.</p>
+   <div class="panel plist">${sin.slice(0,UI.sinAll?sin.length:5).map(prow).join('')}</div>${sin.length>5?`<button class="btn sm" data-a="sinAll" style="align-self:center">${UI.sinAll?'Ver menos':`Ver los ${sin.length}`}</button>`:''}`:'<span class="muted small">Todos los líderes tienen corregimiento.</span>'}</section>
+  <p class="muted">Los ${Object.keys(GEO.circ).length} circuitos electorales del país con sus corregimientos en orden. Asigna un líder a cada corregimiento; el seguimiento cada 2 semanas se activa solo.</p>
   ${PROVS.map(p=>{const cs=CIRC_BY_PROV[p]||[];const open=UI.popen[p];const tot=cs.reduce((a,c)=>a+GEO.circ[c].n,0),cov=cs.reduce((a,c)=>a+covered(c),0);
    return `<div class="prov"><button data-a="popen" data-p="${esc(p)}" aria-expanded="${!!open}"><b>${esc(p)}</b><span class="small muted">${cs.length} circuitos · ${cov}/${tot} corregimientos con líder</span><span class="chev">${open?'▾':'▸'}</span></button>
     ${open?`<div class="circs">${cs.map(code=>{const ci=GEO.circ[code];const cv=covered(code);const op=UI.copen[code];const doc=S.circuitos['c'+code]||{};
@@ -1288,7 +1470,7 @@ function renderDrawer(){const host=$('#drawerHost');const d=UI.drawer;if(!d){hos
   const sc=host.querySelector('.drawer');const top=sc?sc.scrollTop:0;
   host.innerHTML=`<div class="scrim" data-a="closeDrawer"></div><aside class="drawer" role="dialog" aria-modal="true"><div class="dbar"><span class="eyebrow">${d.k==='act'?'Actividad':'Reunión'}</span><div class="row"><button class="btn sm" data-a="drawerFull">Abrir en su pestaña</button><button class="x" data-a="closeDrawer" aria-label="Cerrar">×</button></div></div>${inner}</aside>`;
   const nd=host.querySelector('.drawer');if(nd)nd.scrollTop=top}
-function openDrawer(k,id){UI.drawer={k,id};if(k==='act')UI.actTab=UI.actTab||'resumen';renderDrawer()}
+function openDrawer(k,id,secs){UI.drawer={k,id};if(k==='act')UI.asec=secs||{basico:true,equipo:true};else UI.rsec=secs||reuSecs(S.reuniones[id]);renderDrawer()}
 
 /* ---------- Modales ---------- */
 function openModal(html){const m=$('#modal');m.innerHTML=`<div class="box" role="dialog" aria-modal="true">${html}</div>`;m.hidden=false;const f=m.querySelector('input:not([type=hidden]),select,textarea');if(f)f.focus()}
@@ -1300,6 +1482,7 @@ function taskModal(t){const isNew=!S.tareas[t.id];const o=t.origen||{tipo:'libre
   openModal(`<header><h2>${isNew?'Nueva tarea':'Editar tarea'}</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header>
   <form id="tform" data-a-submit="saveTask" data-id="${t.id}" class="grid2">
    <div class="f" style="grid-column:1/-1"><label for="mt">Qué hay que hacer</label><input id="mt" name="titulo" value="${esc(t.titulo||'')}" required></div>
+   <div class="f" style="grid-column:1/-1"><label for="mentr">Qué necesito que me entregue (descripción corta)</label><input id="mentr" name="entregable" value="${esc(t.entregable||'')}" placeholder="Ej. Lista de 20 jóvenes con teléfono, en Excel"></div>
    <div class="f"><label for="mr">Responsable</label><select id="mr" name="resp">${personOptions(t.responsableId)}</select></div>
    <div class="f"><label for="mnr">o nuevo responsable</label><input id="mnr" name="nuevo" placeholder="Nombre (entra al círculo 0)"></div>
    <div class="f"><label for="mf">Fecha</label><input id="mf" type="date" name="fecha" value="${t.fecha||''}"></div>
@@ -1341,7 +1524,7 @@ function serieModal(s){const isNew=!S.series[s.id];const part=s.participantes||[
    <div class="f"><label for="sdes">Desde</label><input id="sdes" type="date" name="desde" value="${s.desde||today()}"></div>
    <div class="f"><label for="st">Tipo</label><select id="st" name="tipo">${Object.entries(REU_TIPOS).map(([k,v])=>`<option value="${k}" ${s.tipo===k?'selected':''}>${v}</option>`).join('')}</select></div>
    <div class="f" style="grid-column:1/-1"><label for="sl">Lugar o enlace</label><input id="sl" name="lugar" value="${esc(s.lugar||'')}"></div>
-   <div class="f" style="grid-column:1/-1"><span class="lbl">Participantes (se cargan en cada reunión)</span><div class="chips">${L('personas').filter(p=>p.grupo!=='aliado').sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||'')).map(p=>`<label class="tag" style="cursor:pointer"><input type="checkbox" name="part" value="${p.id}" ${part.includes(p.id)?'checked':''} style="accent-color:var(--blue)"> ${esc(p.nombre)}</label>`).join('')||'<span class="small muted">Registra personas en Estructura para elegirlas aquí.</span>'}</div></div>
+   <div class="f" style="grid-column:1/-1"><span class="lbl">Participantes (se cargan en cada reunión)</span><div class="chips">${L('personas').filter(p=>['c0','lider'].includes(p.grupo||'c0')).sort(byName).map(p=>`<label class="tag" style="cursor:pointer"><input type="checkbox" name="part" value="${p.id}" ${part.includes(p.id)?'checked':''} style="accent-color:var(--blue)"> ${esc(p.nombre)}</label>`).join('')||'<span class="small muted">Registra personas en Estructura para elegirlas aquí.</span>'}</div></div>
    <div class="f" style="grid-column:1/-1"><span class="lbl">Color</span><div class="row">${SER_COL.map(c=>`<label style="cursor:pointer"><input type="radio" name="color" value="${c}" ${(s.color||SER_COL[0])===c?'checked':''} style="display:none"><span style="display:inline-block;width:28px;height:28px;border-radius:9px;background:${c};outline:${(s.color||SER_COL[0])===c?'3px solid var(--ink)':'0'};outline-offset:2px"></span></label>`).join('')}</div></div>
    <label class="row small" style="grid-column:1/-1"><input type="checkbox" name="activa" ${s.activa!==false?'checked':''}> Activa (se muestra en la agenda)</label>
   </form>
@@ -1349,20 +1532,88 @@ function serieModal(s){const isNew=!S.series[s.id];const part=s.participantes||[
   $('#sform').addEventListener('change',e=>{if(e.target.name==='color')$$('#sform input[name=color]').forEach(r=>{r.nextElementSibling.style.outline=r.checked?'3px solid var(--ink)':'0'})})}
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 function personModal(p){const isNew=!S.personas[p.id];
-  openModal(`<header><h2>${isNew?(p.grupo==='aliado'?'Nuevo aliado':'Registrar persona'):'Editar persona'}</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header>
+  openModal(`<header><h2>${isNew?'Registrar '+GRUPOS[p.grupo||'c0'].toLowerCase():'Editar persona'}</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header>
   <form id="pform" data-a-submit="savePerson" data-id="${p.id}" class="grid2">
    <div class="f" style="grid-column:1/-1"><label for="pn">Nombre</label><input id="pn" name="nombre" value="${esc(p.nombre||'')}" required></div>
    <div class="f"><label for="pt">Teléfono</label><input id="pt" name="telefono" value="${esc(p.telefono||'')}" inputmode="tel"></div>
-   <div class="f"><label for="pg">Grupo</label><select id="pg" name="grupo">${[['c0','Círculo 0'],['lider','Líder territorial'],['aliado','Aliado o apoyo']].map(([k,n])=>`<option value="${k}" ${(p.grupo||'c0')===k?'selected':''}>${n}</option>`).join('')}</select></div>
-   <div class="f" style="grid-column:1/-1"><label for="pp">Provincia</label><select id="pp" name="provincia"><option value="">—</option>${PROVS.map(x=>`<option ${p.provincia===x?'selected':''}>${esc(x)}</option>`).join('')}</select></div>
+   <div class="f"><label for="pg">Grupo</label><select id="pg" name="grupo">${Object.entries(GRUPOS).map(([k,n])=>`<option value="${k}" ${(p.grupo||'c0')===k?'selected':''}>${n}</option>`).join('')}</select></div>
+   <div class="f"><label for="plu">Corregimiento o comunidad</label><input id="plu" name="lugar" value="${esc(p.lugar||'')}"></div>
+   <div class="f"><label for="pp">Provincia</label><select id="pp" name="provincia"><option value="">—</option>${PROVS.map(x=>`<option ${p.provincia===x?'selected':''}>${esc(x)}</option>`).join('')}</select></div>
    <div class="f" style="grid-column:1/-1"><span class="lbl">En qué es bueno</span><div class="chips">${HABS.map(h=>`<label class="tag" style="cursor:pointer"><input type="checkbox" name="hab" value="${h}" ${(p.habilidades||[]).includes(h)?'checked':''} style="accent-color:var(--blue)"> ${h}</label>`).join('')}</div></div>
    <div class="f" style="grid-column:1/-1"><label for="pno">Notas</label><input id="pno" name="notas" value="${esc(p.notas||'')}" placeholder="Fortalezas, disponibilidad, qué aporta"></div></form>
   <div class="foot"><div id="delzone">${isNew?'':`<button class="btn danger" data-a="askDelModal" data-col="personas" data-id="${p.id}">Eliminar</button>`}</div><div class="row"><button class="btn" data-a="closeModal">Cancelar</button><button class="btn pri" type="submit" form="pform">Guardar</button></div></div>`)}
 
+/* ---------- Importar una lista de personas (Excel, CSV o texto pegado). Todas entran como simpatizantes ---------- */
+const IMP={rows:[],src:'',err:'',map:{hdr:false,nombre:0,apellido:-1,telefono:-1,lugar:-1,provincia:-1}};
+function importModal(){IMP.rows=[];IMP.src='';IMP.err='';
+  openModal(`<header><h2>Importar lista de personas</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header>
+   <p class="muted">Todas entran como <b>simpatizantes</b>. Después las buscas por nombre y las pasas a líder territorial, aliado o círculo 0.</p>
+   <div class="f"><label for="impFile">Archivo de Excel (.xlsx) o .csv</label><input id="impFile" type="file" accept=".xlsx,.csv,.tsv,.txt"></div>
+   <div class="f"><label for="impText">O pega la lista aquí: un nombre por línea, o las columnas copiadas desde Excel</label><textarea id="impText" placeholder="María Pérez	6123-4567	Tocumen"></textarea></div>
+   <div class="impprev" id="impPrev"></div>
+   <div class="foot"><button class="btn" data-a="closeModal">Cancelar</button><button class="btn pri" data-a="impSave" id="impGo" disabled>Guardar</button></div>`)}
+async function inflateRaw(u8){const s=new Blob([u8]).stream().pipeThrough(new DecompressionStream('deflate-raw'));return new Uint8Array(await new Response(s).arrayBuffer())}
+async function unzip(buf){const dv=new DataView(buf),u8=new Uint8Array(buf),td=new TextDecoder();let e=buf.byteLength-22;while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;if(e<0)throw new Error('zip');
+  const n=dv.getUint16(e+10,true);let p=dv.getUint32(e+16,true);const fs={};
+  for(let i=0;i<n&&dv.getUint32(p,true)===0x02014b50;i++){const nl=dv.getUint16(p+28,true);fs[td.decode(u8.subarray(p+46,p+46+nl))]={m:dv.getUint16(p+10,true),sz:dv.getUint32(p+20,true),lo:dv.getUint32(p+42,true)};p+=46+nl+dv.getUint16(p+30,true)+dv.getUint16(p+32,true)}
+  return {names:Object.keys(fs),async text(name){const f=fs[name];if(!f)return '';const st=f.lo+30+dv.getUint16(f.lo+26,true)+dv.getUint16(f.lo+28,true);const raw=u8.subarray(st,st+f.sz);return td.decode(f.m===8?await inflateRaw(raw):raw)}}}
+async function xlsxRows(buf){const z=await unzip(buf);const xml=s=>new DOMParser().parseFromString(s,'application/xml');const tx=el=>[...el.getElementsByTagName('t')].map(t=>t.textContent).join('');
+  const ss=[];const sst=await z.text('xl/sharedStrings.xml');if(sst)[...xml(sst).getElementsByTagName('si')].forEach(si=>ss.push(tx(si)));
+  let best=[];for(const name of z.names.filter(x=>/^xl\/worksheets\/sheet\d+\.xml$/.test(x))){const rows=[];
+    [...xml(await z.text(name)).getElementsByTagName('row')].forEach(r=>{const row=[];[...r.getElementsByTagName('c')].forEach(c=>{const m=(c.getAttribute('r')||'').match(/^[A-Z]+/);let ci=row.length;if(m){ci=0;for(const ch of m[0])ci=ci*26+ch.charCodeAt(0)-64;ci--}
+        const t=c.getAttribute('t'),v=c.getElementsByTagName('v')[0];let val=t==='s'?(ss[+(v?v.textContent:-1)]||''):t==='inlineStr'?tx(c):(v?v.textContent:'');if(/^\d+(\.\d+)?E\+?\d+$/i.test(val))val=String(Number(val));row[ci]=String(val).trim()});
+      if(row.some(x=>x))rows.push(Array.from(row,x=>x||''))});
+    if(rows.length>best.length)best=rows}
+  return best}
+function textRows(txt){const lines=String(txt||'').replace(/\r/g,'').split('\n').filter(l=>l.trim());if(!lines.length)return [];
+  const cnt=ch=>lines.filter(l=>l.includes(ch)).length;const d=cnt('\t')?'\t':cnt(';')>lines.length/2?';':cnt(',')>lines.length/2?',':'\t';
+  return lines.map(l=>{const out=[];let cur='',q=false;for(let i=0;i<l.length;i++){const ch=l[i];if(q){if(ch==='"'){if(l[i+1]==='"'){cur+='"';i++}else q=false}else cur+=ch}else if(ch==='"'&&!cur)q=true;else if(ch===d){out.push(cur.trim());cur=''}else cur+=ch}out.push(cur.trim());return out})}
+function impDetect(){const rows=IMP.rows,m=IMP.map;const h=(rows[0]||[]).map(norm);const find=re=>h.findIndex(x=>re.test(x));
+  m.hdr=h.some(x=>/^(nombre|nombres|apellido|apellidos|telefono|celular|whatsapp|corregimiento|provincia|cedula|nombre completo|nombre y apellido)/.test(x));
+  const body=rows.slice(m.hdr?1:0,60);const cols=Math.max(0,...rows.slice(0,60).map(r=>r.length));const frac=(c,f)=>body.length?body.filter(r=>f(r[c]||'')).length/body.length:0;
+  const isPhone=v=>{const dg=v.replace(/\D/g,'');return dg.length>=7&&dg.length<=11&&!/[a-z]{3}/i.test(v)&&!/^\d-\d+-\d+$/.test(v.trim())};
+  if(m.hdr){m.nombre=find(/nombre|name/);m.apellido=find(/apellido/);m.telefono=find(/tel|cel|whats|movil|contacto/);m.lugar=find(/corregimiento|comunidad|barrio|direccion|lugar|residencia/);m.provincia=find(/provincia/)}
+  else{m.nombre=-1;m.apellido=-1;m.telefono=-1;m.lugar=-1;m.provincia=-1}
+  if(m.nombre<0)for(let c=0;c<cols;c++)if(c!==m.apellido&&frac(c,v=>/[a-zñáéíóú]{2}/i.test(v)&&!/\d{4}/.test(v))>.6){m.nombre=c;break}
+  if(m.telefono<0)for(let c=0;c<cols;c++)if(c!==m.nombre&&frac(c,isPhone)>.5){m.telefono=c;break}
+  if(!m.hdr&&m.lugar<0)for(let c=0;c<cols;c++)if(c!==m.nombre&&c!==m.telefono&&frac(c,v=>/[a-zñáéíóú]{3}/i.test(v)&&!v.includes('@'))>.5){m.lugar=c;break}
+  if(m.nombre<0)m.nombre=0}
+function impPeople(){const m=IMP.map;const seen=new Set(),out=[];let dup=0,bad=0;const ex=L('personas');const key=(n,t)=>norm(n)+'|'+String(t||'').replace(/\D/g,'');
+  const have=new Map();ex.forEach(p=>{const k=norm(p.nombre);(have.get(k)||have.set(k,[]).get(k)).push(String(p.telefono||'').replace(/\D/g,''))});
+  IMP.rows.slice(m.hdr?1:0).forEach(r=>{const g=c=>c>=0?String(r[c]||'').trim():'';const nombre=(g(m.nombre)+' '+g(m.apellido)).replace(/\s+/g,' ').trim();
+    if(!nombre||!/[a-zñáéíóú]{2}/i.test(nombre)){bad++;return}
+    const tel=g(m.telefono).replace(/[^\d+\-\s]/g,'').trim(),td=tel.replace(/\D/g,'');const k=key(nombre,tel);
+    const old=have.get(norm(nombre));if(seen.has(k)||(old&&old.some(t=>!t||!td||t===td))){dup++;return}seen.add(k);
+    let lugar=g(m.lugar),prov=g(m.provincia);const pv=PROVS.find(x=>norm(x)===norm(prov));if(prov&&!pv)lugar=[lugar,prov].filter(Boolean).join(', ');
+    out.push({nombre,telefono:tel,lugar,provincia:pv||''})});
+  return {out,dup,bad}}
+function impPreview(){const host=$('#impPrev'),go=$('#impGo');if(!host)return;
+  if(IMP.err){host.innerHTML=`<div class="note warn">${esc(IMP.err)}</div>`;go.disabled=true;return}
+  if(!IMP.rows.length){host.innerHTML='';go.disabled=true;go.textContent='Guardar';return}
+  const m=IMP.map,{out,dup,bad}=impPeople();const cols=Math.max(0,...IMP.rows.slice(0,60).map(r=>r.length));const ej=(IMP.rows[m.hdr?1:0]||[]);
+  const sel=(k,lab,req)=>`<div class="f"><label for="imp-${k}">${lab}</label><select id="imp-${k}" data-imp="${k}">${req?'':'<option value="-1">No viene</option>'}${Array.from({length:cols},(_,c)=>`<option value="${c}" ${m[k]===c?'selected':''}>${esc(m.hdr&&IMP.rows[0][c]?IMP.rows[0][c]:'Columna '+String.fromCharCode(65+c%26))}${ej[c]?' · ej. '+esc(String(ej[c]).slice(0,18)):''}</option>`).join('')}</select></div>`;
+  host.innerHTML=`<div class="note"><b>${fmt(out.length)} ${out.length===1?'persona nueva':'personas nuevas'}</b>${IMP.src?' en '+esc(IMP.src):''}.${dup?(dup===1?' 1 ya estaba o venía repetida y se salta.':` ${fmt(dup)} ya estaban o venían repetidas y se saltan.`):''}${bad?(bad===1?' 1 fila sin nombre se ignora.':` ${fmt(bad)} filas sin nombre se ignoran.`):''}</div>
+   ${cols>1?`<div class="grid2">${sel('nombre','Columna del nombre',true)}${sel('apellido','Apellido, si viene aparte')}${sel('telefono','Teléfono')}${sel('lugar','Corregimiento o comunidad')}${sel('provincia','Provincia')}<label class="row small"><input type="checkbox" data-imp="hdr" ${m.hdr?'checked':''}> La primera fila son los títulos</label></div>`:''}
+   ${out.length?`<div class="tscroll"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Lugar</th></tr></thead><tbody>${out.slice(0,5).map(p=>`<tr><td>${esc(p.nombre)}</td><td class="num">${esc(p.telefono||'—')}</td><td>${esc([p.lugar,p.provincia].filter(Boolean).join(', ')||'—')}</td></tr>`).join('')}</tbody></table></div>${out.length>5?`<span class="muted small">Así quedan las primeras 5 de ${fmt(out.length)}.</span>`:''}`:''}`;
+  go.disabled=!out.length;go.textContent=out.length?`Guardar ${fmt(out.length)} como simpatizantes`:'Guardar'}
+function impText(txt){IMP.err='';IMP.src='';IMP.rows=textRows(txt);impDetect();impPreview()}
+async function impFile(file){IMP.err='';IMP.rows=[];IMP.src=file.name;const host=$('#impPrev');if(host)host.innerHTML='<span class="muted small">Leyendo el archivo…</span>';
+  try{const buf=await file.arrayBuffer();
+    if(/\.xlsx$/i.test(file.name)){if(typeof DecompressionStream==='undefined')throw new Error('nav');IMP.rows=await xlsxRows(buf)}
+    else if(/\.xls$/i.test(file.name))throw new Error('xls');
+    else{let t;try{t=new TextDecoder('utf-8',{fatal:true}).decode(buf)}catch(e){t=new TextDecoder('windows-1252').decode(buf)}IMP.rows=textRows(t)}
+    if(!IMP.rows.length)IMP.err='No encontré filas con datos en ese archivo.'}
+  catch(e){IMP.err=e.message==='xls'?'Ese es un Excel antiguo (.xls). Ábrelo y guárdalo como .xlsx, o copia las columnas y pégalas abajo.':e.message==='nav'?'Este navegador no puede abrir archivos de Excel. Copia las columnas en Excel y pégalas abajo.':'No pude leer ese archivo. Prueba a copiar las columnas en Excel y pegarlas abajo.'}
+  impDetect();impPreview()}
+async function impSave(){const {out}=impPeople();if(!out.length)return;const btn=$('#impGo');btn.disabled=true;btn.textContent='Guardando…';const stamp=Date.now().toString(36),hoy=today();
+  const list=out.map((p,i)=>({id:'p_'+stamp+i.toString(36),nombre:p.nombre,telefono:p.telefono,grupo:'simpatizante',habilidades:[],provincia:p.provincia,lugar:p.lugar,notas:'',importado:hoy}));
+  const ok=await putMany('personas',list);closeModal();UI.est='simp';UI.estQ='';UI.estN=60;
+  toast(ok===list.length?`${fmt(ok)} simpatizantes guardados`:`Se guardaron ${fmt(ok)} de ${fmt(list.length)}. Revisa la conexión y vuelve a importar el mismo archivo: las que ya entraron no se repiten.`);if(UI.view!=='estructura')go('estructura');else render()}
+
 /* ---------- Creación ---------- */
 function newTaskObj(x={}){return Object.assign({id:uid('t'),titulo:'',responsableId:'',fecha:'',hora:'',prioridad:'media',estado:'pendiente',tipo:'tarea',corrId:'',actividadId:'',origen:{tipo:'libre',id:''},notas:''},x)}
-function createAct(nombre,fecha,corr){const a={id:uid('a'),nombre:nombre||'Nueva actividad',tipo:'masiva',estado:'idea',desde:fecha||'',hasta:'',hora:'',lugar:'',corrId:corr||'',objetivo:'',roles:[],momentos:[],itinerario:[],materiales:[],ideas:[],evaluacion:{}};put('actividades',a,0);UI.actTab='resumen';go('actividades',{act:a.id,actFilter:'todas'})}
-function createReu(titulo,fecha){const r={id:uid('r'),titulo:titulo||'Reunión',fecha:fecha||today(),hora:'',tipo:'equipo',estado:'programada',lugar:'',temas:[],asistentes:[],ideas:[],apuntes:''};put('reuniones',r,0);go('reuniones',{reu:r.id,reuFilter:'todas'})}
+function createAct(nombre,fecha,corr,extra){const a={id:uid('a'),nombre:nombre||'Nueva actividad',tipo:'masiva',estado:'idea',desde:fecha||'',hasta:'',hora:'',lugar:'',corrId:corr||'',objetivo:'',roles:[],momentos:[],itinerario:[],materiales:[],ideas:[],evaluacion:{}};Object.assign(a,extra||{});put('actividades',a,0);UI.asec={basico:true,equipo:true};go('actividades',{act:a.id,actFilter:'todas'});setTimeout(()=>showCard(a.id),150);return a}
+function createReu(titulo,fecha,extra){const r={id:uid('r'),titulo:titulo||'Reunión',fecha:fecha||today(),hora:'',tipo:'equipo',estado:'programada',lugar:'',temas:[],asistentes:[],ideas:[],apuntes:''};Object.assign(r,extra||{});put('reuniones',r,0);UI.rsec={basico:true,asist:true,temas:true};go('reuniones',{reu:r.id,reuFilter:'todas'});setTimeout(()=>showCard(r.id),150);return r}
 function registerVisitFromTask(t){if(t.tipo!=='visita'||!t.corrId)return;if(L('visitas').some(v=>v.tareaId===t.id))return;put('visitas',{id:uid('v'),corrId:t.corrId,fecha:t.hechaEl||today(),hora:t.hora||'',responsableId:t.responsableId||'',estado:'realizada',objetivo:t.titulo,notas:'Registrada desde una tarea',tareaId:t.id},0);toast('Visita registrada en cobertura')}
 
 /* ---------- Acciones ---------- */
@@ -1379,7 +1630,7 @@ const A={
  waRole:el=>{const a=S.actividades[el.dataset.id];const r=a.roles.find(x=>x.id===el.dataset.r);const p=S.personas[r.personaId]||{};showMsg(`Parte de ${r.rol}`,waItinerario(a,r),p.telefono)},
  copyMsg:()=>{const ta=$('#msgText');try{navigator.clipboard.writeText(ta.value).then(()=>toast('Texto copiado'),()=>{ta.select();toast('Selecciona y copia el texto')})}catch(e){ta.select();toast('Selecciona y copia el texto')}},
  contacted:el=>{const p=S.personas[el.dataset.id];p.ultimoContacto=today();put('personas',p,0);toast('Contacto registrado: '+(p.nombre||''));render()},
- goOrigin:el=>{const t=S.tareas[el.dataset.id];const o=t.origen;if(o.tipo==='reunion')openDrawer('reu',o.id);else if(o.tipo==='actividad'){UI.actTab='tareas';openDrawer('act',o.id)}else if(o.tipo==='visita'&&S.visitas[o.id])visitModal(clone(S.visitas[o.id]))},
+ goOrigin:el=>{const t=S.tareas[el.dataset.id];const o=t.origen;if(o.tipo==='reunion')openDrawer('reu',o.id);else if(o.tipo==='actividad'){openDrawer('act',o.id,{tareas:true})}else if(o.tipo==='visita'&&S.visitas[o.id])visitModal(clone(S.visitas[o.id]))},
  goTasks:el=>{UI.tf={estado:el.dataset.f,origen:'todas',resp:'',q:''};go('tareas')},
  goEst:el=>go('estructura',{est:el.dataset.f}),
  goEstCirc:el=>{const c=el.dataset.c;UI.popen[GEO.circ[c].p]=true;UI.copen[c]=true;go('estructura',{est:'lideres'})},
@@ -1399,7 +1650,12 @@ const A={
    else if(S.tareas[id]){const t=S.tareas[id];if(el.classList.contains('lnk')&&t.origen&&['reunion','actividad'].includes(t.origen.tipo)&&t.origen.id)A.goOrigin({dataset:{id}});else taskModal(clone(t))}},
  calMode:el=>{UI.cal.mode=el.dataset.m;render()},
  calToday:()=>{UI.cal.date=today();render()},
- calMove:el=>{const n=+el.dataset.n,c=UI.cal;if(c.mode==='mes'){const d=pd(c.date);c.date=iso(new Date(d.getFullYear(),d.getMonth()+n,1))}else c.date=addDays(c.date,n*(c.mode==='semana'?7:1));render()},
+ calSel:el=>{const d=el.dataset.d;UI.cal.sel=UI.cal.sel===d?null:d;render();const b=$('#daybox');if(b)b.scrollIntoView({block:'nearest',behavior:'smooth'})},
+ estMore:()=>{UI.estN=(UI.estN||60)+120;render()},
+ sinAll:()=>{UI.sinAll=!UI.sinAll;render()},
+ importModal:()=>importModal(),
+ impSave:()=>impSave(),
+ calMove:el=>{const n=+el.dataset.n,c=UI.cal;c.sel=null;if(c.mode==='mes'){const d=pd(c.date);c.date=iso(new Date(d.getFullYear(),d.getMonth()+n,1))}else c.date=addDays(c.date,n*(c.mode==='semana'?7:1));render()},
  calDay:el=>{UI.cal={mode:'dia',date:el.dataset.d};if(UI.view!=='agenda')go('agenda');else render()},
  calWeek:el=>{UI.cal={mode:'semana',date:el.dataset.d};if(UI.view!=='agenda')go('agenda');else render()},
  hopen:el=>{UI.hopen[el.dataset.k]=!UI.hopen[el.dataset.k];render()},
@@ -1414,8 +1670,10 @@ const A={
  cellQuick:el=>{const h=S.horarios[el.dataset.id];h.celdas=h.celdas||{};(h.celdas[el.dataset.k]=h.celdas[el.dataset.k]||[]).push(el.dataset.n);put('horarios',h);closeModal();render()},
  cellDel:el=>{const h=S.horarios[el.dataset.id];h.celdas[el.dataset.k].splice(+el.dataset.i,1);if(!h.celdas[el.dataset.k].length)delete h.celdas[el.dataset.k];put('horarios',h);render()},
  actFilter:el=>{UI.actFilter=el.dataset.f;UI.act=null;render()},
- selAct:el=>{UI.act=el.dataset.id;render()},
- actTab:el=>{UI.actTab=el.dataset.t;render()},
+ selAct:el=>{const id=el.dataset.id;if(UI.act===id){UI.act=null;render();return}UI.act=id;UI.asec={basico:true,equipo:true};render();showCard(id)},
+ togSec:el=>{const m=UI[el.dataset.k];m[el.dataset.s]=!m[el.dataset.s];render()},
+ addSugg:el=>{const a=S.actividades[el.dataset.id];(a.roles=a.roles||[]).push({id:uid('rol'),rol:el.dataset.r,personaId:''});put('actividades',a);render()},
+ togPart:el=>{const a=S.actividades[el.dataset.id];const x=a.participantes[+el.dataset.i];x.confirmado=!x.confirmado;put('actividades',a);render()},
  actView:el=>{UI.actView=el.dataset.v;render()},
  addSuggRoles:el=>{const a=S.actividades[el.dataset.id];a.roles=a.roles||[];SUGG_ROLES.forEach(([r])=>{if(!a.roles.some(x=>x.rol===r))a.roles.push({id:uid('rol'),rol:r,personaId:''})});put('actividades',a);render()},
  addRole:el=>{const a=S.actividades[el.dataset.id];(a.roles=a.roles||[]).push({id:uid('rol'),rol:'Nuevo rol',personaId:''});put('actividades',a);render()},
@@ -1435,10 +1693,22 @@ const A={
  ideaTask:el=>{const o=S[el.dataset.col][el.dataset.id];const idea=o.ideas[+el.dataset.i];const tipo=el.dataset.col==='actividades'?'actividad':'reunion';taskModal(newTaskObj({titulo:idea.texto,origen:{tipo,id:o.id},notas:idea.autor?'Idea de '+idea.autor:''}))},
  topicTask:el=>{const r=S.reuniones[el.dataset.id];const t=r.temas[+el.dataset.i];taskModal(newTaskObj({titulo:'',origen:{tipo:'reunion',id:r.id},actividadId:t.actividadId||'',notas:'Tema: '+t.texto}))},
  ideaF:el=>{UI.ideaF=el.dataset.v;render()},
- bankTask:el=>{const i=S.ideas[el.dataset.id];const t=newTaskObj({titulo:i.texto,origen:i.origen&&i.origen.id?{tipo:i.origen.tipo,id:i.origen.id}:{tipo:'libre',id:''},propuestaPor:i.autor||'',notas:i.autor?'Idea de '+i.autor:''});UI.pendingIdea=i.id;taskModal(t)},
- bankDrop:el=>{const i=S.ideas[el.dataset.id];i.estado='descartada';put('ideas',i,0);render()},
+ bankTask:el=>{const i=ideaDoc(el.dataset.key);if(!i)return;const t=newTaskObj({titulo:i.texto,origen:i.origen&&i.origen.id?{tipo:i.origen.tipo,id:i.origen.id}:{tipo:'libre',id:''},propuestaPor:i.autor||'',notas:i.autor?'Idea de '+i.autor:''});UI.pendingIdea=i.id;taskModal(t)},
+ bankDrop:el=>{const i=ideaDoc(el.dataset.key);if(!i)return;i.estado='descartada';put('ideas',i,0);render()},
+ bankBack:el=>{const i=ideaDoc(el.dataset.key);if(!i)return;i.estado='nueva';put('ideas',i,0);render()},
+ bankAct:el=>{const i=ideaDoc(el.dataset.key);if(!i)return;const a=createAct(shortTx(i.texto),'','',{objetivo:i.texto.length>70?i.texto:'',ideas:[{texto:i.texto,autor:i.autor||'',banco:i.id}],ideaId:i.id});i.estado='convertida';i.destino={tipo:'actividad',id:a.id};put('ideas',i,0);toast('La idea ya es una actividad: ponle fecha y equipo')},
+ bankReu:el=>{const i=ideaDoc(el.dataset.key);if(!i)return;const T=today();
+   const rs=L('reuniones').filter(r=>r.estado!=='terminada'&&(r.fecha||T)>=T).sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||'')).slice(0,12);
+   const ss=L('series').filter(s=>s.activa!==false).map(s=>({s,d:nextOf(s)})).filter(x=>x.d&&!reuOfSerie(x.s.id,x.d));
+   openModal(`<header><h2>Llevar la idea a una reunión</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header>
+    <p class="muted">«${esc(i.texto)}»</p>
+    <form id="irform" data-a-submit="ideaToReu" data-id="${i.id}" class="grid2">
+     <div class="f" style="grid-column:1/-1"><label for="ird">A cuál reunión</label><select id="ird" name="dest"><option value="">Crear una reunión nueva para esta idea</option>
+      ${rs.map(r=>`<option value="${r.id}">Ponerla como tema en: ${esc(r.titulo||'Reunión')} · ${fdate(r.fecha)}</option>`).join('')}${ss.map(({s,d})=>`<option value="serie|${s.id}|${d}">Ponerla como tema en: ${esc(s.nombre||'Reunión')} · ${fdate(d)}</option>`).join('')}</select></div>
+     <div class="f"><label for="irf">Fecha, si la reunión es nueva</label><input id="irf" type="date" name="fecha"></div></form>
+    <div class="foot"><span></span><div class="row"><button class="btn" data-a="closeModal">Cancelar</button><button class="btn pri" type="submit" form="irform">Llevar a reunión</button></div></div>`)},
  reuFilter:el=>{UI.reuFilter=el.dataset.f;UI.reu=null;render()},
- selReu:el=>{UI.reu=el.dataset.id;render()},
+ selReu:el=>{const id=el.dataset.id;if(UI.reu===id){UI.reu=null;render();return}UI.reu=id;UI.rsec=reuSecs(S.reuniones[id]);render();showCard(id)},
  togAtt:el=>{const r=S.reuniones[el.dataset.id];const x=r.asistentes[+el.dataset.i];x.presente=!x.presente;put('reuniones',r);render()},
  addAllTeam:el=>{const r=S.reuniones[el.dataset.id];r.asistentes=r.asistentes||[];L('personas').filter(p=>(p.grupo||'c0')==='c0').forEach(p=>{if(!r.asistentes.some(a=>a.personaId===p.id))r.asistentes.push({personaId:p.id,presente:false})});put('reuniones',r);render()},
  closeReu:async el=>{const r=S.reuniones[el.dataset.id];r.estado='terminada';r.minuta={generada:new Date().toISOString(),resumen:minutaResumen(r)};put('reuniones',r,0);render();toast('Reunión terminada. Minuta generada.');await saveFile(`Minuta-${r.fecha||today()}-${slug(r.titulo)}.pdf`,minutaPdf(r).blob())},
@@ -1449,7 +1719,7 @@ const A={
  horPdf:el=>{const h=S.horarios[el.dataset.id];saveFile(`Horario-${slug(h.nombre)}.pdf`,horPdf(h).blob())},
  tf:el=>{UI.tf[el.dataset.k]=el.dataset.v;if(UI.view!=='tareas')go('tareas');else render()},
  tfResp:el=>{UI.tf={estado:'abiertas',origen:'todas',resp:el.dataset.id,q:''};go('tareas')},
- est:el=>{UI.est=el.dataset.v;render()},
+ est:el=>{UI.est=el.dataset.v;UI.estQ='';UI.estN=60;render()},
  habF:el=>{UI.habF=el.dataset.v;render()},
  togHab:el=>{const p=S.personas[el.dataset.id];const h=el.dataset.h;p.habilidades=(p.habilidades||[]).includes(h)?p.habilidades.filter(x=>x!==h):[...(p.habilidades||[]),h];put('personas',p);render()},
  personModal:el=>{const p=el.dataset.id&&S.personas[el.dataset.id];personModal(p?clone(p):{id:uid('p'),grupo:el.dataset.g||'c0'})},
@@ -1470,7 +1740,7 @@ const A={
  heat:el=>{UI.heat=el.dataset.v;render()},
  heatOpen:el=>{UI.open[el.dataset.p]=!UI.open[el.dataset.p];render()},
  visitTask:el=>{const v=S.visitas[el.dataset.id];taskModal(newTaskObj({origen:{tipo:'visita',id:v.id},fecha:v.fecha,responsableId:v.responsableId,corrId:v.corrId}))},
- askDel:el=>{const c=el.dataset.col,id=el.dataset.id;openModal(`<header><h2>¿Eliminar?</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header><p>Se borrará de forma permanente${['actividades','reuniones','visitas'].includes(c)?'. Sus tareas se quedan en la lista sin origen':''}.</p><div class="foot"><span></span><div class="row"><button class="btn" data-a="closeModal">Cancelar</button><button class="btn danger" data-a="doDel" data-col="${c}" data-id="${id}">Eliminar</button></div></div>`)},
+ askDel:el=>{const c=el.dataset.col,id=el.dataset.id;const nm=c==='tareas'&&S.tareas[id]?S.tareas[id].titulo:'';openModal(`<header><h2>${c==='tareas'?'¿Eliminar esta tarea?':'¿Eliminar?'}</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header>${nm?`<p><b>${esc(nm)}</b></p>`:''}<p>Se borrará de forma permanente${['actividades','reuniones','visitas'].includes(c)?'. Sus tareas se quedan en la lista sin origen':''}.</p><div class="foot"><span></span><div class="row"><button class="btn" data-a="closeModal">Cancelar</button><button class="btn danger" data-a="doDel" data-col="${c}" data-id="${id}">Eliminar</button></div></div>`)},
  askDelModal:el=>{$('#delzone').innerHTML=`<span class="confirm">¿Seguro? <button class="btn sm danger" data-a="doDel" data-col="${el.dataset.col}" data-id="${el.dataset.id}">Sí, eliminar</button></span>`},
  doDel:el=>{const c=el.dataset.col,id=el.dataset.id;
    if(['actividades','reuniones','visitas'].includes(c)){const tipo={actividades:'actividad',reuniones:'reunion',visitas:'visita'}[c];L('tareas').forEach(t=>{let ch=false;if(t.origen&&t.origen.tipo===tipo&&t.origen.id===id){t.origen={tipo:'libre',id:''};ch=true}if(c==='actividades'&&t.actividadId===id){t.actividadId='';ch=true}if(ch)put('tareas',t)})}
@@ -1484,7 +1754,7 @@ const A={
 const SUB={
  quickTask:(f,fd)=>{const tipo=f.dataset.tipo,id=f.dataset.oid;put('tareas',newTaskObj({titulo:fd.get('titulo'),responsableId:fd.get('resp'),fecha:fd.get('fecha'),prioridad:fd.get('prioridad'),origen:{tipo,id},actividadId:tipo==='actividad'?id:''}),0);render()},
  saveTask:(f,fd)=>{const id=f.dataset.id;const t=S.tareas[id]?clone(S.tareas[id]):newTaskObj({id});
-   t.titulo=fd.get('titulo').trim();let resp=fd.get('resp');const nuevo=(fd.get('nuevo')||'').trim();
+   t.titulo=fd.get('titulo').trim();t.entregable=(fd.get('entregable')||'').trim();let resp=fd.get('resp');const nuevo=(fd.get('nuevo')||'').trim();
    if(nuevo){const p={id:uid('p'),nombre:nuevo,grupo:'c0',telefono:'',habilidades:[],provincia:''};put('personas',p,0);resp=p.id}
    const cl=(fd.get('corr')||'').trim();const cid=cl?LABEL2ID[cl]:'';if(cl&&!cid){toast('Elige el corregimiento de la lista');return false}
    t.responsableId=resp;t.fecha=fd.get('fecha');t.hora=fd.get('hora');t.prioridad=fd.get('prioridad');const est=fd.get('estado');const nowDone=est==='hecha'&&t.estado!=='hecha';if(nowDone)t.hechaEl=today();t.estado=est;t.tipo=fd.get('tipo');t.corrId=cid||'';
@@ -1494,17 +1764,25 @@ const SUB={
  saveSerie:(f,fd)=>{const id=f.dataset.id;const s=S.series[id]?clone(S.series[id]):{id};
    Object.assign(s,{nombre:fd.get('nombre').trim(),dia:fd.get('dia')===''?'':+fd.get('dia'),frecuencia:fd.get('frecuencia'),hora:fd.get('hora'),horaFin:fd.get('horaFin'),desde:fd.get('desde')||today(),tipo:fd.get('tipo'),lugar:fd.get('lugar'),participantes:fd.getAll('part'),color:fd.get('color')||SER_COL[0],activa:!!fd.get('activa')});
    put('series',s,0);closeModal();toast('Reunión programada guardada');render()},
- savePerson:(f,fd)=>{const id=f.dataset.id;const p=S.personas[id]?clone(S.personas[id]):{id};Object.assign(p,{nombre:fd.get('nombre').trim(),telefono:fd.get('telefono').trim(),grupo:fd.get('grupo'),provincia:fd.get('provincia'),habilidades:fd.getAll('hab'),notas:fd.get('notas')});put('personas',p,0);closeModal();toast('Persona guardada');render()},
+ savePerson:(f,fd)=>{const id=f.dataset.id;const p=S.personas[id]?clone(S.personas[id]):{id};Object.assign(p,{nombre:fd.get('nombre').trim(),telefono:fd.get('telefono').trim(),grupo:fd.get('grupo'),provincia:fd.get('provincia'),lugar:(fd.get('lugar')||'').trim(),habilidades:fd.getAll('hab'),notas:fd.get('notas')});put('personas',p,0);closeModal();toast('Persona guardada');render()},
  newHor:(f,fd)=>{const tp=f.dataset.tipo;const b=HOR_TIPOS[tp];const h={id:uid('h'),nombre:fd.get('nombre'),tipo:tp,cols:b.cols.slice(),rows:b.rows.slice(),celdas:{},notas:''};put('horarios',h,0);UI.hor=h.id;render()},
  cellSave:(f,fd)=>{A.cellQuick({dataset:{id:f.dataset.id,k:f.dataset.k,n:fd.get('n').trim()}})},
  newAct:(f,fd)=>createAct(fd.get('nombre'),fd.get('fecha')),
  newReu:(f,fd)=>createReu(fd.get('titulo'),fd.get('fecha')),
  addIdea:(f,fd)=>{const o=S[f.dataset.col][f.dataset.id];const tx=fd.get('texto').trim(),au=fd.get('autor').trim();(o.ideas=o.ideas||[]).push({texto:tx,autor:au});put(f.dataset.col,o);put('ideas',{id:uid('i'),texto:tx,autor:au,fecha:today(),origen:{tipo:f.dataset.col==='actividades'?'actividad':'reunion',id:o.id},estado:'nueva'},300);render();const i=document.querySelector(`form[data-a-submit="addIdea"][data-id="${f.dataset.id}"] input[name=texto]`);if(i)i.focus()},
- addAtt:(f,fd)=>{const r=S.reuniones[f.dataset.id];const pid=fd.get('pid'),n=(fd.get('nombre')||'').trim();if(!pid&&!n)return;(r.asistentes=r.asistentes||[]).push(pid?{personaId:pid,presente:true}:{nombre:n,presente:true});put('reuniones',r);render()},
+ addAtt:(f,fd)=>addNames('reuniones',f.dataset.id,'asistentes','presente',true,fd.get('nombres'),'addAtt'),
+ addPart:(f,fd)=>addNames('actividades',f.dataset.id,'participantes','confirmado',false,fd.get('nombres'),'addPart'),
  addTopic:(f,fd)=>{const r=S.reuniones[f.dataset.id];(r.temas=r.temas||[]).push({id:uid('tm'),texto:fd.get('texto').trim(),ok:false,notas:'',actividadId:''});put('reuniones',r);render();const i=document.querySelector(`form[data-a-submit="addTopic"][data-id="${f.dataset.id}"] input`);if(i)i.focus()},
  setLider:(f,fd)=>{const code=f.dataset.c,cid=f.dataset.id;const n=fd.get('nombre').trim();let p=L('personas').find(x=>norm(x.nombre)===norm(n));
-   if(!p){p={id:uid('p'),nombre:n,grupo:'lider',telefono:'',provincia:(GEOI.get(cid)||{}).p||'',habilidades:[],ultimoContacto:''};put('personas',p,0)}else if(p.grupo==='aliado'){p.grupo='lider';put('personas',p,0)}
+   if(!p){p={id:uid('p'),nombre:n,grupo:'lider',telefono:'',provincia:(GEOI.get(cid)||{}).p||'',habilidades:[],ultimoContacto:''};put('personas',p,0)}else if(p.grupo==='aliado'||p.grupo==='simpatizante'){p.grupo='lider';put('personas',p,0)}
    const c=S.circuitos['c'+code]||{id:'c'+code,codigo:code,lideres:{}};c.lideres=c.lideres||{};c.lideres[cid]=p.id;put('circuitos',c,0);render()},
+ ideaToReu:(f,fd)=>{const i=S.ideas[f.dataset.id];if(!i)return false;const dest=fd.get('dest')||'';let r=null;
+   const tema={id:uid('tm'),texto:i.texto,ok:false,notas:i.autor?'Idea de '+i.autor:'',actividadId:'',ideaId:i.id};
+   if(dest.startsWith('serie|')){const [,sid,d]=dest.split('|');r=openSerieOccurrence(sid,d)}else if(dest)r=S.reuniones[dest];
+   closeModal();i.estado='convertida';
+   if(r){(r.temas=r.temas||[]).push(tema);put('reuniones',r,0);UI.rsec={temas:true};go('reuniones',{reu:r.id,reuFilter:'todas'});setTimeout(()=>showCard(r.id),150);toast('Quedó como tema de esa reunión')}
+   else{r=createReu(shortTx(i.texto),fd.get('fecha')||'',{temas:[tema]});toast('La idea ya es una reunión: ponle día y quiénes van')}
+   i.destino={tipo:'reunion',id:r.id};put('ideas',i,0)},
  bankIdea:(f,fd)=>{put('ideas',{id:uid('i'),texto:fd.get('texto').trim(),autor:fd.get('autor').trim(),fecha:today(),origen:{tipo:'libre',id:''},estado:'nueva'},0);render()},
  newMeta:(f,fd)=>{const v=+fd.get('actual')||0;put('metas',{id:uid('m'),nombre:fd.get('nombre').trim(),unidad:fd.get('unidad'),meta:+fd.get('meta')||0,actual:v,fechaLimite:fd.get('fecha'),historial:v?[{fecha:today(),valor:v}]:[],logros:[]},0);closeModal();render()},
  metaAdv:(f,fd)=>{const m=S.metas[f.dataset.id];const v=+fd.get('v');m.actual=v;(m.historial=m.historial||[]).push({fecha:today(),valor:v});put('metas',m,0);toast('Avance registrado');render()}
@@ -1514,15 +1792,26 @@ const SUB={
 document.addEventListener('click',e=>{const fm=$('#fabmenu');if(!fm.hidden&&!e.target.closest('#fabmenu')&&!e.target.closest('#fab'))fm.hidden=true;
   const el=e.target.closest('[data-a]');if(!el||el.tagName==='FORM')return;const fn=A[el.dataset.a];if(!fn)return;if(el.tagName!=='INPUT'&&el.tagName!=='LABEL')e.preventDefault();if(el.closest('#fabmenu'))fm.hidden=true;fn(el,e)});
 document.addEventListener('submit',e=>{const f=e.target;const fn=SUB[f.dataset.aSubmit];if(!fn)return;e.preventDefault();const r=fn(f,new FormData(f));if(r!==false&&f.isConnected&&!f.closest('#modal'))f.reset()});
+/* Agrega uno o varios nombres a una lista (asistentes de una reunión, quiénes van a una actividad). Si el nombre está en Estructura se enlaza; si no, queda como texto. */
+function addNames(col,id,arr,flag,val,texto,form){const o=S[col][id];const ns=splitNames(texto);if(!o||!ns.length)return;const list=o[arr]=o[arr]||[];let n=0;
+  ns.forEach(x=>{const p=findPersona(x);if(list.some(a=>p?a.personaId===p.id:(!a.personaId&&norm(a.nombre)===norm(x))))return;list.push(p?{personaId:p.id,[flag]:val}:{nombre:x,[flag]:val});n++});
+  if(n)put(col,o);else toast('Ya estaba en la lista');render();const i=document.querySelector(`form[data-a-submit="${form}"][data-id="${id}"] input[name=nombres]`);if(i)i.focus()}
 function bindField(el){const [col,id,path]=el.dataset.f.split('|');const o=S[col][id]||(col==='territorio'?{id}:null);if(!o)return null;
   let v=el.type==='checkbox'?el.checked:el.value;if(el.dataset.t==='num')v=el.value===''?null:+el.value;setPath(o,path,v);put(col,o);return o}
 document.addEventListener('input',e=>{const el=e.target;if(el.dataset.f&&el.type!=='checkbox'&&el.tagName!=='SELECT'&&el.type!=='number')bindField(el);
+  if('mirror' in el.dataset){const c=el.closest('.acard');const nm=c&&c.querySelector('.item .nm');if(nm)nm.textContent=el.value||'Sin nombre'}
+  if(el.dataset.q){const k=el.dataset.q;UI[k]=el.value;UI.estN=60;clearTimeout(el._t);el._t=setTimeout(()=>{render();const i=document.querySelector(`[data-q="${k}"]`);if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},350)}
+  if(el.id==='impText'){clearTimeout(el._t);el._t=setTimeout(()=>impText(el.value),300)}
   if(el.dataset.tf==='q'){UI.tf.q=el.value;clearTimeout(el._t);el._t=setTimeout(()=>{render();const i=document.querySelector('[data-tf="q"]');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},350)}});
 document.addEventListener('change',e=>{const el=e.target;
+  if(el.dataset.pick){const [col,id,path]=el.dataset.pick.split('|');const o=S[col][id];if(o){const v=el.value.trim();const p=findPersona(v);setPath(o,path+'.personaId',p?p.id:'');setPath(o,path+'.nombre',p?'':v);put(col,o);const c=el.closest('.rolec');if(c)c.classList.toggle('ok',!!v)}}
   if(el.dataset.f&&(el.type==='checkbox'||el.tagName==='SELECT'||el.type==='date'||el.type==='number'||el.type==='time')){bindField(el);if(el.dataset.rr)render()}
   if(el.dataset.corr){const [col,id,path]=el.dataset.corr.split('|');const cid=LABEL2ID[el.value];if(el.value&&!cid){toast('Elige un corregimiento de la lista');return}const o=S[col][id];setPath(o,path,cid||'');put(col,o,0);render()}
   if(el.dataset.circ){const code=el.dataset.circ;const c=S.circuitos['c'+code]||{id:'c'+code,codigo:code,lideres:{}};c[el.dataset.k]=el.value;put('circuitos',c,0);render()}
   if(el.dataset.tf==='resp'){UI.tf.resp=el.value;render()}
+  if(el.dataset.grp){const p=S.personas[el.dataset.grp];if(p){p.grupo=el.value;put('personas',p,0);toast(`${p.nombre||'La persona'} pasó a ${GRUPOS[el.value].toLowerCase()}`);render()}}
+  if(el.dataset.imp){IMP.map[el.dataset.imp]=el.type==='checkbox'?el.checked:+el.value;impPreview()}
+  if(el.id==='impFile'&&el.files[0])impFile(el.files[0]);
   if(el.dataset.aChange==='mapSearch'){const id=LABEL2ID[el.value];if(id)A.goCorr({dataset:{id}})}
   if(el.id==='restoreFile'&&el.files[0])readRestore(el.files[0]);
   if(el.id==='oldFile'&&el.files[0])importOld(el.files[0])});
@@ -1589,10 +1878,11 @@ function budgetRows(a){const b=budgetOf(a);return (a.materiales||[]).map(m=>{con
 function actPdf(a){const P=PDF('Ficha de actividad',`${a.nombre||''} · ${a.desde?flong(a.desde):'sin fecha'}`);
   P.kv([['Actividad',a.nombre||''],['Tipo',ACT_TYPES[a.tipo]||''],['Estado',ACT_ESTADOS[a.estado||'idea']],['Fecha',a.desde?flong(a.desde)+(a.hasta&&a.hasta!==a.desde?' al '+flong(a.hasta):''):''],['Hora',tm(a.hora)],['Lugar',a.lugar||''],['Corregimiento',corrLabel(a.corrId)],['Meta de asistencia',a.metaAsistencia??'']]);
   if(a.objetivo)P.h('Objetivo').p(a.objetivo);
-  if((a.roles||[]).length)P.h('Roles y responsables').table(['Rol','Responsable','Teléfono'],a.roles.map(r=>[r.rol,pname(r.personaId)||'-',(S.personas[r.personaId]||{}).telefono||'']),[40,35,20]);
+  if((a.roles||[]).length)P.h('Roles y responsables').table(['Rol','Responsable','Teléfono'],a.roles.map(r=>[r.rol,roleWho(r)||'-',(S.personas[r.personaId]||{}).telefono||'']),[40,35,20]);
+  if((a.participantes||[]).length)P.h('Quiénes más van').bullets(a.participantes.map(x=>whoName(x)+(x.confirmado?' (confirmado)':'')));
   if((a.momentos||[]).length)P.h('Momentos del evento').table(['#','Momento','Hora','Responsable','Qué se necesita'],a.momentos.map((m,i)=>{const r=(a.roles||[]).find(x=>x.id===m.rolId);return [String(i+1),m.nombre,m.hora||'',r?r.rol:'',m.necesita||'']}),[5,28,14,24,34]);
   const it=(a.itinerario||[]).slice().sort((x,y)=>(x.hora||'').localeCompare(y.hora||''));
-  if(it.length)P.h('Itinerario').table(['Hora','Actor','Acción','Detalle'],it.map(s=>{const r=(a.roles||[]).find(x=>x.id===s.rolId);return [tm(s.hora)||'-',r?r.rol+(r.personaId?' ('+pname(r.personaId)+')':''):'Todos',s.accion||'',s.detalle||'']}),[12,28,32,28]);
+  if(it.length)P.h('Itinerario').table(['Hora','Actor','Acción','Detalle'],it.map(s=>{const r=(a.roles||[]).find(x=>x.id===s.rolId);return [tm(s.hora)||'-',r?r.rol+(roleWho(r)?' ('+roleWho(r)+')':''):'Todos',s.accion||'',s.detalle||'']}),[12,28,32,28]);
   if((a.materiales||[]).length){const b=budgetOf(a);P.h('Materiales y presupuesto').table(['Material','Cantidad','Costo unit.','Fuente','Responsable','Subtotal','Listo'],budgetRows(a),[26,16,13,13,17,14,8],['Total','','','','',money(b.total),'']);P.kv([['Hay que comprar',money(b.compra)],['Aportes y préstamos',money(b.aporte)],['Costo por asistente',b.n?money(b.porPersona):'-']])}
   const ts=tasksOf('actividad',a.id);if(ts.length)P.h('Tareas').table(['Tarea','Responsable','Fecha','Estado'],ts.map(t=>[t.titulo,pname(t.responsableId)||'-',t.fecha?fdate(t.fecha):'-',ESTADOS[t.estado]]),[45,22,15,13]);
   const reus=actReuniones(a);if(reus.length){P.h('Lo que se habló en reuniones');reus.forEach(({r,t})=>{P.p(`${fdate(r.fecha)} · ${r.titulo||'Reunión'}`,{bold:true,gap:.5});P.p(t.notas||'Sin notas',{indent:5,muted:!t.notas})})}
