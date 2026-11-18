@@ -282,6 +282,28 @@ main{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px
 .impprev td,.impprev th{text-align:left;padding:4px 8px;border-bottom:1px solid var(--line)}
 .impprev .f select{padding:5px 8px;font-size:13.5px}
 @media (max-width:560px){.gbody{padding:4px 8px 10px}.prow{grid-template-columns:30px minmax(0,1fr)}.prow select{grid-column:2}.daybox{padding:10px 8px}}
+/* Circuito, roles y lista jurada */
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.ctag{display:inline-flex;align-items:center;border-radius:999px;padding:1px 8px;font-size:12px;font-weight:800;background:var(--soft);color:var(--navy);white-space:nowrap}
+.ctag.rol{background:#efe9ff;color:#5b3bc4}
+.ctag.jur{background:#e6fbfd;color:var(--cyan-ink)}
+.circbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.conv{display:flex;flex-direction:column;gap:6px;min-width:0}
+.crow{background:var(--bg);border-radius:14px;padding:8px 10px;display:grid;grid-template-columns:minmax(0,1.6fr) repeat(4,minmax(58px,.55fr)) 60px 28px;gap:8px;align-items:center;min-width:0}
+.crow.med{grid-template-columns:minmax(0,1.6fr) repeat(2,minmax(70px,.6fr)) 28px}
+.crow.hd{background:transparent;padding:0 10px;font-size:10.5px;text-transform:uppercase;letter-spacing:.02em;color:var(--muted);font-weight:800;line-height:1.2}
+.crow.tot{background:var(--surface);box-shadow:inset 0 0 0 2px var(--soft);font-weight:800}
+.crow input{width:100%;min-width:0;border:1.5px solid var(--line);border-radius:10px;padding:5px 7px;background:var(--surface);text-align:right}
+.crow .who{border:0;background:none;padding:0;text-align:left;display:flex;gap:8px;align-items:center;min-width:0;font-weight:800;color:var(--navy)}
+.crow .who>span:last-child{min-width:0;overflow-wrap:anywhere}
+.crow .who small{display:block;font-weight:700;color:var(--muted);font-size:12px}
+.crow .v{text-align:right;font-variant-numeric:tabular-nums}
+.crow .v small{display:block;font-size:11px;color:var(--muted);font-weight:700}
+.cbox{background:var(--surface);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;margin:-2px 0 4px 12px;border-left:4px solid var(--blue);min-width:0}
+.chip .mk{font-size:11.5px;font-weight:800;padding:1px 7px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted)}
+.chip .mk[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+@media (max-width:700px){.crow{grid-template-columns:repeat(3,minmax(0,1fr)) 26px;gap:6px 8px;padding:8px}.crow.med{grid-template-columns:repeat(2,minmax(0,1fr)) 26px}.crow .c-conf,.crow .c-pct{display:none}
+ .crow>.who,.crow.tot>span:first-child{grid-column:1/-1}.crow.hd>span:first-child{display:none}.crow.hd{padding:0 8px}.cbox{margin-left:4px}}
 
 /* Tablas editables */
 .tscroll{overflow-x:auto}
@@ -721,6 +743,13 @@ async function initStore(){
 let rq=false;
 function editing(){const a=document.activeElement;return a&&a.matches('input,textarea,select')&&(a.closest('#main')||a.closest('#drawerHost'))}
 function requestRender(){if(editing()){rq=true;return}render()}
+/* Recalcular después de cambiar un número, fecha o selector sin comerse el toque siguiente:
+   si el dedo o el mouse sigue abajo, espera a que suelte; si pasó a escribir en otro campo, espera a que salga de él. */
+let ptrDown=false,rrWait=false;
+const typing=()=>{const a=document.activeElement;return editing()&&a.matches('input:not([type=checkbox]):not([type=radio]),textarea,select')};
+function afterChange(el){if(ptrDown){rrWait=true;return}if(document.activeElement!==el&&typing()){rq=true;return}render()}
+document.addEventListener('pointerdown',()=>{ptrDown=true},true);
+document.addEventListener('pointerup',()=>{ptrDown=false;if(!rrWait)return;rrWait=false;setTimeout(()=>{if(typing())rq=true;else render()},0)},true);
 document.addEventListener('focusout',()=>{if(!rq)return;setTimeout(()=>{if(!editing()){rq=false;render()}},60)});
 const L=c=>Object.values(S[c]);
 
@@ -731,15 +760,15 @@ function migrate(){if(migrated||!GEOI.size)return;migrated=true;
     c.corrs.forEach(x=>{const code=(GEOI.get(x.id)||{}).circ;if(!code||!(x.lideres||[]).length)return;const doc=S.circuitos['c'+code]||{id:'c'+code,codigo:code,lideres:{}};doc.lideres=doc.lideres||{};doc.lideres[x.id]=x.lideres[0];put('circuitos',doc,200)});
     del('circuitos',c.id)})}
 
-const SCHEMA_VERSION=5;
+const SCHEMA_VERSION=6;
 function ensureSchema(){const s=S.config.esquema;if(s&&s.version>=SCHEMA_VERSION&&s.app)return;
   put('config',{id:'esquema',version:SCHEMA_VERSION,app:'GitHub Pages + Supabase (proyecto une-juventud)',descripcion:'Centro de Mando UNE Juventud. Un documento por registro, con proyecto, creado y actualizado. Fechas AAAA-MM-DD, horas HH:MM (24 h). Corregimientos por código INEC de 6 dígitos (ID_CORR). Circuitos electorales con código "8-6" (provincia-número).',
    colecciones:{
-    personas:'id, nombre, telefono, grupo (c0 = círculo 0 | lider = líder territorial | aliado = gente con la que nos hemos reunido o que apoya, sin ser del círculo 0 | simpatizante = la base general, entra por importación de listas), habilidades[], provincia, lugar (corregimiento o comunidad, texto), ultimoContacto, notas, importado (fecha, si entró por lista)',
+    personas:'id, nombre, telefono, grupo (c0 = círculo 0 | lider = líder territorial | aliado = gente con la que nos hemos reunido o que apoya, sin ser del círculo 0 | simpatizante = la base general, entra por importación de listas), roles[] (c0|lider|aliado; grupo es el rol principal y siempre está incluido; sin roles se lee [grupo]; simpatizante no se combina con otros), circuito (código "8-3"; si falta, se deduce del corrId o del corregimiento que cubre en circuitos), cuotaBase (gente que suele jurar traer; si falta, config.general.cuotaDefecto), referidoPor (personaId del líder que la trajo), habilidades[], provincia, lugar (corregimiento o comunidad, texto), ultimoContacto, notas, importado (fecha, si entró por lista)',
     tareas:'id, codigo (LUG-MMDD-NN), titulo, entregable (qué se espera recibir, texto corto), responsableId, apoyo[personaId] (máx. 2), fecha (entrega), fechaSeguimiento, tareaMadreId (subtareas), propuestaPor, hora, prioridad (alta|media|baja), estado (pendiente|curso|hecha|bloqueada|cancelada), tipo (tarea|seguimiento|visita), corrId (opcional), actividadId (opcional, vínculo secundario), origen {tipo: reunion|actividad|campana|visita|libre, id}, comunicadoPor, notas, hechaEl',
     series:'Reuniones programadas. id, nombre, tipo, dia (0 domingo … 6 sábado), hora, horaFin, frecuencia (semanal|quincenal|mensual), desde (fecha ancla), lugar, participantes[personaId], color, activa',
     reuniones:'id, titulo, serieId, fecha, hora, horaFin, lugar, tipo, estado (programada|terminada), temas[{id,texto,ok,notas,actividadId}], asistentes[{personaId|nombre, presente}], ideas[{texto,autor}], apuntes, transcripcion, minuta {generada, resumen}',
-    actividades:'id, nombre, tipo (masiva|cerrada|equipo), estado, desde, hasta, hora, lugar, corrId, objetivo, metaAsistencia, roles[{id,rol,personaId | nombre (texto, si no está en personas)}], participantes[{personaId | nombre, confirmado}] (quiénes más van), momentos[{id,nombre,hora,rolId,necesita}], itinerario[{id,hora,rolId,accion,detalle}], materiales[{id,item,cant,porPersona,unidad,costo,fuente,responsableId,listo}], ideas[], evaluacion {asistencia,nuevos,logros,mejorar}',
+    actividades:'id, nombre, tipo (masiva|cerrada|equipo), estado, desde, hasta, hora, lugar, corrId, objetivo, metaAsistencia, roles[{id,rol,personaId | nombre (texto, si no está en personas)}], participantes[{personaId | nombre, confirmado, liderId (si va en la lista jurada de un líder), llego}] (quiénes más van y listas juradas), sinCuota (bool: actividad para medir, sin cuota de gente), cuotas[{liderId, jurados, confirmados, llegaron, inscritos, nota}] (lista jurada por líder; si el líder tiene nombres, confirmados y llegaron se calculan de participantes; llegaron vacío = no reportado), momentos[{id,nombre,hora,rolId,necesita}], itinerario[{id,hora,rolId,accion,detalle}], materiales[{id,item,cant,porPersona,unidad,costo,fuente,responsableId,listo}], ideas[], evaluacion {asistencia,nuevos,logros,mejorar}',
     horarios:'id, nombre, tipo (semanal|jornada|gira|turnos), cols[], rows[], celdas {"fila-col": [nombres]}, notas',
     visitas:'id, corrId, fecha, hora, responsableId, objetivo, estado (programada|realizada|cancelada), jovenes, notas, tareaId',
     territorio:'id = ID_CORR; destacados, notas, foda {f,d,o,a} (notas del equipo), pedirAnalisis (bool). Electores y circuito vienen del archivo geo.json (Tribunal Electoral 2024).',
@@ -747,7 +776,7 @@ function ensureSchema(){const s=S.config.esquema;if(s&&s.version>=SCHEMA_VERSION
     analisis:'id = ID_CORR, prov-<provincia> o _nacional; nivel, fecha, resumen, alertas[], noticias[{titulo,fuente,url,fecha,tema}], foda {o[],a[]}, pestel {p,e,s,t,ec,l}. Lo escribe la tarea diaria.',
     ideas:'Banco de ideas. id, texto, autor, fecha, origen {tipo: reunion|actividad|libre, id}, estado (nueva|convertida|descartada), tareaId, destino {tipo: actividad|reunion, id} (si pasó a una actividad o reunión; la actividad guarda ideaId y el tema de la reunión guarda ideaId). Las ideas también viven dentro de su reunión o actividad.',
     metas:'id, nombre, unidad, meta, actual, fechaLimite, historial[{fecha,valor}], logros[{fecha,texto}]',
-    config:'esquema, general {ultimoRespaldo, ultimoReporte, importadoTablero}'}},0)}
+    config:'esquema, general {ultimoRespaldo, ultimoReporte, importadoTablero, cuotaDefecto (gente que jura cada líder por defecto, 20)}'}},0)}
 
 /* ---------- Geografía electoral ---------- */
 let GEO=null;const GEOI=new Map(),LABEL2ID={},CIRC_BY_PROV={};let PROVS=[];
@@ -771,6 +800,45 @@ function personOptions(sel,emptyLabel='Sin asignar'){const ps=L('personas').sort
   return `<option value="">${emptyLabel}</option>`+cur+grp('c0','Círculo 0')+grp('lider','Líderes territoriales')+grp('aliado','Aliados')}
 const GRUPOS={c0:'Círculo 0',lider:'Líder territorial',aliado:'Aliado',simpatizante:'Simpatizante'};
 const byName=(a,b)=>(a.nombre||'').localeCompare(b.nombre||'','es');
+/* Roles: grupo es el principal y roles[] (opcional) suma los demás. Sin roles se lee [grupo]. Simpatizante no se combina. */
+const ROLES3=['c0','lider','aliado'];
+function rolesOf(p){const g=p.grupo||'c0';if(g==='simpatizante')return ['simpatizante'];const r=(Array.isArray(p.roles)?p.roles:[]).filter(x=>ROLES3.includes(x)&&x!==g);return [g,...new Set(r)]}
+const tieneRol=(p,g)=>rolesOf(p).includes(g);
+/* Circuito: el que tenga escrito la persona; si no, el de su corregimiento o el del corregimiento que cubre */
+let CPM=null,HIST=null;
+function circOf(p){if(!p)return '';if(p.circuito)return p.circuito;const g=GEOI.get(p.corrId);if(g)return g.circ;if(!CPM){CPM={};L('circuitos').forEach(c=>Object.values(c.lideres||{}).forEach(x=>{if(!CPM[x])CPM[x]=c.codigo}))}return CPM[p.id]||''}
+const circSort=(a,b)=>!a&&!b?0:!a?1:!b?-1:a.localeCompare(b,'es',{numeric:true});
+function circOptions(sel){if(!GEO)return sel?`<option value="${esc(sel)}" selected>${esc(sel)}</option>`:'';return PROVS.map(pv=>`<optgroup label="${esc(pv)}">${(CIRC_BY_PROV[pv]||[]).map(c=>`<option value="${c}" ${c===sel?'selected':''}>${c}</option>`).join('')}</optgroup>`).join('')}
+function circBar(ps){const cnt={};ps.forEach(p=>{const c=circOf(p)||'sin';cnt[c]=(cnt[c]||0)+1});const ks=Object.keys(cnt).filter(k=>k!=='sin').sort(circSort);const f=UI.estC||'';if(f&&f!=='sin'&&!cnt[f])ks.push(f);
+  if(!ks.length&&!f)return '';
+  return `<div class="circbar"><span class="lbl">Circuito</span><button class="tag" data-a="estC" data-v="" aria-pressed="${!f}">Todos <span class="num">${fmt(ps.length)}</span></button>${ks.map(k=>`<button class="tag" data-a="estC" data-v="${k}" aria-pressed="${f===k}">${k} <span class="num">${fmt(cnt[k]||0)}</span></button>`).join('')}${cnt.sin||f==='sin'?`<button class="tag" data-a="estC" data-v="sin" aria-pressed="${f==='sin'}">Sin circuito <span class="num">${fmt(cnt.sin||0)}</span></button>`:''}</div>`}
+const byCirc=ps=>{const f=UI.estC||'';return f?ps.filter(p=>(circOf(p)||'sin')===f):ps};
+function pTags(p){const c=circOf(p);const ex=rolesOf(p).slice(1);const lid=tieneRol(p,'lider');const h=lid?liderHist(p.id):null;
+  const t=[c?`<span class="ctag" title="Circuito">${c}</span>`:'',ex.length?`<span class="ctag rol">También: ${ex.map(r=>GRUPOS[r]).join(', ')}</span>`:'',lid?`<span class="ctag jur">Jurados ${cuotaDe(p)}${h&&h.pct!=null?' · Cumplió '+h.pct+' %':''}${h&&h.prom!=null?' · Línea base ~'+h.prom:''}</span>`:'',p.referidoPor&&S.personas[p.referidoPor]?`<span class="ctag">De ${esc(pname(p.referidoPor))}</span>`:''].join('');
+  return t?`<div class="tags">${t}</div>`:''}
+/* Lista jurada: cada líder jura cuánta gente trae y después se compara con quién llegó */
+const cuotaDef=()=>+((S.config.general||{}).cuotaDefecto)||20;
+const cuotaDe=p=>p&&p.cuotaBase!=null&&p.cuotaBase!==''?+p.cuotaBase:cuotaDef();
+const sinCuota=a=>!!(a&&a.sinCuota);
+const actPasada=a=>a.estado==='realizada'||!!((a.hasta||a.desde)&&(a.hasta||a.desde)<today());
+function liderHist(pid){if(!HIST){HIST={};L('actividades').forEach(a=>{if(a.estado==='cancelada'||!actPasada(a))return;(a.cuotas||[]).forEach(c=>{if(c.llegaron==null||c.llegaron==='')return;const h=HIST[c.liderId]=HIST[c.liderId]||{jur:0,lleg:0,n:0,base:[]};if(sinCuota(a))h.base.push(+c.llegaron||0);else if(+c.jurados>0){h.jur+=+c.jurados;h.lleg+=+c.llegaron||0;h.n++}})})}
+  const h=HIST[pid];if(!h)return null;return {...h,pct:h.jur?Math.round(h.lleg/h.jur*100):null,prom:h.base.length?Math.round(h.base.reduce((s,x)=>s+x,0)/h.base.length):null}}
+function cuotaNueva(a,pid){const c={liderId:pid,confirmados:null,llegaron:null,inscritos:null,nota:''};if(!sinCuota(a))c.jurados=cuotaDe(S.personas[pid]);return c}
+/* Si el líder tiene lista con nombres, confirmados y llegaron salen de ahí */
+function syncCuota(a,lid){const c=(a.cuotas||[]).find(x=>x.liderId===lid);if(!c)return;const ps=(a.participantes||[]).filter(x=>x.liderId===lid);if(!ps.length)return;c.confirmados=ps.filter(x=>x.confirmado).length;c.llegaron=ps.some(x=>x.llego)?ps.filter(x=>x.llego).length:null}
+function cAddCirc(id,code){const a=S.actividades[id];if(!a)return;a.cuotas=a.cuotas||[];let n=0;L('personas').filter(p=>tieneRol(p,'lider')&&circOf(p)===code).sort(byName).forEach(p=>{if(!a.cuotas.some(c=>c.liderId===p.id)){a.cuotas.push(cuotaNueva(a,p.id));n++}});put('actividades',a);toast(`${pl(n,'líder agregado','líderes agregados')} del circuito ${code}`);render()}
+function convAvisos(){const T=today(),antes=[],despues=[];L('actividades').forEach(a=>{if(a.estado==='cancelada'||!a.desde||!(a.cuotas||[]).length)return;const dd=diffDays(T,a.desde);
+  if(dd>=0&&dd<=7)a.cuotas.forEach(c=>{if(!(+c.confirmados>0))antes.push({a,c,dd})});
+  else if(actPasada(a)&&diffDays(a.hasta||a.desde,T)<=14)a.cuotas.forEach(c=>{const l=c.llegaron;if(l==null||l==='')despues.push({a,c,falta:true});else if(!sinCuota(a)&&+c.jurados>0&&+l<+c.jurados)despues.push({a,c})})});
+  return {antes,despues}}
+function convSection(){const {antes,despues}=convAvisos();if(!antes.length&&!despues.length)return '';
+  const row=(a,c,txt,k)=>{const p=S.personas[c.liderId]||{};return `<div class="trow">${avatar(p.nombre)}<div><div class="tt" data-a="openConv" data-id="${a.id}">${esc(p.nombre||'Líder')}</div><div class="meta"><span>${esc(a.nombre||'Actividad')}</span><span class="${k==='despues'?'late':''}">${txt}</span></div></div><div class="acts"><button class="btn sm" data-a="waConv" data-id="${a.id}" data-l="${c.liderId}" data-k="${k}">Mensaje</button></div></div>`};
+  const xs=[...antes.map(({a,c,dd})=>row(a,c,`Sin confirmar su lista · ${dd===0?'es hoy':dd===1?'es mañana':'faltan '+dd+' días'}`,'antes')),...despues.map(({a,c,falta})=>row(a,c,falta?'Falta anotar cuántos llegaron':`Juró ${fmt(c.jurados)} · llegaron ${fmt(c.llegaron)}`,falta?'falta':'despues'))];
+  return `<section class="flat"><header><h2>Convocatorias</h2><span class="small muted">Lo que juró cada líder</span></header><div class="tlist">${xs.slice(0,8).join('')}</div>${xs.length>8?`<span class="small muted">Y ${xs.length-8} más dentro de cada actividad.</span>`:''}</section>`}
+function waConvText(a,c,k){const n=`*${a.nombre||'la actividad'}*`;const f=a.desde?` (${fshort(a.desde).toLowerCase()}${a.hora?', '+tm(a.hora):''})`:'';
+  if(k==='antes')return `¿Cómo estás, líder? 🫡\nTe escribo por ${n}${f}.`+(sinCuota(a)?' ¿Ya sabes quiénes van contigo?':` Quedaste en traer ${fmt(c.jurados||cuotaDef())} personas. ¿Ya tienes confirmada tu lista?`)+` Pásame los nombres cuando puedas.\n\nCuenta conmigo. Vamos con todo 🙌`;
+  if(k==='falta')return `¿Cómo estás, líder? 🫡\nGracias por el apoyo en ${n}. ¿Cuántos de los tuyos llegaron al final?${sinCuota(a)?' ¿Y cuántos se inscribieron?':''} Lo necesito para planificar la próxima.\n\nVamos con todo 🙌`;
+  return `¿Cómo estás, líder? 🫡\nGracias por el apoyo en ${n}. Quedamos en ${fmt(c.jurados)} y llegaron ${fmt(c.llegaron)}. ¿Qué pasó con los demás? Cuéntame para que la próxima nos salga mejor.\n\nVamos con todo 🙌`}
 const isOpen=t=>t.estado!=='hecha'&&t.estado!=='cancelada';
 const isLate=t=>isOpen(t)&&t.fecha&&t.fecha<today();
 const prioRank={alta:0,media:1,baja:2};
@@ -847,7 +915,7 @@ function openSerieOccurrence(sid,d){let r=reuOfSerie(sid,d);if(r)return r;const 
   put('reuniones',r,0);return r}
 
 /* ---------- Estado de la interfaz ---------- */
-const UI={view:'inicio',act:null,reu:null,hor:null,actFilter:'proximas',reuFilter:'todas',cal:{mode:'mes',date:today()},asec:{basico:true,equipo:true},rsec:{},tsec:{},estQ:'',estN:60,sinAll:false,
+const UI={view:'inicio',act:null,reu:null,hor:null,actFilter:'proximas',reuFilter:'todas',cal:{mode:'mes',date:today()},asec:{basico:true,equipo:true},rsec:{},tsec:{},estQ:'',estN:60,estC:'',cOpen:null,sinAll:false,
   tf:{estado:'abiertas',origen:'todas',resp:'',q:''},est:'c0',habF:'',mapMode:'cobertura',mapCirc:null,mapSel:null,heat:'semanas',open:{},hopen:{},popen:{},copen:{},actView:'lista',restore:null,drawer:null};
 const VIEWS_META=[
  ['Hoy',[['inicio','Inicio']]],
@@ -857,17 +925,17 @@ const VIEWS_META=[
  ['Territorio',[['mapa','Mapa'],['cobertura','Cobertura']]],
  ['Sistema',[['respaldo','Respaldo']]]];
 const ico=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${ICONS[k]||''}"/></svg>`;
-function renderNav(){const late=L('tareas').filter(isLate).length;const seg=L('personas').filter(p=>p.grupo==='lider'&&liderStatus(p).toca).length;
+function renderNav(){const late=L('tareas').filter(isLate).length;const seg=L('personas').filter(p=>tieneRol(p,'lider')&&liderStatus(p).toca).length;
   $('#nav').innerHTML=VIEWS_META.map(([g,items])=>`<div class="grp"><span>${g}</span>${items.map(([k,n])=>{const b=k==='tareas'&&late?late:k==='inicio'&&seg?seg:0;
     return `<a href="#${k}" ${UI.view===k?'aria-current="page"':''}>${ico(k)}<span>${n}</span>${b?`<span class="b">${b}</span>`:''}</a>`}).join('')}</div>`).join('')}
 function go(view,extra={}){Object.assign(UI,extra);UI.drawer=null;if(location.hash!=='#'+view)location.hash=view;else{UI.view=view;render();window.scrollTo(0,0)}}
 window.addEventListener('hashchange',()=>{const v=location.hash.slice(1);UI.view=VIEWS[v]?v:'inicio';UI.drawer=null;render();window.scrollTo(0,0)});
 let dlPers='';
-function render(){renderNav();const dl=L('personas').map(p=>p.nombre).filter(Boolean).sort((a,b)=>a.localeCompare(b,'es')).map(n=>`<option value="${esc(n)}"></option>`).join('');if(dl!==dlPers){dlPers=dl;$('#dl-pers').innerHTML=dl}const v=VIEWS[UI.view]||VIEWS.inicio;$('#main').innerHTML=`<div class="view">${v()}</div>`;renderDrawer();if(UI.view==='mapa')mountMap()}
+function render(){CPM=null;HIST=null;renderNav();const dl=L('personas').map(p=>p.nombre).filter(Boolean).sort((a,b)=>a.localeCompare(b,'es')).map(n=>`<option value="${esc(n)}"></option>`).join('');if(dl!==dlPers){dlPers=dl;$('#dl-pers').innerHTML=dl}const v=VIEWS[UI.view]||VIEWS.inicio;$('#main').innerHTML=`<div class="view">${v()}</div>`;renderDrawer();if(UI.view==='mapa')mountMap()}
 
 /* ---------- Inicio ---------- */
 function vInicio(){const T=today(),ts=L('tareas');const late=ts.filter(isLate),hoy=ts.filter(t=>isOpen(t)&&t.fecha===T);
-  const lids=L('personas').filter(p=>p.grupo==='lider').map(p=>({p,s:liderStatus(p)})).sort((a,b)=>a.s.due.localeCompare(b.s.due));const toca=lids.filter(x=>x.s.toca);
+  const lids=L('personas').filter(p=>tieneRol(p,'lider')).map(p=>({p,s:liderStatus(p)})).sort((a,b)=>a.s.due.localeCompare(b.s.due));const toca=lids.filter(x=>x.s.toca);
   const nextAct=L('actividades').filter(a=>(a.hasta||a.desde)>=T&&a.estado!=='cancelada').sort((a,b)=>(a.desde||'').localeCompare(b.desde||''))[0];
   const ser=L('series').filter(s=>s.activa!==false).map(s=>({s,d:nextOf(s)})).filter(x=>x.d).sort((a,b)=>a.d.localeCompare(b.d));
   const g=S.config.general||{};const d=pd(T).getDate();const lastDay=new Date(pd(T).getFullYear(),pd(T).getMonth()+1,0).getDate();
@@ -889,6 +957,7 @@ function vInicio(){const T=today(),ts=L('tareas');const late=ts.filter(isLate),h
   ${!g.importadoTablero?`<div class="note row between"><span><b>¿Traes los datos del tablero anterior?</b> Abre el Tablero de Reunión, toca "Pasar al Centro de Mando" y sube aquí el archivo.</span><button class="btn sm pri" data-a="nav" data-v="respaldo">Importar</button></div>`:''}
   ${showReport?`<div class="note row between"><span><b>Reporte mensual de ${MESES[pd(repMonth+'-01').getMonth()]}.</b> ${g.ultimoReporte&&g.ultimoReporte.startsWith(repMonth)?'Ya lo generaste; puedes descargarlo otra vez.':'Es momento de generarlo para la dirección.'}</span><button class="btn pri sm" data-a="monthReport" data-m="${repMonth}">Generar reporte PDF</button></div>`:''}
   ${backupAge===null||backupAge>7?`<div class="note warn row between"><span>${backupAge===null?'Todavía no has hecho una copia de seguridad.':`Tu última copia de seguridad tiene ${backupAge} días.`}</span><button class="btn sm" data-a="backup">Descargar copia</button></div>`:''}
+  ${convSection()}
   <div class="cols">
    <section class="flat"><header><h2>Requiere atención</h2><button class="btn sm ghost" data-a="goTasks" data-f="abiertas">Todas las tareas →</button></header>
     ${attention.length?`<div class="tlist">${attention.slice(0,10).map(t=>taskRow(t)).join('')}</div>`:`<div class="empty">Nada vencido ni para hoy. Buen trabajo.</div>`}</section>
@@ -915,7 +984,7 @@ function itemsOn(d){const out=[];
   L('reuniones').forEach(r=>{if(r.fecha===d)out.push({k:'reu',id:r.id,t:r.titulo||'Reunión',h:r.hora,done:r.estado==='terminada'})});
   L('visitas').forEach(v=>{if(v.fecha===d&&v.estado!=='cancelada')out.push({k:'vis',id:v.id,t:'Visita: '+(corrName(v.corrId)||'corregimiento'),h:v.hora,done:v.estado==='realizada'})});
   L('tareas').forEach(t=>{if(t.fecha===d&&!(t.tipo==='visita'&&L('visitas').some(v=>v.tareaId===t.id)))out.push({k:t.tipo==='seguimiento'?'seg':'tarea',id:t.id,t:t.titulo||'Tarea',h:t.hora,done:t.estado==='hecha',lnk:t.origen&&['reunion','actividad','visita'].includes(t.origen.tipo)&&t.origen.id})});
-  if(d===today())L('personas').filter(p=>p.grupo==='lider'&&liderStatus(p).toca).forEach(p=>out.push({k:'lid',id:p.id,t:'Contactar a '+(p.nombre||'líder')}));
+  if(d===today())L('personas').filter(p=>tieneRol(p,'lider')&&liderStatus(p).toca).forEach(p=>out.push({k:'lid',id:p.id,t:'Contactar a '+(p.nombre||'líder')}));
   return out.sort((a,b)=>(a.h||'99').localeCompare(b.h||'99'))}
 const KC={tarea:'var(--k-tarea)',seg:'var(--k-seg)',act:'var(--k-act)',reu:'var(--k-reu)',vis:'var(--k-vis)',fer:'var(--k-fer)',lid:'var(--k-seg)',serie:'var(--k-serie)'};
 function evBtn(x){return `<button class="wev ${x.lnk||x.k==='act'||x.k==='reu'||x.k==='serie'?'lnk':''} ${x.done?'done':''}" style="--c:${KC[x.k]}" data-a="openItem" data-k="${x.k}" data-id="${x.id}" data-d="${x.d||''}"><b>${esc(x.t)}</b>${x.h?`<span class="tm">${tm(x.h)}</span>`:''}</button>`}
@@ -1006,7 +1075,12 @@ function actPlan(a,{title=false}={}){const id=a.id,F=p=>`actividades|${id}|${p}`
   const rolOpts=sel=>roles.map(r=>`<option value="${r.id}" ${r.id===sel?'selected':''}>${esc(r.rol)}${roleWho(r)?' · '+esc(roleWho(r)):''}</option>`).join('');
   const when=a.desde?fshort(a.desde)+(a.hasta&&a.hasta!==a.desde?' al '+fshort(a.hasta).toLowerCase():''):'Sin fecha';
   const sBasico=[a.desde?fdate(a.desde)+(a.hasta&&a.hasta!==a.desde?' al '+fdate(a.hasta):''):'Falta la fecha',a.hora?tm(a.hora):'',a.lugar?esc(a.lugar):'Falta el lugar',a.metaAsistencia?'esperamos '+fmt(a.metaAsistencia):''].filter(Boolean).join(' · ');
-  const sEquipo=(roles.length?`${roles.filter(roleWho).length} de ${roles.length} roles con nombre`:'Todavía sin roles')+(part.length?` · ${part.length} más van`:'');
+  const partL=part.filter(x=>!x.liderId);
+  const sEquipo=(roles.length?`${roles.filter(roleWho).length} de ${roles.length} roles con nombre`:'Todavía sin roles')+(partL.length?` · ${partL.length} más van`:'');
+  const cs=a.cuotas||[];const sc=sinCuota(a);
+  const tot=cs.reduce((t,c)=>{t.jur+=+c.jurados||0;t.conf+=+c.confirmados||0;t.ins+=+c.inscritos||0;if(c.llegaron!=null&&c.llegaron!==''){t.lleg+=+c.llegaron||0;t.jurRep+=+c.jurados||0;t.rep++}return t},{jur:0,conf:0,lleg:0,ins:0,rep:0,jurRep:0});
+  const pctT=!sc&&tot.rep&&tot.jurRep?Math.round(tot.lleg/tot.jurRep*100):null;
+  const sConv=cs.length?pl(cs.length,'líder','líderes')+(sc?' · para medir, sin cuota':` · ${fmt(tot.jur)} jurados · ${fmt(tot.conf)} confirmados`)+(tot.rep?` · llegaron ${fmt(tot.lleg)}${pctT!=null?' ('+pctT+' %)':''}`:'')+(tot.ins?` · ${fmt(tot.ins)} inscritos`:''):(sc?'Para medir: anota por líder cuántos llegan':'Sin líderes convocados todavía');
   const sProg=ms.length||it.length?`${pl(ms.length,"momento","momentos")} · ${pl(it.length,"paso","pasos")} con hora`:'Sin programa todavía';
   const sMat=mats.length?`${mats.length} en la lista · ${money(b.total)} · ${mats.filter(m=>m.listo).length} listos`:'Sin lista todavía';
   const sTar=ts.length?`${ts.filter(isOpen).length} por hacer · ${ts.filter(t=>!isOpen(t)).length} hechas`:'Sin pendientes anotados';
@@ -1035,9 +1109,35 @@ function actPlan(a,{title=false}={}){const id=a.id,F=p=>`actividades|${id}|${p}`
     <div class="lbl">${roles.length?'Más roles':'Roles sugeridos'} · toca uno para agregarlo</div>
     <div class="sugg">${missing.map(([r,d])=>`<button class="sg" data-a="addSugg" data-id="${id}" data-r="${esc(r)}"><b>+ ${esc(r)}</b><small>${esc(d)}</small></button>`).join('')}<button class="sg" data-a="addRole" data-id="${id}"><b>+ Otro rol</b><small>Uno que no está en la lista</small></button></div>
     ${missing.length>1?`<div class="row"><button class="btn sm" data-a="addSuggRoles" data-id="${id}">Agregar todos los sugeridos</button></div>`:''}
-    <div class="sub2"><h3>Quiénes más van <span class="muted num">${part.filter(p=>p.confirmado).length}/${part.length} confirmados</span></h3>
-     <div class="chips">${part.map((x,i)=>{const n=whoName(x);return `<span class="chip ${x.confirmado?'on':''}"><button data-a="togPart" data-id="${id}" data-i="${i}" style="display:flex;gap:6px;align-items:center;color:inherit;padding:0" aria-pressed="${!!x.confirmado}">${avatar(n)}${esc(n)}</button><button data-a="delRow" data-col="actividades" data-id="${id}" data-arr="participantes" data-i="${i}" aria-label="Quitar">×</button></span>`}).join('')||'<span class="muted small">Anota aquí a voluntarios e invitados. Toca un nombre cuando confirme.</span>'}</div>
+    <div class="sub2"><h3>Quiénes más van <span class="muted num">${partL.filter(p=>p.confirmado).length}/${partL.length} confirmados</span></h3>
+     <div class="chips">${part.map((x,i)=>{if(x.liderId)return '';const n=whoName(x);return `<span class="chip ${x.confirmado?'on':''}"><button data-a="togPart" data-id="${id}" data-i="${i}" style="display:flex;gap:6px;align-items:center;color:inherit;padding:0" aria-pressed="${!!x.confirmado}">${avatar(n)}${esc(n)}</button><button data-a="delRow" data-col="actividades" data-id="${id}" data-arr="participantes" data-i="${i}" aria-label="Quitar">×</button></span>`}).join('')||'<span class="muted small">Anota aquí a voluntarios e invitados. Toca un nombre cuando confirme.</span>'}</div>${part.length>partL.length?`<span class="small muted">Además, ${pl(part.length-partL.length,'persona está','personas están')} en las listas de los líderes (paso 3, Convocatoria).</span>`:''}
      <form class="row" data-a-submit="addPart" data-id="${id}"><input class="in" name="nombres" list="dl-pers" placeholder="Escribe un nombre (o varios separados por coma)" style="flex:1 1 220px" required><button class="btn sm pri">Agregar</button></form></div>`};
+
+  const convocatoria=()=>{const libres=L('personas').filter(p=>tieneRol(p,'lider')&&!cs.some(c=>c.liderId===p.id)).sort((x,y)=>circSort(circOf(x),circOf(y))||byName(x,y));
+    const circs=[...new Set(libres.map(circOf).filter(Boolean))].sort(circSort);
+    const hd=sc?`<div class="crow med hd"><span>Líder</span><span class="v">Llegaron</span><span class="v">Inscritos</span><span></span></div>`:`<div class="crow hd"><span>Líder</span><span class="v">Jurados</span><span class="v c-conf">Confirmados</span><span class="v">Llegaron</span><span class="v">Inscritos</span><span class="v c-pct">Cumplió</span><span></span></div>`;
+    const cBox=c=>{const ps=(a.participantes||[]).map((x,j)=>({x,j})).filter(({x})=>x.liderId===c.liderId);const nuevos=ps.filter(({x})=>!x.personaId).length;
+      const suyos=L('personas').filter(p=>p.referidoPor===c.liderId&&!ps.some(({x})=>x.personaId===p.id)).length;
+      return `<div class="cbox"><span class="small muted">Su lista con nombres. Toca <b>Confirmó</b> cuando diga que va y <b>Llegó</b> el día de la actividad; los números de arriba se calculan solos.</span>
+       <div class="chips">${ps.map(({x,j})=>{const n=whoName(x);return `<span class="chip">${avatar(n)}<span style="padding:0 4px">${esc(n)}</span><button class="mk" data-a="pMark" data-id="${id}" data-i="${j}" data-k="confirmado" aria-pressed="${!!x.confirmado}">Confirmó</button><button class="mk" data-a="pMark" data-id="${id}" data-i="${j}" data-k="llego" aria-pressed="${!!x.llego}">Llegó</button><button data-a="pDel" data-id="${id}" data-i="${j}" aria-label="Quitar a ${esc(n)}">×</button></span>`}).join('')||'<span class="muted small">Sin nombres todavía. Si solo tienes el número, escríbelo en la fila de arriba.</span>'}</div>
+       <form class="row" data-a-submit="addJur" data-id="${id}" data-l="${c.liderId}"><input class="in" name="nombres" list="dl-pers" placeholder="Nombres de su gente (varios separados por coma)" style="flex:1 1 220px" required><button class="btn sm pri">Agregar</button></form>
+       ${suyos||nuevos?`<div class="row">${suyos?`<button class="btn sm" data-a="cSuyos" data-id="${id}" data-l="${c.liderId}">Traer a su gente de Estructura (${suyos})</button>`:''}${nuevos?`<button class="btn sm ghost" data-a="cGuardar" data-id="${id}" data-l="${c.liderId}">Guardar ${pl(nuevos,'nombre nuevo','nombres nuevos')} en Simpatizantes</button>`:''}</div>`:''}</div>`};
+    const row=(c,i)=>{const p=S.personas[c.liderId];const h=liderHist(c.liderId);const nm=p?(p.nombre||'Sin nombre'):'(ya no está en Estructura)';const nN=(a.participantes||[]).filter(x=>x.liderId===c.liderId).length;const open=UI.cOpen===id+'|'+c.liderId;
+      const num=(k,cls)=>`<input class="${cls||''}" type="number" min="0" data-f="${F('cuotas.'+i+'.'+k)}" data-t="num" data-rr value="${c[k]??''}" placeholder="—" aria-label="${k} de ${esc(nm)}">`;
+      const calc=(k,cls)=>nN?`<span class="v ${cls||''}">${c[k]==null||c[k]===''?'—':fmt(c[k])}<small>de la lista</small></span>`:num(k,cls);
+      const pct=+c.jurados&&c.llegaron!=null&&c.llegaron!==''?Math.round(c.llegaron/c.jurados*100)+' %':'—';
+      const sub=[circOf(p),nN?pl(nN,'nombre','nombres'):'Toca para anotar sus nombres',h&&h.pct!=null?'antes cumplió '+h.pct+' %':'',h&&h.prom!=null?'línea base ~'+h.prom:''].filter(Boolean).join(' · ');
+      return `<div class="crow ${sc?'med':''}"><button class="who" data-a="cOpen" data-k="${id}|${c.liderId}" aria-expanded="${open}">${avatar(nm)}<span>${esc(nm)}<small>${esc(sub)}</small></span></button>
+        ${sc?'':num('jurados')}${sc?'':calc('confirmados','c-conf')}${calc('llegaron')}${num('inscritos')}${sc?'':`<span class="v c-pct">${pct}</span>`}<button class="x" data-a="cDel" data-id="${id}" data-i="${i}" aria-label="Quitar a ${esc(nm)} de la convocatoria">×</button></div>${open?cBox(c):''}`};
+    const cuento=Math.round(cs.reduce((s,c)=>{const h=liderHist(c.liderId);return s+(+c.jurados||0)*(h&&h.pct!=null?Math.min(h.pct,100)/100:1)},0));
+    return `<p class="muted small">${sc?'Esta actividad es para <b>medir</b>: no lleva cuota. Anota por líder cuántos llegaron y cuántos inscribieron; eso será la base para las próximas.':`Cada líder jura cuánta gente trae (por defecto ${cuotaDef()}). Toca a un líder para anotar los nombres de su gente; después de la actividad marca quién llegó y se compara con lo jurado.`}</p>
+     <label class="row small"><input type="checkbox" data-f="${F('sinCuota')}" data-t="bool" data-rr ${sc?'checked':''}> Actividad para medir (sin cuota de gente)</label>
+     ${cs.length?`<div class="conv">${hd}${cs.map(row).join('')}
+      <div class="crow tot ${sc?'med':''}"><span>Total · ${pl(cs.length,'líder','líderes')}</span>${sc?'':`<span class="v">${fmt(tot.jur)}</span><span class="v c-conf">${fmt(tot.conf)}</span>`}<span class="v">${tot.rep?fmt(tot.lleg):'—'}</span><span class="v">${fmt(tot.ins)}</span>${sc?'':`<span class="v c-pct">${pctT!=null?pctT+' %':'—'}</span>`}<span></span></div></div>
+      ${!sc&&tot.jur?`<div class="row between"><span class="small">Con cuánta gente cuento: <b>~${fmt(cuento)}</b> <span class="muted">(lo jurado, ajustado por lo que cumplió cada líder antes)</span></span>${+a.metaAsistencia!==tot.jur?`<button class="btn sm" data-a="cMeta" data-id="${id}">Usar la suma (${fmt(tot.jur)}) como meta</button>`:'<span class="small muted">La meta ya es la suma.</span>'}</div>`:''}
+      ${tot.ins?`<span class="small">Inscritos en esta actividad: <b>${fmt(tot.ins)}</b>. La meta de inscripciones se actualiza a mano en Panel de datos.</span>`:''}`:'<span class="muted small">Agrega a los líderes que traen gente a esta actividad.</span>'}
+     <div class="row"><form class="row" data-a-submit="cAdd" data-id="${id}" style="flex:1 1 260px"><select class="in" name="lid" style="flex:1 1 200px" aria-label="Líder" required><option value="">Elegir líder…</option>${libres.map(p=>`<option value="${p.id}">${esc(p.nombre||'')}${circOf(p)?' · '+circOf(p):''}</option>`).join('')}</select><button class="btn sm pri">Agregar</button></form>
+      ${circs.length?`<select class="in" style="width:auto" data-ccirc="${id}" aria-label="Agregar los líderes de un circuito"><option value="">Agregar los de un circuito…</option>${circs.map(k=>`<option value="${k}">Circuito ${k} (${libres.filter(p=>circOf(p)===k).length})</option>`).join('')}</select>`:''}</div>`};
 
   const programa=()=>`<p class="muted small">Primero los momentos del evento, en orden, y qué se necesita en cada uno. Abajo, si hace falta, el paso a paso con hora para enviarle a cada quien su parte.</p>
     ${ms.length?`<div class="moments">${ms.map((m,i)=>`<div class="mom" data-n="${i+1}"><input type="text" data-f="${F('momentos.'+i+'.hora')}" value="${esc(m.hora||'')}" placeholder="Hora" aria-label="Hora">
@@ -1085,11 +1185,12 @@ function actPlan(a,{title=false}={}){const id=a.id,F=p=>`actividades|${id}|${p}`
    <div class="row between ptools"><span class="when">${when}${a.lugar?' · '+esc(a.lugar):''}</span><div class="row"><button class="btn sm" data-a="actPdf" data-id="${id}">Ficha PDF</button><button class="btn sm danger" data-a="askDel" data-col="actividades" data-id="${id}">Eliminar</button></div></div>
    ${psec('asec','basico',1,'Lo básico: cuándo, dónde y para qué',sBasico,basico)}
    ${psec('asec','equipo',2,'Quién hace qué',sEquipo,equipo)}
-   ${psec('asec','programa',3,'Programa del día',sProg,programa)}
-   ${psec('asec','materiales',4,'Qué llevar y cuánto cuesta',sMat,materiales)}
-   ${psec('asec','tareas',5,'Pendientes antes del día',sTar,tareas)}
-   ${psec('asec','ideas',6,'Ideas y lo hablado en reuniones',sIdeas,ideas)}
-   ${psec('asec','evaluacion',7,'Después: cómo salió',sEval,evaluacion)}</div>`}
+   ${psec('asec','conv',3,'Convocatoria: la gente de cada líder',sConv,convocatoria)}
+   ${psec('asec','programa',4,'Programa del día',sProg,programa)}
+   ${psec('asec','materiales',5,'Qué llevar y cuánto cuesta',sMat,materiales)}
+   ${psec('asec','tareas',6,'Pendientes antes del día',sTar,tareas)}
+   ${psec('asec','ideas',7,'Ideas y lo hablado en reuniones',sIdeas,ideas)}
+   ${psec('asec','evaluacion',8,'Después: cómo salió',sEval,evaluacion)}</div>`}
 function actDetail(a){return actPlan(a,{title:true})}
 function ideasBlock(col,o){return `<form class="row" data-a-submit="addIdea" data-col="${col}" data-id="${o.id}"><input class="in" name="texto" placeholder="Escribe la idea" style="flex:2 1 180px" required><input class="in" name="autor" placeholder="De quién" style="flex:1 1 110px"><button class="ideabtn">Idea</button></form>
   <ul class="ideas">${(o.ideas||[]).map((x,i)=>`<li><span>${esc(x.texto)}${x.autor?`<span class="by">${esc(x.autor)}</span>`:''}</span><span class="row"><button class="btn sm" data-a="ideaTask" data-col="${col}" data-id="${o.id}" data-i="${i}">Volver tarea</button><button class="x" data-a="delRow" data-col="${col}" data-id="${o.id}" data-arr="ideas" data-i="${i}" aria-label="Quitar idea">×</button></span></li>`).join('')}</ul>`}
@@ -1203,38 +1304,45 @@ function ideasBank(){const xs=allIdeas();const f=UI.ideaF||'nueva';const ys=xs.f
      <div class="ideagrid">${ys.map(card).join('')||'<span class="muted small">Nada en este filtro.</span>'}</div></div>`:''}</div>`}
 
 /* ---------- Estructura ---------- */
-function vEstructura(){const n=g=>L('personas').filter(p=>(p.grupo||'c0')===g).length;
+const EST_TABS=[['c0','Círculo 0','c0'],['lideres','Líderes territoriales','lider'],['aliados','Aliados','aliado'],['simp','Simpatizantes','simpatizante']];
+function vEstructura(){const all=L('personas');const n=g=>all.filter(p=>tieneRol(p,g)).length;const multi=all.filter(p=>rolesOf(p).length>1).length;
   return `<div class="vhead"><div class="t"><span class="eyebrow">Equipo</span><h1>Estructura</h1></div>
-  <div class="seg">${[['c0','Círculo 0','c0'],['lideres','Líderes territoriales','lider'],['aliados','Aliados','aliado'],['simp','Simpatizantes','simpatizante']].map(([k,t,g])=>`<button data-a="est" data-v="${k}" aria-pressed="${UI.est===k}">${t} <span class="num">${fmt(n(g))}</span></button>`).join('')}</div></div>
+  <div class="seg">${EST_TABS.map(([k,t,g])=>`<button data-a="est" data-v="${k}" aria-pressed="${UI.est===k}">${t} <span class="num">${fmt(n(g))}</span></button>`).join('')}</div></div>
+  ${multi?`<p class="muted small">${multi===1?'1 persona tiene':fmt(multi)+' personas tienen'} más de un rol y sale en más de una pestaña.</p>`:''}
   ${UI.est==='c0'?vC0():UI.est==='lideres'?vLideres():UI.est==='aliados'?vGrupo('aliado'):vGrupo('simpatizante')}`}
 /* Fila de una persona con su grupo a la mano: así se pasa de simpatizante a líder, aliado o círculo 0 sin abrir nada */
-function prow(p){return `<div class="prow">${avatar(p.nombre)}<div><button class="pn2" data-a="personModal" data-id="${p.id}">${esc(p.nombre||'Sin nombre')}</button><div class="small muted">${[p.telefono||'Sin teléfono',p.lugar,p.provincia].filter(Boolean).map(esc).join(' · ')}</div></div>
+function prow(p){return `<div class="prow">${avatar(p.nombre)}<div><button class="pn2" data-a="personModal" data-id="${p.id}">${esc(p.nombre||'Sin nombre')}</button><div class="small muted">${[p.telefono||'Sin teléfono',p.lugar,p.provincia].filter(Boolean).map(esc).join(' · ')}</div>${pTags(p)}</div>
   <select class="in" data-grp="${p.id}" aria-label="Grupo de ${esc(p.nombre||'esta persona')}">${Object.entries(GRUPOS).map(([k,t])=>`<option value="${k}" ${(p.grupo||'c0')===k?'selected':''}>${t}</option>`).join('')}</select></div>`}
 const GDESC={aliado:'Personas con las que nos hemos reunido un par de veces o que nos apoyan, pero que no son parte del círculo 0.',simpatizante:'Toda la base. Busca un nombre y cámbiale el grupo cuando pase a ser líder territorial, aliado o del círculo 0.'};
-function vGrupo(g){const all=L('personas').filter(p=>p.grupo===g).sort(byName);const q=norm(UI.estQ);
-  const ps=q?all.filter(p=>norm(p.nombre).includes(q)||String(p.telefono||'').replace(/\D/g,'').includes(q.replace(/\D/g,'')||'¬')||norm(p.lugar).includes(q)||norm(p.provincia).includes(q)):all;const N=UI.estN||60;
+function vGrupo(g){const all=L('personas').filter(p=>tieneRol(p,g)).sort(byName);const q=norm(UI.estQ);
+  const ps0=q?all.filter(p=>norm(p.nombre).includes(q)||String(p.telefono||'').replace(/\D/g,'').includes(q.replace(/\D/g,'')||'¬')||norm(p.lugar).includes(q)||norm(p.provincia).includes(q)):all;const bar=circBar(ps0);const ps=byCirc(ps0);const N=UI.estN||60;
   return `<p class="muted">${GDESC[g]}</p>
   <div class="row between"><input class="in" style="flex:1 1 220px;max-width:380px" type="search" placeholder="Buscar por nombre, teléfono o lugar" value="${esc(UI.estQ||'')}" data-q="estQ" aria-label="Buscar personas">
-   <div class="row"><span class="muted small num">${q?`${fmt(ps.length)} de ${fmt(all.length)}`:pl(all.length,'persona','personas')}</span>${g==='simpatizante'?'<button class="btn sm" data-a="importModal">Importar lista</button>':''}<button class="btn sm pri" data-a="personModal" data-g="${g}">+ Registrar persona</button></div></div>
+   <div class="row"><span class="muted small num">${q||UI.estC?`${fmt(ps.length)} de ${fmt(all.length)}`:pl(all.length,'persona','personas')}</span>${g==='simpatizante'?'<button class="btn sm" data-a="importModal">Importar lista</button>':''}<button class="btn sm pri" data-a="personModal" data-g="${g}">+ Registrar persona</button></div></div>
+  ${bar}
   ${ps.length?`<div class="panel plist">${ps.slice(0,N).map(prow).join('')}</div>${ps.length>N?`<button class="btn" data-a="estMore" style="align-self:center">Mostrar más (faltan ${fmt(ps.length-N)})</button>`:''}`
-   :`<div class="empty">${q?'Nadie con ese nombre en este grupo.':g==='simpatizante'?'Todavía no hay simpatizantes. Registra uno o importa una lista completa desde Excel.<button class="btn sm pri" data-a="importModal">Importar lista</button>':'Todavía no hay aliados. Regístralos aquí o pásalos desde Simpatizantes cambiándoles el grupo.'}</div>`}`}
-function vC0(){let ps=L('personas').filter(p=>(p.grupo||'c0')==='c0').sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||'','es'));
+   :`<div class="empty">${q||UI.estC?'Nadie con ese filtro en este grupo.':g==='simpatizante'?'Todavía no hay simpatizantes. Registra uno o importa una lista completa desde Excel.<button class="btn sm pri" data-a="importModal">Importar lista</button>':'Todavía no hay aliados. Regístralos aquí o pásalos desde Simpatizantes cambiándoles el grupo.'}</div>`}`}
+function vC0(){const all=L('personas').filter(p=>tieneRol(p,'c0')).sort(byName);const bar=circBar(all);let ps=byCirc(all);
   const counts={};HABS.forEach(h=>counts[h]=ps.filter(p=>(p.habilidades||[]).includes(h)).length);
   if(UI.habF)ps=ps.filter(p=>(p.habilidades||[]).includes(UI.habF));
   return `<div class="row between"><div class="chips"><button class="tag" data-a="habF" data-v="" aria-pressed="${!UI.habF}">Todos</button>${HABS.map(h=>`<button class="tag" data-a="habF" data-v="${h}" aria-pressed="${UI.habF===h}">${h} <span class="num">${counts[h]}</span></button>`).join('')}</div>
    <div class="row"><button class="btn sm" data-a="importModal">Importar lista</button><button class="btn sm pri" data-a="personModal" data-g="c0">+ Registrar persona</button></div></div>
+  ${bar}
   <div class="people">${ps.map(p=>pcard(p)).join('')||'<div class="empty">Nadie con este filtro todavía.</div>'}</div>`}
 function pcard(p){const F=k=>`personas|${p.id}|${k}`;const open=L('tareas').filter(t=>t.responsableId===p.id&&isOpen(t)).length;
   return `<div class="pcard"><div class="nmr">${avatar(p.nombre)}<input class="nm" data-f="${F('nombre')}" value="${esc(p.nombre||'')}" aria-label="Nombre"><button class="x" data-a="personModal" data-id="${p.id}" aria-label="Editar">✎</button></div>
-    <div class="row small muted"><span class="num">${esc(p.telefono||'Sin teléfono')}</span>${p.provincia?`<span>· ${esc(p.provincia)}</span>`:''}</div>
+    <div class="row small muted"><span class="num">${esc(p.telefono||'Sin teléfono')}</span>${p.provincia?`<span>· ${esc(p.provincia)}</span>`:''}</div>${pTags(p)}
     <div class="chips">${HABS.map(h=>`<button class="tag" data-a="togHab" data-id="${p.id}" data-h="${h}" aria-pressed="${(p.habilidades||[]).includes(h)}">${h}</button>`).join('')}</div>
     <div class="row between small"><span class="muted">${open} tareas abiertas</span><span class="row">${open?`<button class="olink" data-a="tfResp" data-id="${p.id}">Ver</button>`:''}<button class="btn sm ghost" data-a="newTask" data-resp="${p.id}">+ Tarea</button></span></div></div>`}
 function vLideres(){if(!GEO)return '<div class="empty">Cargando circuitos…</div>';
   const covered=code=>{const c=S.circuitos['c'+code];return c&&c.lideres?Object.values(c.lideres).filter(x=>S.personas[x]).length:0};
-  const asg=new Set();L('circuitos').forEach(c=>Object.values(c.lideres||{}).forEach(x=>asg.add(x)));const sin=L('personas').filter(p=>p.grupo==='lider'&&!asg.has(p.id)).sort(byName);
-  return `<section class="flat"><header><h2>Líderes sin corregimiento asignado <span class="muted num" style="font-size:14px">${sin.length}</span></h2><button class="btn sm pri" data-a="personModal" data-g="lider">+ Registrar líder</button></header>
-   ${sin.length?`<p class="muted small">Ya están marcados como líderes, pero todavía no cubren un corregimiento. Para asignarlos, abre su circuito abajo y escribe su nombre en el corregimiento que les toca.</p>
-   <div class="panel plist">${sin.slice(0,UI.sinAll?sin.length:5).map(prow).join('')}</div>${sin.length>5?`<button class="btn sm" data-a="sinAll" style="align-self:center">${UI.sinAll?'Ver menos':`Ver los ${sin.length}`}</button>`:''}`:'<span class="muted small">Todos los líderes tienen corregimiento.</span>'}</section>
+  const asg=new Set();L('circuitos').forEach(c=>Object.values(c.lideres||{}).forEach(x=>asg.add(x)));const sinAll=L('personas').filter(p=>tieneRol(p,'lider')&&!asg.has(p.id));
+  const bar=circBar(sinAll);const sin=byCirc(sinAll).sort((x,y)=>circSort(circOf(x),circOf(y))||byName(x,y));const show=UI.sinAll||UI.estC?sin:sin.slice(0,8);
+  const cnt={};sin.forEach(p=>{const c=circOf(p);cnt[c]=(cnt[c]||0)+1});let last=null;
+  const rows=show.map(p=>{const c=circOf(p);const h=c!==last?`<div class="mhead" style="padding:10px 0 2px">${c?'Circuito '+c:'Sin circuito'} · ${cnt[c]}</div>`:'';last=c;return h+prow(p)}).join('');
+  return `<section class="flat"><header><h2>Líderes sin corregimiento asignado <span class="muted num" style="font-size:14px">${sinAll.length}</span></h2><button class="btn sm pri" data-a="personModal" data-g="lider">+ Registrar líder</button></header>
+   ${sinAll.length?`<p class="muted small">Ya están marcados como líderes, pero todavía no cubren un corregimiento. Van agrupados por circuito. Para asignarlos, abre su circuito abajo y escribe su nombre en el corregimiento que les toca.</p>${bar}
+   <div class="panel plist">${rows||'<span class="muted small">Nadie con ese filtro.</span>'}</div>${!UI.estC&&sin.length>8?`<button class="btn sm" data-a="sinAll" style="align-self:center">${UI.sinAll?'Ver menos':`Ver los ${sin.length}`}</button>`:''}`:'<span class="muted small">Todos los líderes tienen corregimiento.</span>'}</section>
   <p class="muted">Los ${Object.keys(GEO.circ).length} circuitos electorales del país con sus corregimientos en orden. Asigna un líder a cada corregimiento; el seguimiento cada 2 semanas se activa solo.</p>
   ${PROVS.map(p=>{const cs=CIRC_BY_PROV[p]||[];const open=UI.popen[p];const tot=cs.reduce((a,c)=>a+GEO.circ[c].n,0),cov=cs.reduce((a,c)=>a+covered(c),0);
    return `<div class="prov"><button data-a="popen" data-p="${esc(p)}" aria-expanded="${!!open}"><b>${esc(p)}</b><span class="small muted">${cs.length} circuitos · ${cov}/${tot} corregimientos con líder</span><span class="chev">${open?'▾':'▸'}</span></button>
@@ -1539,17 +1647,23 @@ function personModal(p){const isNew=!S.personas[p.id];
    <div class="f"><label for="pg">Grupo</label><select id="pg" name="grupo">${Object.entries(GRUPOS).map(([k,n])=>`<option value="${k}" ${(p.grupo||'c0')===k?'selected':''}>${n}</option>`).join('')}</select></div>
    <div class="f"><label for="plu">Corregimiento o comunidad</label><input id="plu" name="lugar" value="${esc(p.lugar||'')}"></div>
    <div class="f"><label for="pp">Provincia</label><select id="pp" name="provincia"><option value="">—</option>${PROVS.map(x=>`<option ${p.provincia===x?'selected':''}>${esc(x)}</option>`).join('')}</select></div>
+   <div class="f"><label for="pci">Circuito</label><select id="pci" name="circuito"><option value="">${!p.circuito&&circOf(p)?'Según su corregimiento: '+circOf(p):'Sin circuito'}</option>${circOptions(p.circuito||'')}</select></div>
+   <div class="f"><label for="prf">Lo trajo (líder)</label><select id="prf" name="referidoPor"><option value="">Nadie anotado</option>${L('personas').filter(x=>x.id!==p.id&&(tieneRol(x,'lider')||x.id===p.referidoPor)).sort(byName).map(x=>`<option value="${x.id}" ${p.referidoPor===x.id?'selected':''}>${esc(x.nombre||'')}${circOf(x)?' · '+circOf(x):''}</option>`).join('')}</select></div>
+   <div class="f" style="grid-column:1/-1"><span class="lbl">También es</span><div class="chips">${ROLES3.map(r=>{const pr=(p.grupo||'c0')===r;return `<label class="tag" style="cursor:pointer"><input type="checkbox" name="rol" value="${r}" ${pr||tieneRol(p,r)?'checked':''} ${pr?'disabled data-pr="1"':''} style="accent-color:var(--blue)"> ${GRUPOS[r]}</label>`}).join('')}</div><span class="small muted">El grupo de arriba es el principal. Aquí marcas los otros roles que también tiene.</span></div>
+   <div class="f"><label for="pcu">Gente que jura traer (si es líder)</label><input id="pcu" name="cuotaBase" type="number" min="0" value="${p.cuotaBase??''}" placeholder="${cuotaDef()}, la de siempre"></div>
    <div class="f" style="grid-column:1/-1"><span class="lbl">En qué es bueno</span><div class="chips">${HABS.map(h=>`<label class="tag" style="cursor:pointer"><input type="checkbox" name="hab" value="${h}" ${(p.habilidades||[]).includes(h)?'checked':''} style="accent-color:var(--blue)"> ${h}</label>`).join('')}</div></div>
    <div class="f" style="grid-column:1/-1"><label for="pno">Notas</label><input id="pno" name="notas" value="${esc(p.notas||'')}" placeholder="Fortalezas, disponibilidad, qué aporta"></div></form>
-  <div class="foot"><div id="delzone">${isNew?'':`<button class="btn danger" data-a="askDelModal" data-col="personas" data-id="${p.id}">Eliminar</button>`}</div><div class="row"><button class="btn" data-a="closeModal">Cancelar</button><button class="btn pri" type="submit" form="pform">Guardar</button></div></div>`)}
+  <div class="foot"><div id="delzone">${isNew?'':`<button class="btn danger" data-a="askDelModal" data-col="personas" data-id="${p.id}">Eliminar</button>`}</div><div class="row"><button class="btn" data-a="closeModal">Cancelar</button><button class="btn pri" type="submit" form="pform">Guardar</button></div></div>`);
+  const syncR=()=>{const g=$('#pg').value;$$('#pform input[name=rol]').forEach(c=>{if(c.dataset.pr&&c.value!==g){c.checked=false;c.disabled=false;delete c.dataset.pr}if(c.value===g){c.checked=true;c.disabled=true;c.dataset.pr='1'}})};$('#pg').addEventListener('change',syncR)}
 
 /* ---------- Importar una lista de personas (Excel, CSV o texto pegado). Todas entran como simpatizantes ---------- */
-const IMP={rows:[],src:'',err:'',map:{hdr:false,nombre:0,apellido:-1,telefono:-1,lugar:-1,provincia:-1}};
-function importModal(){IMP.rows=[];IMP.src='';IMP.err='';
+const IMP={rows:[],src:'',err:'',map:{hdr:false,nombre:0,apellido:-1,telefono:-1,lugar:-1,provincia:-1,circuito:-1},ref:''};
+function importModal(){IMP.rows=[];IMP.src='';IMP.err='';IMP.ref='';
   openModal(`<header><h2>Importar lista de personas</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header>
    <p class="muted">Todas entran como <b>simpatizantes</b>. Después las buscas por nombre y las pasas a líder territorial, aliado o círculo 0.</p>
    <div class="f"><label for="impFile">Archivo de Excel (.xlsx) o .csv</label><input id="impFile" type="file" accept=".xlsx,.csv,.tsv,.txt"></div>
    <div class="f"><label for="impText">O pega la lista aquí: un nombre por línea, o las columnas copiadas desde Excel</label><textarea id="impText" placeholder="María Pérez	6123-4567	Tocumen"></textarea></div>
+   <div class="f"><label for="impRef">¿Son la gente de un líder? (opcional)</label><select id="impRef" data-impref="1"><option value="">No, son de la base general</option>${L('personas').filter(p=>tieneRol(p,'lider')).sort(byName).map(p=>`<option value="${p.id}">${esc(p.nombre||'')}${circOf(p)?' · '+circOf(p):''}</option>`).join('')}</select></div>
    <div class="impprev" id="impPrev"></div>
    <div class="foot"><button class="btn" data-a="closeModal">Cancelar</button><button class="btn pri" data-a="impSave" id="impGo" disabled>Guardar</button></div>`)}
 async function inflateRaw(u8){const s=new Blob([u8]).stream().pipeThrough(new DecompressionStream('deflate-raw'));return new Uint8Array(await new Response(s).arrayBuffer())}
@@ -1569,11 +1683,11 @@ function textRows(txt){const lines=String(txt||'').replace(/\r/g,'').split('\n')
   const cnt=ch=>lines.filter(l=>l.includes(ch)).length;const d=cnt('\t')?'\t':cnt(';')>lines.length/2?';':cnt(',')>lines.length/2?',':'\t';
   return lines.map(l=>{const out=[];let cur='',q=false;for(let i=0;i<l.length;i++){const ch=l[i];if(q){if(ch==='"'){if(l[i+1]==='"'){cur+='"';i++}else q=false}else cur+=ch}else if(ch==='"'&&!cur)q=true;else if(ch===d){out.push(cur.trim());cur=''}else cur+=ch}out.push(cur.trim());return out})}
 function impDetect(){const rows=IMP.rows,m=IMP.map;const h=(rows[0]||[]).map(norm);const find=re=>h.findIndex(x=>re.test(x));
-  m.hdr=h.some(x=>/^(nombre|nombres|apellido|apellidos|telefono|celular|whatsapp|corregimiento|provincia|cedula|nombre completo|nombre y apellido)/.test(x));
+  m.hdr=h.some(x=>/^(nombre|nombres|apellido|apellidos|telefono|celular|whatsapp|corregimiento|provincia|circuito|cedula|nombre completo|nombre y apellido)/.test(x));
   const body=rows.slice(m.hdr?1:0,60);const cols=Math.max(0,...rows.slice(0,60).map(r=>r.length));const frac=(c,f)=>body.length?body.filter(r=>f(r[c]||'')).length/body.length:0;
   const isPhone=v=>{const dg=v.replace(/\D/g,'');return dg.length>=7&&dg.length<=11&&!/[a-z]{3}/i.test(v)&&!/^\d-\d+-\d+$/.test(v.trim())};
-  if(m.hdr){m.nombre=find(/nombre|name/);m.apellido=find(/apellido/);m.telefono=find(/tel|cel|whats|movil|contacto/);m.lugar=find(/corregimiento|comunidad|barrio|direccion|lugar|residencia/);m.provincia=find(/provincia/)}
-  else{m.nombre=-1;m.apellido=-1;m.telefono=-1;m.lugar=-1;m.provincia=-1}
+  if(m.hdr){m.nombre=find(/nombre|name/);m.apellido=find(/apellido/);m.telefono=find(/tel|cel|whats|movil|contacto/);m.lugar=find(/corregimiento|comunidad|barrio|direccion|lugar|residencia/);m.provincia=find(/provincia/);m.circuito=find(/circuito/)}
+  else{m.nombre=-1;m.apellido=-1;m.telefono=-1;m.lugar=-1;m.provincia=-1;m.circuito=-1}
   if(m.nombre<0)for(let c=0;c<cols;c++)if(c!==m.apellido&&frac(c,v=>/[a-zñáéíóú]{2}/i.test(v)&&!/\d{4}/.test(v))>.6){m.nombre=c;break}
   if(m.telefono<0)for(let c=0;c<cols;c++)if(c!==m.nombre&&frac(c,isPhone)>.5){m.telefono=c;break}
   if(!m.hdr&&m.lugar<0)for(let c=0;c<cols;c++)if(c!==m.nombre&&c!==m.telefono&&frac(c,v=>/[a-zñáéíóú]{3}/i.test(v)&&!v.includes('@'))>.5){m.lugar=c;break}
@@ -1585,7 +1699,8 @@ function impPeople(){const m=IMP.map;const seen=new Set(),out=[];let dup=0,bad=0
     const tel=g(m.telefono).replace(/[^\d+\-\s]/g,'').trim(),td=tel.replace(/\D/g,'');const k=key(nombre,tel);
     const old=have.get(norm(nombre));if(seen.has(k)||(old&&old.some(t=>!t||!td||t===td))){dup++;return}seen.add(k);
     let lugar=g(m.lugar),prov=g(m.provincia);const pv=PROVS.find(x=>norm(x)===norm(prov));if(prov&&!pv)lugar=[lugar,prov].filter(Boolean).join(', ');
-    out.push({nombre,telefono:tel,lugar,provincia:pv||''})});
+    let ci=(g(m.circuito).match(/(\d{1,2})\s*-\s*(\d{1,2})/)||[]).slice(1).join('-');if(ci&&GEO&&!GEO.circ[ci])ci='';
+    out.push({nombre,telefono:tel,lugar,provincia:pv||'',circuito:ci})});
   return {out,dup,bad}}
 function impPreview(){const host=$('#impPrev'),go=$('#impGo');if(!host)return;
   if(IMP.err){host.innerHTML=`<div class="note warn">${esc(IMP.err)}</div>`;go.disabled=true;return}
@@ -1593,8 +1708,8 @@ function impPreview(){const host=$('#impPrev'),go=$('#impGo');if(!host)return;
   const m=IMP.map,{out,dup,bad}=impPeople();const cols=Math.max(0,...IMP.rows.slice(0,60).map(r=>r.length));const ej=(IMP.rows[m.hdr?1:0]||[]);
   const sel=(k,lab,req)=>`<div class="f"><label for="imp-${k}">${lab}</label><select id="imp-${k}" data-imp="${k}">${req?'':'<option value="-1">No viene</option>'}${Array.from({length:cols},(_,c)=>`<option value="${c}" ${m[k]===c?'selected':''}>${esc(m.hdr&&IMP.rows[0][c]?IMP.rows[0][c]:'Columna '+String.fromCharCode(65+c%26))}${ej[c]?' · ej. '+esc(String(ej[c]).slice(0,18)):''}</option>`).join('')}</select></div>`;
   host.innerHTML=`<div class="note"><b>${fmt(out.length)} ${out.length===1?'persona nueva':'personas nuevas'}</b>${IMP.src?' en '+esc(IMP.src):''}.${dup?(dup===1?' 1 ya estaba o venía repetida y se salta.':` ${fmt(dup)} ya estaban o venían repetidas y se saltan.`):''}${bad?(bad===1?' 1 fila sin nombre se ignora.':` ${fmt(bad)} filas sin nombre se ignoran.`):''}</div>
-   ${cols>1?`<div class="grid2">${sel('nombre','Columna del nombre',true)}${sel('apellido','Apellido, si viene aparte')}${sel('telefono','Teléfono')}${sel('lugar','Corregimiento o comunidad')}${sel('provincia','Provincia')}<label class="row small"><input type="checkbox" data-imp="hdr" ${m.hdr?'checked':''}> La primera fila son los títulos</label></div>`:''}
-   ${out.length?`<div class="tscroll"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Lugar</th></tr></thead><tbody>${out.slice(0,5).map(p=>`<tr><td>${esc(p.nombre)}</td><td class="num">${esc(p.telefono||'—')}</td><td>${esc([p.lugar,p.provincia].filter(Boolean).join(', ')||'—')}</td></tr>`).join('')}</tbody></table></div>${out.length>5?`<span class="muted small">Así quedan las primeras 5 de ${fmt(out.length)}.</span>`:''}`:''}`;
+   ${cols>1?`<div class="grid2">${sel('nombre','Columna del nombre',true)}${sel('apellido','Apellido, si viene aparte')}${sel('telefono','Teléfono')}${sel('lugar','Corregimiento o comunidad')}${sel('provincia','Provincia')}${sel('circuito','Circuito')}<label class="row small"><input type="checkbox" data-imp="hdr" ${m.hdr?'checked':''}> La primera fila son los títulos</label></div>`:''}
+   ${out.length?`<div class="tscroll"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Lugar</th></tr></thead><tbody>${out.slice(0,5).map(p=>`<tr><td>${esc(p.nombre)}</td><td class="num">${esc(p.telefono||'—')}</td><td>${esc([p.lugar,p.provincia,p.circuito?'circuito '+p.circuito:''].filter(Boolean).join(', ')||'—')}</td></tr>`).join('')}</tbody></table></div>${out.length>5?`<span class="muted small">Así quedan las primeras 5 de ${fmt(out.length)}.</span>`:''}`:''}`;
   go.disabled=!out.length;go.textContent=out.length?`Guardar ${fmt(out.length)} como simpatizantes`:'Guardar'}
 function impText(txt){IMP.err='';IMP.src='';IMP.rows=textRows(txt);impDetect();impPreview()}
 async function impFile(file){IMP.err='';IMP.rows=[];IMP.src=file.name;const host=$('#impPrev');if(host)host.innerHTML='<span class="muted small">Leyendo el archivo…</span>';
@@ -1606,7 +1721,7 @@ async function impFile(file){IMP.err='';IMP.rows=[];IMP.src=file.name;const host
   catch(e){IMP.err=e.message==='xls'?'Ese es un Excel antiguo (.xls). Ábrelo y guárdalo como .xlsx, o copia las columnas y pégalas abajo.':e.message==='nav'?'Este navegador no puede abrir archivos de Excel. Copia las columnas en Excel y pégalas abajo.':'No pude leer ese archivo. Prueba a copiar las columnas en Excel y pegarlas abajo.'}
   impDetect();impPreview()}
 async function impSave(){const {out}=impPeople();if(!out.length)return;const btn=$('#impGo');btn.disabled=true;btn.textContent='Guardando…';const stamp=Date.now().toString(36),hoy=today();
-  const list=out.map((p,i)=>({id:'p_'+stamp+i.toString(36),nombre:p.nombre,telefono:p.telefono,grupo:'simpatizante',habilidades:[],provincia:p.provincia,lugar:p.lugar,notas:'',importado:hoy}));
+  const list=out.map((p,i)=>Object.assign({id:'p_'+stamp+i.toString(36),nombre:p.nombre,telefono:p.telefono,grupo:'simpatizante',habilidades:[],provincia:p.provincia,lugar:p.lugar,notas:'',importado:hoy},p.circuito?{circuito:p.circuito}:{},IMP.ref?{referidoPor:IMP.ref}:{}));
   const ok=await putMany('personas',list);closeModal();UI.est='simp';UI.estQ='';UI.estN=60;
   toast(ok===list.length?`${fmt(ok)} simpatizantes guardados`:`Se guardaron ${fmt(ok)} de ${fmt(list.length)}. Revisa la conexión y vuelve a importar el mismo archivo: las que ya entraron no se repiten.`);if(UI.view!=='estructura')go('estructura');else render()}
 
@@ -1710,7 +1825,7 @@ const A={
  reuFilter:el=>{UI.reuFilter=el.dataset.f;UI.reu=null;render()},
  selReu:el=>{const id=el.dataset.id;if(UI.reu===id){UI.reu=null;render();return}UI.reu=id;UI.rsec=reuSecs(S.reuniones[id]);render();showCard(id)},
  togAtt:el=>{const r=S.reuniones[el.dataset.id];const x=r.asistentes[+el.dataset.i];x.presente=!x.presente;put('reuniones',r);render()},
- addAllTeam:el=>{const r=S.reuniones[el.dataset.id];r.asistentes=r.asistentes||[];L('personas').filter(p=>(p.grupo||'c0')==='c0').forEach(p=>{if(!r.asistentes.some(a=>a.personaId===p.id))r.asistentes.push({personaId:p.id,presente:false})});put('reuniones',r);render()},
+ addAllTeam:el=>{const r=S.reuniones[el.dataset.id];r.asistentes=r.asistentes||[];L('personas').filter(p=>tieneRol(p,'c0')).forEach(p=>{if(!r.asistentes.some(a=>a.personaId===p.id))r.asistentes.push({personaId:p.id,presente:false})});put('reuniones',r);render()},
  closeReu:async el=>{const r=S.reuniones[el.dataset.id];r.estado='terminada';r.minuta={generada:new Date().toISOString(),resumen:minutaResumen(r)};put('reuniones',r,0);render();toast('Reunión terminada. Minuta generada.');await saveFile(`Minuta-${r.fecha||today()}-${slug(r.titulo)}.pdf`,minutaPdf(r).blob())},
  reopenReu:el=>{const r=S.reuniones[el.dataset.id];r.estado='programada';put('reuniones',r,0);render()},
  reuPdf:el=>{const r=S.reuniones[el.dataset.id];saveFile(`Minuta-${r.fecha||today()}-${slug(r.titulo)}.pdf`,minutaPdf(r).blob())},
@@ -1720,6 +1835,16 @@ const A={
  tf:el=>{UI.tf[el.dataset.k]=el.dataset.v;if(UI.view!=='tareas')go('tareas');else render()},
  tfResp:el=>{UI.tf={estado:'abiertas',origen:'todas',resp:el.dataset.id,q:''};go('tareas')},
  est:el=>{UI.est=el.dataset.v;UI.estQ='';UI.estN=60;render()},
+ estC:el=>{UI.estC=el.dataset.v;UI.estN=60;render()},
+ openConv:el=>openDrawer('act',el.dataset.id,{conv:true}),
+ cOpen:el=>{UI.cOpen=UI.cOpen===el.dataset.k?null:el.dataset.k;render()},
+ cDel:el=>{const a=S.actividades[el.dataset.id];const c=a.cuotas.splice(+el.dataset.i,1)[0];(a.participantes||[]).forEach(x=>{if(x.liderId===c.liderId)delete x.liderId});put('actividades',a);render()},
+ cMeta:el=>{const a=S.actividades[el.dataset.id];a.metaAsistencia=(a.cuotas||[]).reduce((s,c)=>s+(+c.jurados||0),0);put('actividades',a,0);toast('Cuántas personas esperamos: '+fmt(a.metaAsistencia));render()},
+ pMark:el=>{const a=S.actividades[el.dataset.id];const x=a.participantes[+el.dataset.i];const k=el.dataset.k;x[k]=!x[k];if(k==='llego'&&x.llego)x.confirmado=true;syncCuota(a,x.liderId);put('actividades',a);render()},
+ pDel:el=>{const a=S.actividades[el.dataset.id];const x=a.participantes.splice(+el.dataset.i,1)[0];syncCuota(a,x.liderId);put('actividades',a);render()},
+ cSuyos:el=>{const a=S.actividades[el.dataset.id],lid=el.dataset.l;a.participantes=a.participantes||[];let n=0;L('personas').filter(p=>p.referidoPor===lid).sort(byName).forEach(p=>{if(!a.participantes.some(x=>x.personaId===p.id)){a.participantes.push({personaId:p.id,confirmado:false,llego:false,liderId:lid});n++}});syncCuota(a,lid);put('actividades',a);toast(pl(n,'persona agregada','personas agregadas'));render()},
+ cGuardar:el=>{const a=S.actividades[el.dataset.id],lid=el.dataset.l;let n=0;(a.participantes||[]).forEach(x=>{if(x.liderId!==lid||x.personaId||!x.nombre)return;const ex=findPersona(x.nombre);if(ex){x.personaId=ex.id;delete x.nombre;return}const p={id:uid('p'),nombre:x.nombre,grupo:'simpatizante',telefono:'',habilidades:[],provincia:'',lugar:'',notas:'',referidoPor:lid};put('personas',p,0);x.personaId=p.id;delete x.nombre;n++});put('actividades',a,0);toast(pl(n,'simpatizante guardado','simpatizantes guardados'));render()},
+ waConv:el=>{const a=S.actividades[el.dataset.id];const c=(a.cuotas||[]).find(x=>x.liderId===el.dataset.l)||{};const p=S.personas[el.dataset.l]||{};showMsg('Mensaje para '+(p.nombre||''),waConvText(a,c,el.dataset.k),p.telefono)},
  habF:el=>{UI.habF=el.dataset.v;render()},
  togHab:el=>{const p=S.personas[el.dataset.id];const h=el.dataset.h;p.habilidades=(p.habilidades||[]).includes(h)?p.habilidades.filter(x=>x!==h):[...(p.habilidades||[]),h];put('personas',p);render()},
  personModal:el=>{const p=el.dataset.id&&S.personas[el.dataset.id];personModal(p?clone(p):{id:uid('p'),grupo:el.dataset.g||'c0'})},
@@ -1764,7 +1889,11 @@ const SUB={
  saveSerie:(f,fd)=>{const id=f.dataset.id;const s=S.series[id]?clone(S.series[id]):{id};
    Object.assign(s,{nombre:fd.get('nombre').trim(),dia:fd.get('dia')===''?'':+fd.get('dia'),frecuencia:fd.get('frecuencia'),hora:fd.get('hora'),horaFin:fd.get('horaFin'),desde:fd.get('desde')||today(),tipo:fd.get('tipo'),lugar:fd.get('lugar'),participantes:fd.getAll('part'),color:fd.get('color')||SER_COL[0],activa:!!fd.get('activa')});
    put('series',s,0);closeModal();toast('Reunión programada guardada');render()},
- savePerson:(f,fd)=>{const id=f.dataset.id;const p=S.personas[id]?clone(S.personas[id]):{id};Object.assign(p,{nombre:fd.get('nombre').trim(),telefono:fd.get('telefono').trim(),grupo:fd.get('grupo'),provincia:fd.get('provincia'),lugar:(fd.get('lugar')||'').trim(),habilidades:fd.getAll('hab'),notas:fd.get('notas')});put('personas',p,0);closeModal();toast('Persona guardada');render()},
+ savePerson:(f,fd)=>{const id=f.dataset.id;const p=S.personas[id]?clone(S.personas[id]):{id};let g=fd.get('grupo');const ex=fd.getAll('rol').filter(r=>ROLES3.includes(r));if(g==='simpatizante'&&ex.length)g=ex[0];
+   Object.assign(p,{nombre:fd.get('nombre').trim(),telefono:fd.get('telefono').trim(),grupo:g,provincia:fd.get('provincia'),lugar:(fd.get('lugar')||'').trim(),habilidades:fd.getAll('hab'),notas:fd.get('notas')});
+   const rs=g==='simpatizante'?[]:[g,...ex.filter(r=>r!==g)];if(rs.length>1)p.roles=rs;else delete p.roles;
+   const ci=fd.get('circuito')||'';if(ci)p.circuito=ci;else delete p.circuito;const cu=fd.get('cuotaBase');if(cu!=null&&cu!=='')p.cuotaBase=+cu;else delete p.cuotaBase;const rf=fd.get('referidoPor')||'';if(rf)p.referidoPor=rf;else delete p.referidoPor;
+   put('personas',p,0);closeModal();toast('Persona guardada');render()},
  newHor:(f,fd)=>{const tp=f.dataset.tipo;const b=HOR_TIPOS[tp];const h={id:uid('h'),nombre:fd.get('nombre'),tipo:tp,cols:b.cols.slice(),rows:b.rows.slice(),celdas:{},notas:''};put('horarios',h,0);UI.hor=h.id;render()},
  cellSave:(f,fd)=>{A.cellQuick({dataset:{id:f.dataset.id,k:f.dataset.k,n:fd.get('n').trim()}})},
  newAct:(f,fd)=>createAct(fd.get('nombre'),fd.get('fecha')),
@@ -1774,7 +1903,7 @@ const SUB={
  addPart:(f,fd)=>addNames('actividades',f.dataset.id,'participantes','confirmado',false,fd.get('nombres'),'addPart'),
  addTopic:(f,fd)=>{const r=S.reuniones[f.dataset.id];(r.temas=r.temas||[]).push({id:uid('tm'),texto:fd.get('texto').trim(),ok:false,notas:'',actividadId:''});put('reuniones',r);render();const i=document.querySelector(`form[data-a-submit="addTopic"][data-id="${f.dataset.id}"] input`);if(i)i.focus()},
  setLider:(f,fd)=>{const code=f.dataset.c,cid=f.dataset.id;const n=fd.get('nombre').trim();let p=L('personas').find(x=>norm(x.nombre)===norm(n));
-   if(!p){p={id:uid('p'),nombre:n,grupo:'lider',telefono:'',provincia:(GEOI.get(cid)||{}).p||'',habilidades:[],ultimoContacto:''};put('personas',p,0)}else if(p.grupo==='aliado'||p.grupo==='simpatizante'){p.grupo='lider';put('personas',p,0)}
+   if(!p){p={id:uid('p'),nombre:n,grupo:'lider',circuito:code,telefono:'',provincia:(GEOI.get(cid)||{}).p||'',habilidades:[],ultimoContacto:''};put('personas',p,0)}else{let ch=false;if(p.grupo==='simpatizante'){p.grupo='lider';delete p.roles;ch=true}else if(!tieneRol(p,'lider')){p.roles=[...rolesOf(p),'lider'];ch=true}if(!p.circuito){p.circuito=code;ch=true}if(ch)put('personas',p,0)}
    const c=S.circuitos['c'+code]||{id:'c'+code,codigo:code,lideres:{}};c.lideres=c.lideres||{};c.lideres[cid]=p.id;put('circuitos',c,0);render()},
  ideaToReu:(f,fd)=>{const i=S.ideas[f.dataset.id];if(!i)return false;const dest=fd.get('dest')||'';let r=null;
    const tema={id:uid('tm'),texto:i.texto,ok:false,notas:i.autor?'Idea de '+i.autor:'',actividadId:'',ideaId:i.id};
@@ -1783,6 +1912,13 @@ const SUB={
    if(r){(r.temas=r.temas||[]).push(tema);put('reuniones',r,0);UI.rsec={temas:true};go('reuniones',{reu:r.id,reuFilter:'todas'});setTimeout(()=>showCard(r.id),150);toast('Quedó como tema de esa reunión')}
    else{r=createReu(shortTx(i.texto),fd.get('fecha')||'',{temas:[tema]});toast('La idea ya es una reunión: ponle día y quiénes van')}
    i.destino={tipo:'reunion',id:r.id};put('ideas',i,0)},
+ cAdd:(f,fd)=>{const a=S.actividades[f.dataset.id];const lid=fd.get('lid');if(!a||!lid)return false;a.cuotas=a.cuotas||[];if(!a.cuotas.some(c=>c.liderId===lid))a.cuotas.push(cuotaNueva(a,lid));put('actividades',a);render()},
+ addJur:(f,fd)=>{const a=S.actividades[f.dataset.id],lid=f.dataset.l;const ns=splitNames(fd.get('nombres'));if(!a||!ns.length)return;const list=a.participantes=a.participantes||[];let n=0;const otro=[];
+   ns.forEach(x=>{const p=findPersona(x);const ya=list.find(y=>p?y.personaId===p.id:(!y.personaId&&norm(y.nombre)===norm(x)));
+     if(ya){if(ya.liderId&&ya.liderId!==lid){otro.push(x);return}if(!ya.liderId){ya.liderId=lid;ya.llego=!!ya.llego;n++}return}
+     list.push(Object.assign(p?{personaId:p.id}:{nombre:x},{confirmado:false,llego:false,liderId:lid}));n++;
+     if(p&&p.grupo==='simpatizante'&&!p.referidoPor){p.referidoPor=lid;put('personas',p,0)}});
+   syncCuota(a,lid);if(n)put('actividades',a);toast(otro.length?`${otro.join(', ')} ya va en la lista de otro líder`:n?pl(n,'nombre agregado','nombres agregados'):'Ya estaba en la lista');render();const i=document.querySelector(`form[data-a-submit="addJur"][data-l="${lid}"] input[name=nombres]`);if(i)i.focus()},
  bankIdea:(f,fd)=>{put('ideas',{id:uid('i'),texto:fd.get('texto').trim(),autor:fd.get('autor').trim(),fecha:today(),origen:{tipo:'libre',id:''},estado:'nueva'},0);render()},
  newMeta:(f,fd)=>{const v=+fd.get('actual')||0;put('metas',{id:uid('m'),nombre:fd.get('nombre').trim(),unidad:fd.get('unidad'),meta:+fd.get('meta')||0,actual:v,fechaLimite:fd.get('fecha'),historial:v?[{fecha:today(),valor:v}]:[],logros:[]},0);closeModal();render()},
  metaAdv:(f,fd)=>{const m=S.metas[f.dataset.id];const v=+fd.get('v');m.actual=v;(m.historial=m.historial||[]).push({fecha:today(),valor:v});put('metas',m,0);toast('Avance registrado');render()}
@@ -1805,11 +1941,13 @@ document.addEventListener('input',e=>{const el=e.target;if(el.dataset.f&&el.type
   if(el.dataset.tf==='q'){UI.tf.q=el.value;clearTimeout(el._t);el._t=setTimeout(()=>{render();const i=document.querySelector('[data-tf="q"]');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},350)}});
 document.addEventListener('change',e=>{const el=e.target;
   if(el.dataset.pick){const [col,id,path]=el.dataset.pick.split('|');const o=S[col][id];if(o){const v=el.value.trim();const p=findPersona(v);setPath(o,path+'.personaId',p?p.id:'');setPath(o,path+'.nombre',p?'':v);put(col,o);const c=el.closest('.rolec');if(c)c.classList.toggle('ok',!!v)}}
-  if(el.dataset.f&&(el.type==='checkbox'||el.tagName==='SELECT'||el.type==='date'||el.type==='number'||el.type==='time')){bindField(el);if(el.dataset.rr)render()}
+  if(el.dataset.f&&(el.type==='checkbox'||el.tagName==='SELECT'||el.type==='date'||el.type==='number'||el.type==='time')){bindField(el);if('rr' in el.dataset)afterChange(el)}
   if(el.dataset.corr){const [col,id,path]=el.dataset.corr.split('|');const cid=LABEL2ID[el.value];if(el.value&&!cid){toast('Elige un corregimiento de la lista');return}const o=S[col][id];setPath(o,path,cid||'');put(col,o,0);render()}
   if(el.dataset.circ){const code=el.dataset.circ;const c=S.circuitos['c'+code]||{id:'c'+code,codigo:code,lideres:{}};c[el.dataset.k]=el.value;put('circuitos',c,0);render()}
   if(el.dataset.tf==='resp'){UI.tf.resp=el.value;render()}
-  if(el.dataset.grp){const p=S.personas[el.dataset.grp];if(p){p.grupo=el.value;put('personas',p,0);toast(`${p.nombre||'La persona'} pasó a ${GRUPOS[el.value].toLowerCase()}`);render()}}
+  if(el.dataset.grp){const p=S.personas[el.dataset.grp];if(p){const v=el.value;const ex=rolesOf(p).filter(r=>r!==p.grupo&&r!==v);p.grupo=v;if(v!=='simpatizante'&&ex.length)p.roles=[v,...ex];else delete p.roles;put('personas',p,0);toast(`${p.nombre||'La persona'} pasó a ${GRUPOS[v].toLowerCase()}`);render()}}
+  if(el.dataset.ccirc&&el.value)cAddCirc(el.dataset.ccirc,el.value);
+  if(el.dataset.impref)IMP.ref=el.value;
   if(el.dataset.imp){IMP.map[el.dataset.imp]=el.type==='checkbox'?el.checked:+el.value;impPreview()}
   if(el.id==='impFile'&&el.files[0])impFile(el.files[0]);
   if(el.dataset.aChange==='mapSearch'){const id=LABEL2ID[el.value];if(id)A.goCorr({dataset:{id}})}
@@ -1911,7 +2049,8 @@ async function doBackup(){if(!window.JSZip){toast('La compresión no cargó; rec
   L('horarios').forEach(h=>z.file(`horarios/Horario-${slug(h.nombre)}-${h.id.slice(-4)}.pdf`,horPdf(h).blob()));
   z.file(`reportes/Reporte-${T.slice(0,7)}.pdf`,reportPdf(T.slice(0,7)).blob());
   z.file('tablas/tareas.csv',csv(['Título','Responsable','Fecha','Hora','Prioridad','Estado','Tipo','Origen','Corregimiento','Notas'],L('tareas').sort(sortTasks).map(t=>[t.titulo,pname(t.responsableId),t.fecha,t.hora,PRIOS[t.prioridad],ESTADOS[t.estado],t.tipo,originLabel(t)||ORIG[(t.origen||{}).tipo]||'',corrName(t.corrId),t.notas])));
-  z.file('tablas/personas.csv',csv(['Nombre','Grupo','Teléfono','Provincia','Habilidades','Último contacto','Notas'],L('personas').map(p=>[p.nombre,{c0:'Círculo 0',lider:'Líder territorial',aliado:'Aliado'}[p.grupo||'c0'],p.telefono,p.provincia,(p.habilidades||[]).join(' / '),p.ultimoContacto,p.notas])));
+  z.file('tablas/personas.csv',csv(['Nombre','Grupo principal','Roles','Circuito','Teléfono','Corregimiento o comunidad','Provincia','Lo trajo','Habilidades','Último contacto','Notas'],L('personas').sort(byName).map(p=>[p.nombre,GRUPOS[p.grupo||'c0']||p.grupo,rolesOf(p).map(r=>GRUPOS[r]||r).join(' / '),circOf(p),p.telefono,p.lugar,p.provincia,pname(p.referidoPor),(p.habilidades||[]).join(' / '),p.ultimoContacto,p.notas])));
+  z.file('tablas/convocatorias.csv',csv(['Actividad','Fecha','Líder','Circuito','Jurados','Confirmados','Llegaron','Inscritos','Para medir'],L('actividades').flatMap(a=>(a.cuotas||[]).map(c=>[a.nombre,a.desde,pname(c.liderId),circOf(S.personas[c.liderId]),c.jurados,c.confirmados,c.llegaron,c.inscritos,sinCuota(a)?'Sí':'']))));
   z.file('tablas/visitas.csv',csv(['Fecha','Corregimiento','Distrito','Provincia','Circuito','Responsable','Estado','Objetivo','Jóvenes'],L('visitas').map(v=>{const g=GEOI.get(v.corrId)||{};return [v.fecha,g.c,g.d,g.p,g.circ,pname(v.responsableId),v.estado,v.objetivo,v.jovenes]})));
   z.file('tablas/lideres.csv',csv(['Circuito','Corregimiento','Líder','Teléfono'],L('circuitos').flatMap(c=>Object.entries(c.lideres||{}).map(([cid,pid])=>[c.codigo,corrName(cid),pname(pid),(S.personas[pid]||{}).telefono||'']))));
   z.file('LEEME.txt',`Copia de seguridad del Centro de Mando UNE Juventud\nFecha: ${flong(T)}\n\n- datos/: todo en JSON. Súbelo en Respaldo > Restaurar.\n- minutas/, actividades/, presupuestos/, horarios/, reportes/: los PDF.\n- tablas/: CSV para Excel.\n`);
