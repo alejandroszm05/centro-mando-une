@@ -304,6 +304,94 @@ main{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px
 .chip .mk[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
 @media (max-width:700px){.crow{grid-template-columns:repeat(3,minmax(0,1fr)) 26px;gap:6px 8px;padding:8px}.crow.med{grid-template-columns:repeat(2,minmax(0,1fr)) 26px}.crow .c-conf,.crow .c-pct{display:none}
  .crow>.who,.crow.tot>span:first-child{grid-column:1/-1}.crow.hd>span:first-child{display:none}.crow.hd{padding:0 8px}.cbox{margin-left:4px}}
+/* Panel de reunión para proyectar */
+body.panel-on{overflow:hidden}
+.rpanel{position:fixed;inset:0;z-index:50;background:var(--night);color:#fff;display:flex;flex-direction:column}
+.rpanel .ptop{display:flex;align-items:center;gap:10px 16px;padding:12px 24px;border-bottom:1px solid #ffffff1f;flex-wrap:wrap}
+.pt-t{font-weight:800;color:#c9d3f0;font-size:15px}.pt-t b{color:#fff;font-family:var(--f-display);font-weight:700}
+.psteps{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.psteps button{border:0;border-radius:999px;padding:6px 12px 6px 6px;background:#ffffff14;color:#c9d3f0;font-weight:800;font-size:13.5px;display:flex;gap:7px;align-items:center;max-width:260px}
+.psteps button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.psteps i{font-style:normal;width:22px;height:22px;border-radius:50%;background:#ffffff26;display:grid;place-items:center;font-size:12px;flex:none}
+.psteps .on{background:#fff;color:var(--night)}.psteps .on i{background:var(--blue);color:#fff}.psteps .done i{background:var(--ok);color:#fff}
+.pstage{flex:1;overflow:auto;padding:22px 36px 28px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.pkick{font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);font-size:14px}
+.rpanel input,.rpanel textarea,.rpanel select{font:inherit;color:inherit}
+.ptitle{font-family:var(--f-display)!important;font-weight:800!important;font-size:clamp(26px,3.3vw,46px)!important;line-height:1.1;letter-spacing:-.02em;background:transparent;border:0;color:#fff!important;width:100%;padding:2px 0;border-radius:8px}
+.plead{font-size:clamp(16px,1.5vw,21px)!important;color:#dfe6f7!important;background:#ffffff0d;border:1.5px solid #ffffff1f;border-radius:14px;padding:10px 14px;width:100%;min-height:58px;resize:vertical;line-height:1.45}
+.rpanel :focus-visible{outline:2px solid var(--cyan);outline-offset:1px}
+.pbot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 24px 16px;border-top:1px solid #ffffff1f}
+.rpanel .btn{background:#ffffff14;border-color:#ffffff30;color:#fff}.rpanel .btn.pri{background:var(--blue);border-color:var(--blue)}.rpanel .btn:disabled{opacity:.35}
+.pok{display:flex;gap:8px;align-items:center;font-weight:800;color:#c9d3f0}.pok input{width:20px;height:20px;accent-color:var(--ok)}
+.qtipos{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.qtipos button{border:1.5px dashed #ffffff40;background:transparent;color:#dfe6f7;border-radius:14px;padding:10px 14px;font-weight:800}
+.qnote{font-size:13px;color:#c9d3f0}
+.qchip{display:inline-flex;align-items:center;gap:5px;background:var(--soft);color:var(--navy);border-radius:999px;padding:2px 4px 2px 2px;font-weight:800;font-size:14px;max-width:100%}
+.qchip .av{width:22px;height:22px;font-size:10px}
+.qchip>span{overflow-wrap:anywhere;padding-right:4px}
+.qchip button{border:0;background:transparent;color:var(--muted);padding:0 4px;font-size:15px;line-height:1}
+.qchip.libre{background:#fff4dc}
+.qrefs{display:flex;flex-wrap:wrap;gap:4px;align-items:center;min-width:0}
+.qadd{display:flex;align-items:center;gap:2px;min-width:0;flex:1 1 96px;max-width:220px}
+.qadd input{flex:1 1 auto;width:100%;min-width:0;border:1.5px dashed var(--line);border-radius:999px;padding:2px 8px;font-size:13px;background:transparent;color:var(--ink)}
+.qadd button{flex:none}
+.qadd button{border:0;background:var(--soft);color:var(--navy);border-radius:50%;width:22px;height:22px;font-weight:800;line-height:1;padding:0}
+.qgrid{display:grid;gap:6px;min-width:620px}
+.qgh{text-align:center;font-weight:800;color:#c9d3f0;font-size:15px;padding:4px 0}
+.qgb{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#ffffff10;border-radius:14px;padding:6px;gap:2px}
+.qgb input{width:100%;background:transparent;border:0;text-align:center;font-family:var(--f-display)!important;font-weight:800;font-size:clamp(14px,1.4vw,20px);color:var(--sun)!important}
+.qgb .x,.qfunc>.x,.qteam .x,.qmat .x{color:#9aa8c0;font-size:15px}
+.qcell{background:#fff;color:var(--ink);border-radius:12px;padding:7px;min-height:84px}
+.qfuncs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.qfunc{background:#ffffff10;border:1.5px solid #ffffff22;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative}
+.qnum{width:26px;height:26px;border-radius:50%;background:var(--blue);display:grid;place-items:center;font-weight:800;font-size:13px}
+.qfn{background:transparent;border:0;font-family:var(--f-display)!important;font-weight:800;font-size:22px;color:#fff!important;width:100%}
+.qfunc textarea{background:transparent;border:0;color:#dfe6f7!important;font-size:16px;resize:vertical;min-height:64px;width:100%;line-height:1.4}
+.qfunc>.x{position:absolute;top:8px;right:8px}
+.qteams{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.qteam,.qmat{background:#fff;color:var(--ink);border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.qtn,.qmn{border:0;background:transparent;font-family:var(--f-display)!important;font-weight:800;font-size:17px;color:var(--navy)!important;width:100%;min-width:0}
+.qfr,.qf{display:grid;grid-template-columns:100px minmax(0,1fr);gap:8px;align-items:center;font-size:14px}
+.qfr>span,.qf>span{font-weight:800;color:var(--muted)}
+.qf input,.qf textarea,.qf select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:5px 8px;background:var(--surface);color:var(--ink)!important}
+.qf textarea{min-height:44px;resize:vertical}
+.qmats{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.qmat.new{background:transparent;border:2px dashed #ffffff40;color:#c9d3f0;font-weight:800;align-items:center;justify-content:center;min-height:120px}
+.qcar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.qcar select{width:auto;flex:1 1 140px;border:1.5px solid var(--line);border-radius:10px;padding:4px 6px;background:var(--surface);color:var(--ink)!important;font-size:13px}
+table.qt{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:15px;min-width:760px}
+table.qt th{text-align:left;color:#c9d3f0;font-weight:800;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding:0 10px}
+table.qt td{background:#fff;color:var(--ink);padding:8px 10px;vertical-align:middle}
+table.qt td:first-child{border-radius:12px 0 0 12px}table.qt td:last-child{border-radius:0 12px 12px 0}
+table.qt td input,table.qt td select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:5px 8px;background:var(--surface);color:var(--ink)!important;min-width:0}
+table.qt th input{background:transparent;border:0;color:#fff!important;font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:12.5px;padding:0;width:calc(100% - 22px)}
+table.qt th .x{color:#9aa8c0;font-size:14px}
+.qauto{display:block;font-size:11.5px;font-weight:800;color:var(--ok);margin-bottom:2px}
+.qres{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.qrc{background:#ffffff10;border:1.5px solid #ffffff22;border-radius:18px;padding:14px 16px}
+.qrc h4{font-family:var(--f-display);font-size:19px;margin:0 0 6px;color:#fff}
+.qrc ul{margin:0;padding-left:20px;font-size:16px;color:#e8eefb}.qrc li{margin:3px 0}
+.qfin{background:#fff;color:var(--ink);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.qfin ul{margin:0;padding-left:20px}
+.rpanel .qfin .btn{background:#fff;color:var(--navy);border-color:var(--line)}.rpanel .qfin .btn.pri{background:var(--blue);color:#fff;border-color:var(--blue)}
+.rpanel .tscroll{overflow-x:auto}
+.qkrow{gap:6px 10px}
+.qteampal{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.qtchip{display:inline-flex;flex-direction:column;background:var(--blue);color:#fff;border-radius:14px;padding:6px 12px;font-weight:800;cursor:grab;user-select:none;max-width:260px}
+.qtchip small{font-weight:700;opacity:.85;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qchip.team{background:#dbe6ff;flex-direction:column;align-items:flex-start;border-radius:12px;padding:3px 4px 4px 8px;gap:0;width:100%}
+.qchip.team .tr{display:flex;align-items:center;gap:4px;width:100%}
+.qchip.team .tr b{flex:1;min-width:0}
+.qchip.team small{font-weight:700;color:var(--muted);font-size:11.5px;line-height:1.3;padding-right:4px}
+.qtsel{border:1.5px dashed var(--line);border-radius:999px;padding:1px 6px;font-size:12px;background:transparent;color:var(--muted)!important;max-width:100%;margin-top:4px;width:100%}
+.dropok{outline:3px dashed var(--cyan)!important;outline-offset:2px}
+.dragging{opacity:.45}
+.tdrag{cursor:grab;color:var(--muted);font-size:18px;line-height:1;padding:0 4px;user-select:none}
+.topic .th{grid-template-columns:auto 22px minmax(0,1fr) auto}
+.topic .th .x:disabled{opacity:.25}
+.psteps button[draggable=true]{cursor:grab}
+.qkind{border:1.5px solid var(--blue);background:#e3ecff;border-radius:999px;padding:2px 10px;font-weight:800;font-size:12.5px;color:var(--navy)}
+@media (max-width:700px){.rpanel .ptop,.pbot{padding-left:12px;padding-right:12px}.pstage{padding:16px 12px}.psteps{margin-left:0}.psteps button span{max-width:120px}.qfr,.qf{grid-template-columns:1fr}}
 
 /* Tablas editables */
 .tscroll{overflow-x:auto}
@@ -560,6 +648,7 @@ details>summary{cursor:pointer;font-weight:800;color:var(--navy)}
 <datalist id="dl-corr"></datalist>
 <datalist id="dl-pers"></datalist>
 <div id="drawerHost"></div>
+<div id="panelHost"></div>
 <button class="fab" id="fab" type="button" aria-label="Crear algo nuevo" data-a="fab">+</button>
 <div id="fabmenu" hidden></div>
 <div class="modal" id="modal" hidden></div>
@@ -741,7 +830,7 @@ async function initStore(){
     },err=>{setSync('err');toast('Se perdió la conexión con la nube. Recarga la página.')})});
 }
 let rq=false;
-function editing(){const a=document.activeElement;return a&&a.matches('input,textarea,select')&&(a.closest('#main')||a.closest('#drawerHost'))}
+function editing(){const a=document.activeElement;return a&&a.matches('input,textarea,select')&&(a.closest('#main')||a.closest('#drawerHost')||a.closest('#panelHost'))}
 function requestRender(){if(editing()){rq=true;return}render()}
 /* Recalcular después de cambiar un número, fecha o selector sin comerse el toque siguiente:
    si el dedo o el mouse sigue abajo, espera a que suelte; si pasó a escribir en otro campo, espera a que salga de él. */
@@ -760,14 +849,14 @@ function migrate(){if(migrated||!GEOI.size)return;migrated=true;
     c.corrs.forEach(x=>{const code=(GEOI.get(x.id)||{}).circ;if(!code||!(x.lideres||[]).length)return;const doc=S.circuitos['c'+code]||{id:'c'+code,codigo:code,lideres:{}};doc.lideres=doc.lideres||{};doc.lideres[x.id]=x.lideres[0];put('circuitos',doc,200)});
     del('circuitos',c.id)})}
 
-const SCHEMA_VERSION=6;
+const SCHEMA_VERSION=7;
 function ensureSchema(){const s=S.config.esquema;if(s&&s.version>=SCHEMA_VERSION&&s.app)return;
   put('config',{id:'esquema',version:SCHEMA_VERSION,app:'GitHub Pages + Supabase (proyecto une-juventud)',descripcion:'Centro de Mando UNE Juventud. Un documento por registro, con proyecto, creado y actualizado. Fechas AAAA-MM-DD, horas HH:MM (24 h). Corregimientos por código INEC de 6 dígitos (ID_CORR). Circuitos electorales con código "8-6" (provincia-número).',
    colecciones:{
     personas:'id, nombre, telefono, grupo (c0 = círculo 0 | lider = líder territorial | aliado = gente con la que nos hemos reunido o que apoya, sin ser del círculo 0 | simpatizante = la base general, entra por importación de listas), roles[] (c0|lider|aliado; grupo es el rol principal y siempre está incluido; sin roles se lee [grupo]; simpatizante no se combina con otros), circuito (código "8-3"; si falta, se deduce del corrId o del corregimiento que cubre en circuitos), cuotaBase (gente que suele jurar traer; si falta, config.general.cuotaDefecto), referidoPor (personaId del líder que la trajo), habilidades[], provincia, lugar (corregimiento o comunidad, texto), ultimoContacto, notas, importado (fecha, si entró por lista)',
     tareas:'id, codigo (LUG-MMDD-NN), titulo, entregable (qué se espera recibir, texto corto), responsableId, apoyo[personaId] (máx. 2), fecha (entrega), fechaSeguimiento, tareaMadreId (subtareas), propuestaPor, hora, prioridad (alta|media|baja), estado (pendiente|curso|hecha|bloqueada|cancelada), tipo (tarea|seguimiento|visita), corrId (opcional), actividadId (opcional, vínculo secundario), origen {tipo: reunion|actividad|campana|visita|libre, id}, comunicadoPor, notas, hechaEl',
     series:'Reuniones programadas. id, nombre, tipo, dia (0 domingo … 6 sábado), hora, horaFin, frecuencia (semanal|quincenal|mensual), desde (fecha ancla), lugar, participantes[personaId], color, activa',
-    reuniones:'id, titulo, serieId, fecha, hora, horaFin, lugar, tipo, estado (programada|terminada), temas[{id,texto,ok,notas,actividadId}], asistentes[{personaId|nombre, presente}], ideas[{texto,autor}], apuntes, transcripcion, minuta {generada, resumen}',
+    reuniones:'id, titulo, serieId, fecha, hora, horaFin, lugar, tipo, estado (programada|terminada), temas[{id,texto,ok,notas,actividadId,cuadro}] (cuadro opcional, se llena en vivo en el panel para proyectar: {tipo:"horarios", dias:[0-6], bloques:[{id,label}], celdas:{"<bloqueId>_<dia>":[{personaId|nombre|equipoId}]}} (un equipoId se lee como los integrantes de ese equipo en el cuadro de equipos) | {tipo:"equipos", tam, funciones:[{id,nombre,desc}], equipos:[{id,nombre,m:{<funcionId>:[{personaId|nombre}]}}]} | {tipo:"rutas", filas:[{id,fecha,lugar,bloqueId (del cuadro de horarios),resp:[{personaId|nombre}],actividadId (cuando ya se creó)}]} (quiénes van = celda del cuadro de horarios con ese día y bloque) | {tipo:"materiales", items:[{id,nombre,enc:[{personaId|nombre}],tenemos,cant,nota,carros:[{personaId|nombre,rutaId}]}]} | {tipo:"lista", cols:[], filas:[[]]} | {tipo:"resumen"}; los nombres que no están en personas quedan como {nombre} y no crean personas), asistentes[{personaId|nombre, presente}], ideas[{texto,autor}], apuntes, transcripcion, minuta {generada, resumen}',
     actividades:'id, nombre, tipo (masiva|cerrada|equipo), estado, desde, hasta, hora, lugar, corrId, objetivo, metaAsistencia, roles[{id,rol,personaId | nombre (texto, si no está en personas)}], participantes[{personaId | nombre, confirmado, liderId (si va en la lista jurada de un líder), llego}] (quiénes más van y listas juradas), sinCuota (bool: actividad para medir, sin cuota de gente), cuotas[{liderId, jurados, confirmados, llegaron, inscritos, nota}] (lista jurada por líder; si el líder tiene nombres, confirmados y llegaron se calculan de participantes; llegaron vacío = no reportado), momentos[{id,nombre,hora,rolId,necesita}], itinerario[{id,hora,rolId,accion,detalle}], materiales[{id,item,cant,porPersona,unidad,costo,fuente,responsableId,listo}], ideas[], evaluacion {asistencia,nuevos,logros,mejorar}',
     horarios:'id, nombre, tipo (semanal|jornada|gira|turnos), cols[], rows[], celdas {"fila-col": [nombres]}, notas',
     visitas:'id, corrId, fecha, hora, responsableId, objetivo, estado (programada|realizada|cancelada), jovenes, notas, tareaId',
@@ -931,7 +1020,7 @@ function renderNav(){const late=L('tareas').filter(isLate).length;const seg=L('p
 function go(view,extra={}){Object.assign(UI,extra);UI.drawer=null;if(location.hash!=='#'+view)location.hash=view;else{UI.view=view;render();window.scrollTo(0,0)}}
 window.addEventListener('hashchange',()=>{const v=location.hash.slice(1);UI.view=VIEWS[v]?v:'inicio';UI.drawer=null;render();window.scrollTo(0,0)});
 let dlPers='';
-function render(){CPM=null;HIST=null;renderNav();const dl=L('personas').map(p=>p.nombre).filter(Boolean).sort((a,b)=>a.localeCompare(b,'es')).map(n=>`<option value="${esc(n)}"></option>`).join('');if(dl!==dlPers){dlPers=dl;$('#dl-pers').innerHTML=dl}const v=VIEWS[UI.view]||VIEWS.inicio;$('#main').innerHTML=`<div class="view">${v()}</div>`;renderDrawer();if(UI.view==='mapa')mountMap()}
+function render(){CPM=null;HIST=null;renderNav();const dl=L('personas').map(p=>p.nombre).filter(Boolean).sort((a,b)=>a.localeCompare(b,'es')).map(n=>`<option value="${esc(n)}"></option>`).join('');if(dl!==dlPers){dlPers=dl;$('#dl-pers').innerHTML=dl}const v=VIEWS[UI.view]||VIEWS.inicio;$('#main').innerHTML=`<div class="view">${v()}</div>`;renderDrawer();renderPanel();if(UI.view==='mapa')mountMap()}
 
 /* ---------- Inicio ---------- */
 function vInicio(){const T=today(),ts=L('tareas');const late=ts.filter(isLate),hoy=ts.filter(t=>isOpen(t)&&t.fecha===T);
@@ -1233,12 +1322,13 @@ function reuPlan(r,{title=false}={}){const id=r.id,F=p=>`reuniones|${id}|${p}`;c
     <div class="chips">${att.map((x,i)=>{const n=whoName(x);return `<span class="chip ${x.presente?'on':''}"><button data-a="togAtt" data-id="${id}" data-i="${i}" style="display:flex;gap:6px;align-items:center;color:inherit;padding:0" aria-pressed="${!!x.presente}">${avatar(n)}${esc(n)}</button><button data-a="delRow" data-col="reuniones" data-id="${id}" data-arr="asistentes" data-i="${i}" aria-label="Quitar">×</button></span>`}).join('')||'<span class="muted small">Todavía no hay nadie en la lista.</span>'}</div>
     <form class="row" data-a-submit="addAtt" data-id="${id}"><input class="in" name="nombres" list="dl-pers" placeholder="Escribe un nombre (o varios separados por coma)" style="flex:1 1 220px" required><button class="btn sm pri">Agregar</button><button type="button" class="btn sm ghost" data-a="addAllTeam" data-id="${id}">+ Todo el círculo 0</button></form>`;
 
-  const temasB=()=>`<p class="muted small">Un tema por línea. Marca la casilla cuando se trate y anota lo que se habló. Si el tema es de una actividad, vincúlalo y queda guardado en ella.</p>
-    ${temas.map((t,i)=>`<div class="topic ${t.ok?'ok':''}"><div class="th"><input type="checkbox" data-f="${F('temas.'+i+'.ok')}" data-t="bool" data-rr ${t.ok?'checked':''} aria-label="Tema tratado"><b>${esc(t.texto)}</b><button class="x" data-a="delRow" data-col="reuniones" data-id="${id}" data-arr="temas" data-i="${i}" aria-label="Quitar tema">×</button></div>
+  const temasB=()=>`<div class="row between"><p class="muted small" style="margin:0;flex:1 1 260px">Un tema por línea, en el orden de la reunión. Cada tema puede llevar un cuadro que se llena en vivo frente a todos: horarios, equipos, rutas, materiales o una lista.</p><button class="btn pri" data-a="panelOpen" data-id="${id}">▶ Proyectar reunión</button></div>
+    ${temas.map((t,i)=>`<div class="topic ${t.ok?'ok':''}" data-drop-tema="${i}" data-rid="${id}"><div class="th"><span class="tdrag" draggable="true" data-drag-tema="${i}" data-rid="${id}" title="Arrastra para cambiar el orden">⠿</span><input type="checkbox" data-f="${F('temas.'+i+'.ok')}" data-t="bool" data-rr ${t.ok?'checked':''} aria-label="Tema tratado"><b>${i+1}. ${esc(t.texto)}</b><span class="row" style="gap:0;flex-wrap:nowrap"><button class="x" data-a="temaMove" data-id="${id}" data-i="${i}" data-d="-1" aria-label="Subir tema" ${i?'':'disabled'}>▲</button><button class="x" data-a="temaMove" data-id="${id}" data-i="${i}" data-d="1" aria-label="Bajar tema" ${i<temas.length-1?'':'disabled'}>▼</button><button class="x" data-a="delRow" data-col="reuniones" data-id="${id}" data-arr="temas" data-i="${i}" aria-label="Quitar tema">×</button></span></div>
+      ${t.cuadro?`<div class="row qkrow"><span class="qkind">Cuadro: ${CUADROS[t.cuadro.tipo]||t.cuadro.tipo}</span><span class="small muted">${cuadroCuenta(t.cuadro)}</span><button class="olink small" data-a="panelOpen" data-id="${id}" data-i="${i}">Abrir en el panel</button><button class="olink small" data-a="qQuitar" data-id="${id}" data-t="${i}" style="color:var(--bad)">Quitar cuadro</button></div>`:`<div class="row qkrow"><select class="in" style="width:auto;padding:5px 9px" data-qtipo="${id}|${i}" aria-label="Agregar un cuadro a este tema"><option value="">Sin cuadro</option>${Object.entries(CUADROS).map(([k,v])=>`<option value="${k}">Cuadro: ${v}</option>`).join('')}</select></div>`}
       <textarea data-f="${F('temas.'+i+'.notas')}" placeholder="Lo que se habló de este tema">${esc(t.notas||'')}</textarea>
       <div class="row link"><select class="in" style="width:auto;flex:1 1 200px;padding:5px 9px" data-f="${F('temas.'+i+'.actividadId')}" data-rr aria-label="Actividad vinculada"><option value="">Sin actividad vinculada</option>${acts.map(a=>`<option value="${a.id}" ${a.id===t.actividadId?'selected':''}>${esc(a.nombre||'Actividad')} · ${fdate(a.desde)}</option>`).join('')}</select>
        ${t.actividadId?`<button class="olink" data-a="drawerAct" data-id="${t.actividadId}">Ver actividad</button>`:''}<button class="btn sm ghost" data-a="topicTask" data-id="${id}" data-i="${i}">+ Tarea</button></div></div>`).join('')}
-    <form class="row" data-a-submit="addTopic" data-id="${id}"><input class="in" name="texto" placeholder="Nuevo tema" style="flex:1" required><button class="btn sm pri">Agregar</button></form>`;
+    <form class="row" data-a-submit="addTopic" data-id="${id}"><input class="in" name="texto" placeholder="Nuevo tema" style="flex:1 1 200px" required><select class="in" name="tipo" style="width:auto;flex:0 1 220px" aria-label="Cuadro del tema"><option value="">Sin cuadro</option>${Object.entries(CUADROS).map(([k,v])=>`<option value="${k}">Cuadro: ${v}</option>`).join('')}</select><button class="btn sm pri">Agregar</button></form>`;
 
   const acuerdos=()=>`<p class="muted small">Cada acuerdo es una tarea: qué, quién y para cuándo. Quedan en la agenda con enlace a esta reunión.</p>${quickTaskForm('reunion',id)}<div class="tlist">${ts.map(t=>taskRow(t,{showOrigin:false})).join('')||'<span class="muted small">Sin acuerdos todavía.</span>'}</div>`;
 
@@ -1247,7 +1337,7 @@ function reuPlan(r,{title=false}={}){const id=r.id,F=p=>`reuniones|${id}|${p}`;c
 
   return `<div class="plan">${title?`<h2>${esc(r.titulo||'Reunión')}</h2>`:''}
    <div class="row between ptools"><span class="when">${r.fecha?fshort(r.fecha):'Sin fecha'}${r.hora?' · '+tm(r.hora):''}${s?' · Programada':''}${closed?' · Terminada':''}</span>
-    <div class="row">${closed?`<button class="btn sm pri" data-a="reuPdf" data-id="${id}">Descargar minuta</button><button class="btn sm" data-a="reopenReu" data-id="${id}">Reabrir</button>`:''}<button class="btn sm danger" data-a="askDel" data-col="reuniones" data-id="${id}">Eliminar</button></div></div>
+    <div class="row"><button class="btn sm pri" data-a="panelOpen" data-id="${id}">▶ Proyectar</button>${closed?`<button class="btn sm" data-a="reuPdf" data-id="${id}">Descargar minuta</button><button class="btn sm" data-a="reopenReu" data-id="${id}">Reabrir</button>`:''}<button class="btn sm danger" data-a="askDel" data-col="reuniones" data-id="${id}">Eliminar</button></div></div>
    ${prevOpen.length?`<section class="note"><b>Pendientes de la reunión anterior (${fdate(prev.fecha)})</b><div class="tlist">${prevOpen.map(t=>taskRow(t,{showOrigin:false})).join('')}</div></section>`:''}
    ${psec('rsec','basico',1,'Cuándo y dónde',sBasico,basico)}
    ${psec('rsec','asist',2,'Quiénes vinieron',sAsist,asist)}
@@ -1572,6 +1662,134 @@ function vRespaldo(){const g=S.config.general||{};const n=c=>L(c).length;const m
 
 const VIEWS={inicio:vInicio,agenda:vAgenda,horarios:vHorarios,actividades:vActividades,reuniones:vReuniones,tareas:vTareas,estructura:vEstructura,panel:vPanel,mapa:vMapa,cobertura:vCobertura,respaldo:vRespaldo,metas:vPanel};
 
+/* ---------- Panel de reunión: los temas en orden, para proyectar y llenar en vivo ---------- */
+const CUADROS={horarios:'Horarios',equipos:'Equipos y funciones',rutas:'Rutas o programación',materiales:'Materiales',lista:'Lista libre',resumen:'Resumen (se arma solo)'};
+const MAT_BASE=['Transporte','Agua','Comida','Indumentaria'];
+const FUNC_BASE=[['Activista','Registra a cada persona en el partido y le explica el protocolo de inscripción, una por una.'],['Conversador','Da la respuesta política. Atiende a la familia en una casa, o a grupos de 3 personas en un lugar público.'],['Avanzada','Va adelante y mira qué casas quieren la visita. En los puntos fijos, pregunta alrededor quién quiere participar.']];
+function nuevoCuadro(tipo){
+  if(tipo==='horarios')return {tipo,dias:[6,0,1,2,3,4,5],bloques:['6 a 9','10 a 2','3 a 7'].map(label=>({id:uid('b'),label})),celdas:{}};
+  if(tipo==='equipos')return {tipo,tam:3,funciones:FUNC_BASE.map(([nombre,desc])=>({id:uid('f'),nombre,desc})),equipos:[1,2,3].map(n=>({id:uid('e'),nombre:'Equipo '+n,m:{}}))};
+  if(tipo==='rutas')return {tipo,filas:[{id:uid('ru'),fecha:'',lugar:'',bloqueId:'',resp:[]}]};
+  if(tipo==='materiales')return {tipo,items:MAT_BASE.map(nombre=>Object.assign({id:uid('mt'),nombre,enc:[],tenemos:'',cant:'',nota:''},nombre==='Transporte'?{carros:[]}:{}))};
+  if(tipo==='lista')return {tipo,cols:['Qué','Quién','Nota'],filas:[['','','']]};
+  if(tipo==='resumen')return {tipo};return null}
+function getPath(o,p){return String(p).split('.').reduce((a,k)=>a==null?a:a[k],o)}
+const refName=x=>!x?'':x.personaId?(pname(x.personaId)||x.nombre||''):(x.nombre||'');
+const refChipRO=x=>{const n=refName(x);return `<span class="qchip ${x.personaId?'':'libre'}">${avatar(n)}<span>${esc(n)}</span></span>`};
+/* Equipos dentro del cuadro de horarios: se guarda {equipoId} y al leer se cambia por sus integrantes */
+const teamOf=(r,id)=>{const eq=cuadroDe(r,'equipos');return eq&&eq.equipos.find(e=>e.id===id)};
+function teamMembers(r,e){const eq=cuadroDe(r,'equipos');return eq&&e?eq.funciones.flatMap(f=>((e.m||{})[f.id]||[]).map(p=>Object.assign({},p,{funcion:f.nombre,equipo:e.nombre}))):[]}
+function expandRefs(r,xs){const out=[],seen=new Set();(xs||[]).forEach(x=>{(x.equipoId?teamMembers(r,teamOf(r,x.equipoId)):[x]).forEach(p=>{const k=p.personaId||('n:'+norm(p.nombre));if(seen.has(k))return;seen.add(k);out.push(p)})});return out}
+const refLbl=(r,x)=>{if(!x.equipoId)return refName(x);const e=teamOf(r,x.equipoId);if(!e)return 'Equipo borrado';const ms=teamMembers(r,e).map(refName);return `${e.nombre} (${ms.length?ms.join(', '):'sin nombres todavía'})`};
+function addTeamToCell(rid,path,eid){const r=S.reuniones[rid];if(!r||!eid)return;let arr=getPath(r,path);if(!Array.isArray(arr)){setPath(r,path,[]);arr=getPath(r,path)}if(arr.some(x=>x.equipoId===eid)){toast('Ese equipo ya está en esa casilla');render();return}arr.push({equipoId:eid});put('reuniones',r);render()}
+function moverTema(rid,from,to){const r=S.reuniones[rid];if(!r||!r.temas||from===to||to<0||to>=r.temas.length)return;const [t]=r.temas.splice(from,1);r.temas.splice(to,0,t);
+  if(UI.panel&&UI.panel.id===rid){const p=UI.panel;if(p.i===from)p.i=to;else if(from<p.i&&to>=p.i)p.i--;else if(from>p.i&&to<=p.i)p.i++}put('reuniones',r);render()}
+let DRAG=null;
+document.addEventListener('dragstart',e=>{const t=e.target.closest&&e.target.closest('[data-drag-team],[data-drag-tema]');if(!t)return;DRAG=t.dataset.dragTeam?{k:'team',id:t.dataset.dragTeam}:{k:'tema',rid:t.dataset.rid,i:+t.dataset.dragTema};
+  e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain',DRAG.k)}catch(_){}t.classList.add('dragging')});
+document.addEventListener('dragend',()=>{DRAG=null;$$('.dragging,.dropok').forEach(x=>x.classList.remove('dragging','dropok'))});
+document.addEventListener('dragover',e=>{if(!DRAG)return;const c=DRAG.k==='team'?e.target.closest('[data-drop-cell]'):e.target.closest('[data-drop-tema]');if(!c||(DRAG.k==='tema'&&c.dataset.rid!==DRAG.rid))return;e.preventDefault();$$('.dropok').forEach(x=>{if(x!==c)x.classList.remove('dropok')});c.classList.add('dropok')});
+document.addEventListener('drop',e=>{if(!DRAG)return;const d=DRAG;DRAG=null;$$('.dragging,.dropok').forEach(x=>x.classList.remove('dragging','dropok'));
+  if(d.k==='team'){const c=e.target.closest('[data-drop-cell]');if(!c)return;e.preventDefault();addTeamToCell(c.dataset.rid,c.dataset.dropCell,d.id)}
+  else{const c=e.target.closest('[data-drop-tema]');if(!c||c.dataset.rid!==d.rid)return;e.preventDefault();moverTema(d.rid,d.i,+c.dataset.dropTema)}});
+function refList(r,path,ph){const arr=getPath(r,path)||[];
+  return `<div class="qrefs">${arr.map((x,i)=>{if(x.equipoId){const e=teamOf(r,x.equipoId);const ms=teamMembers(r,e).map(refName);return `<span class="qchip team"><span class="tr">👥 <b>${esc(e?e.nombre:'Equipo borrado')}</b><button data-a="qDel" data-id="${r.id}" data-p="${path}" data-i="${i}" aria-label="Quitar ${esc(e?e.nombre:'equipo')}">×</button></span><small>${esc(ms.join(', ')||'sin nombres todavía')}</small></span>`}const n=refName(x);return `<span class="qchip ${x.personaId?'':'libre'}" title="${x.personaId?'Ligado a su ficha':'Escrito a mano: no está en Estructura'}">${avatar(n)}<span>${esc(n)}</span><button data-a="qDel" data-id="${r.id}" data-p="${path}" data-i="${i}" aria-label="Quitar a ${esc(n)}">×</button></span>`}).join('')}<form class="qadd" data-a-submit="qAdd" data-id="${r.id}" data-p="${path}"><input name="n" list="dl-pers" placeholder="${ph||'Nombre'}" aria-label="Agregar nombre" autocomplete="off"><button aria-label="Agregar">+</button></form></div>`}
+const cuadroDe=(r,tipo)=>(r.temas||[]).map(t=>t.cuadro).find(c=>c&&c.tipo===tipo);
+function bloqueLbl(r,f){const h=cuadroDe(r,'horarios');const b=h&&f.bloqueId?h.bloques.find(x=>x.id===f.bloqueId):null;return b?b.label:(f.bloque||'')}
+function quienesVan(r,f){const h=cuadroDe(r,'horarios');if(!h||!f.fecha||!f.bloqueId)return null;const d=pd(f.fecha).getDay();if(!h.dias.includes(d))return [];return expandRefs(r,(h.celdas||{})[f.bloqueId+'_'+d])}
+function bloqueHora(lbl){const m=String(lbl||'').match(/(\d{1,2})(?::(\d{2}))?/);if(!m)return '';let h=+m[1];if(/p\.?\s*m/i.test(lbl)||(h>=1&&h<=5))h+=12;return pad(h%24)+':'+(m[2]||'00')}
+const rutaLbl=f=>[f.fecha?fdate(f.fecha):'',f.lugar||'Ruta sin lugar'].filter(Boolean).join(' · ');
+function cuadroCuenta(c){if(c.tipo==='horarios'){const n=Object.values(c.celdas||{}).reduce((s,x)=>s+x.length,0);return `${c.bloques.length} bloques · ${pl(n,'nombre','nombres')}`}
+  if(c.tipo==='equipos')return `${pl(c.funciones.length,'función','funciones')} · ${pl(c.equipos.length,'equipo','equipos')}`;if(c.tipo==='rutas')return pl(c.filas.filter(f=>f.lugar||f.fecha).length,'ruta','rutas');
+  if(c.tipo==='materiales')return `${c.items.filter(m=>(m.enc||[]).length).length} de ${c.items.length} con encargado`;if(c.tipo==='lista')return pl(c.filas.length,'fila','filas');return 'Se llena solo con los demás cuadros'}
+function panelSteps(r){const st=(r.temas||[]).map((t,ti)=>({t,ti,titulo:t.texto||'Tema '+(ti+1)}));if(!st.some(s=>s.t.cuadro&&s.t.cuadro.tipo==='resumen'))st.push({titulo:'Resumen',resumen:true});return st}
+function cuadroHTML(r,ti){const c=r.temas[ti].cuadro;const P=`temas.${ti}.cuadro`;const F=p=>`reuniones|${r.id}|${P}.${p}`;const btn=(k,t)=>`<button class="btn" data-a="qPush" data-id="${r.id}" data-t="${ti}" data-k="${k}">${t}</button>`;const pop=(arr,i,lbl)=>`<button class="x" data-a="qPop" data-id="${r.id}" data-t="${ti}" data-arr="${arr}" data-i="${i}" aria-label="${lbl}">×</button>`;
+  if(c.tipo==='horarios'){const eq=cuadroDe(r,'equipos');const eqs=eq?eq.equipos:[];
+    return `${eqs.length?`<div class="qteampal"><span class="qnote">Arrastra cada equipo a su día y horario:</span>${eqs.map(e=>{const ms=teamMembers(r,e).map(refName);return `<span class="qtchip" draggable="true" data-drag-team="${e.id}" title="${esc(ms.join(', '))}">👥 ${esc(e.nombre)}<small>${esc(ms.join(', ')||'sin nombres todavía')}</small></span>`}).join('')}</div>`:''}<div class="tscroll"><div class="qgrid" style="grid-template-columns:minmax(76px,.7fr) repeat(${c.dias.length},minmax(78px,1fr))"><span></span>${c.dias.map(d=>`<span class="qgh">${cap(DIAS[d])}</span>`).join('')}
+    ${c.bloques.map((b,bi)=>`<div class="qgb"><input data-f="${F('bloques.'+bi+'.label')}" value="${esc(b.label)}" aria-label="Bloque de horario">${pop('bloques',bi,'Quitar bloque')}</div>${c.dias.map(d=>{const cp=`${P}.celdas.${b.id}_${d}`;return `<div class="qcell" data-drop-cell="${cp}" data-rid="${r.id}">${refList(r,cp)}${eqs.length?`<select class="qtsel" data-addteam="${cp}" data-rid="${r.id}" aria-label="Poner un equipo en ${cap(DIAS[d])}, ${esc(b.label)}"><option value="">+ equipo</option>${eqs.map(e=>`<option value="${e.id}">${esc(e.nombre)}</option>`).join('')}</select>`:''}</div>`}).join('')}`).join('')}</div></div>
+    <div class="row">${btn('bloque','+ Bloque')}<span class="qnote">${eqs.length?'También puedes escribir nombres sueltos. ':''}Toca un horario para cambiarlo. Amarillo = nombre escrito a mano (no está en Estructura y no se crea la persona).</span></div>`}
+  if(c.tipo==='equipos')return `<div class="qfuncs">${c.funciones.map((f,fi)=>`<div class="qfunc"><span class="qnum">${fi+1}</span><input class="qfn" data-f="${F('funciones.'+fi+'.nombre')}" value="${esc(f.nombre)}" aria-label="Función"><textarea data-f="${F('funciones.'+fi+'.desc')}" placeholder="Qué hace" aria-label="Qué hace">${esc(f.desc||'')}</textarea>${pop('funciones',fi,'Quitar función')}</div>`).join('')}</div>
+    <div class="qteams">${c.equipos.map((e,ei)=>`<div class="qteam"><div class="row" style="flex-wrap:nowrap"><input class="qtn" data-f="${F('equipos.'+ei+'.nombre')}" value="${esc(e.nombre)}" aria-label="Nombre del equipo">${pop('equipos',ei,'Quitar equipo')}</div>${c.funciones.map(f=>`<div class="qfr"><span>${esc(f.nombre)}</span>${refList(r,`${P}.equipos.${ei}.m.${f.id}`)}</div>`).join('')}</div>`).join('')}</div>
+    <div class="row">${btn('equipo','+ Equipo')}${btn('funcion','+ Función')}</div>`;
+  if(c.tipo==='rutas'){const h=cuadroDe(r,'horarios');
+    return `<div class="tscroll"><table class="qt"><thead><tr><th style="width:150px">Día</th><th>Lugar o ruta</th><th style="width:22%">Responsable</th><th style="width:120px">Bloque</th><th style="width:26%">Quiénes van</th><th style="width:30px"></th></tr></thead><tbody>
+    ${c.filas.map((f,fi)=>{const van=quienesVan(r,f);const hecha=f.actividadId&&S.actividades[f.actividadId];return `<tr><td><input type="date" data-f="${F('filas.'+fi+'.fecha')}" data-rr value="${f.fecha||''}" aria-label="Día"></td>
+      <td><input list="dl-corr" data-f="${F('filas.'+fi+'.lugar')}" value="${esc(f.lugar||'')}" placeholder="Barriada, punto fijo o corregimiento" aria-label="Lugar o ruta">${hecha?'<span class="qauto">Ya es actividad en la agenda</span>':''}</td>
+      <td>${refList(r,`${P}.filas.${fi}.resp`,'+ responsable')}</td>
+      <td>${h?`<select data-f="${F('filas.'+fi+'.bloqueId')}" data-rr aria-label="Bloque"><option value="">—</option>${h.bloques.map(b=>`<option value="${b.id}" ${b.id===f.bloqueId?'selected':''}>${esc(b.label)}</option>`).join('')}</select>`:`<input data-f="${F('filas.'+fi+'.bloque')}" value="${esc(f.bloque||'')}" placeholder="6 a 9" aria-label="Bloque">`}</td>
+      <td>${van==null?`<span class="small muted">${h?'Sale solo al poner día y bloque':'Agrega un tema con cuadro de horarios'}</span>`:van.length?`<span class="qauto">del cuadro de horarios</span><div class="qrefs">${van.map(refChipRO).join('')}</div>`:'<span class="small muted">Nadie anotado en ese día y bloque</span>'}</td>
+      <td>${pop('filas',fi,'Quitar ruta')}</td></tr>`}).join('')}</tbody></table></div><div class="row">${btn('ruta','+ Ruta')}</div>`}
+  if(c.tipo==='materiales'){const ru=cuadroDe(r,'rutas');
+    return `<div class="qmats">${c.items.map((m,mi)=>`<div class="qmat"><div class="row" style="flex-wrap:nowrap"><input class="qmn" data-f="${F('items.'+mi+'.nombre')}" value="${esc(m.nombre)}" aria-label="Material">${pop('items',mi,'Quitar material')}</div>
+      <div class="qf"><span>Se encarga</span>${refList(r,`${P}.items.${mi}.enc`)}</div>
+      <div class="qf"><span>Tenemos</span><input data-f="${F('items.'+mi+'.tenemos')}" value="${esc(m.tenemos||'')}" aria-label="Qué tenemos"></div>
+      <div class="qf"><span>Cantidad</span><input data-f="${F('items.'+mi+'.cant')}" value="${esc(m.cant||'')}" aria-label="Cantidad"></div>
+      <div class="qf"><span>Nota</span><textarea data-f="${F('items.'+mi+'.nota')}" aria-label="Nota">${esc(m.nota||'')}</textarea></div>
+      ${m.carros?`<div class="qf"><span>Carros</span><div class="flat" style="gap:6px">${m.carros.map((k,ki)=>`<div class="qcar">${refChipRO(k)}<select data-f="${F('items.'+mi+'.carros.'+ki+'.rutaId')}" aria-label="Ruta del carro"><option value="">¿En qué ruta va?</option>${(ru?ru.filas:[]).filter(f=>f.lugar||f.fecha).map(f=>`<option value="${f.id}" ${f.id===k.rutaId?'selected':''}>${esc(rutaLbl(f))}</option>`).join('')}</select><button class="x" data-a="qDel" data-id="${r.id}" data-p="${P}.items.${mi}.carros" data-i="${ki}" aria-label="Quitar carro">×</button></div>`).join('')}
+        <form class="qadd" data-a-submit="qAdd" data-id="${r.id}" data-p="${P}.items.${mi}.carros"><input name="n" list="dl-pers" placeholder="+ quién tiene carro" aria-label="Quién tiene carro" autocomplete="off" style="width:150px"><button aria-label="Agregar">+</button></form></div></div>`:''}</div>`).join('')}
+      <button class="qmat new" data-a="qPush" data-id="${r.id}" data-t="${ti}" data-k="item">+ Otro material</button></div>`}
+  if(c.tipo==='lista')return `<div class="tscroll"><table class="qt"><thead><tr>${c.cols.map((h,ci)=>`<th><span class="row" style="flex-wrap:nowrap;gap:2px"><input data-f="${F('cols.'+ci)}" value="${esc(h)}" aria-label="Columna">${pop('cols',ci,'Quitar columna')}</span></th>`).join('')}<th style="width:30px"></th></tr></thead><tbody>
+    ${c.filas.map((f,fi)=>`<tr>${c.cols.map((h,ci)=>`<td><input data-f="${F('filas.'+fi+'.'+ci)}" value="${esc(f[ci]||'')}" aria-label="${esc(h)}"></td>`).join('')}<td>${pop('filas',fi,'Quitar fila')}</td></tr>`).join('')}</tbody></table></div><div class="row">${btn('fila','+ Fila')}${btn('col','+ Columna')}</div>`;
+  return ''}
+/* Lo que quedó definido, tema por tema, a partir de lo escrito en los cuadros */
+function cuadroResumen(r){const out=[];(r.temas||[]).forEach(t=>{const c=t.cuadro;if(c&&c.tipo==='resumen')return;const L2=[];
+  if(!c){if(t.notas)L2.push(t.notas);out.push({titulo:t.texto,tipo:'',lineas:L2});return}
+  if(c.tipo==='horarios')c.dias.forEach(d=>c.bloques.forEach(b=>{const xs=(c.celdas||{})[b.id+'_'+d]||[];if(xs.length)L2.push(`${cap(DIAS[d])}, ${b.label}: ${xs.map(x=>refLbl(r,x)).join('; ')}`)}));
+  if(c.tipo==='equipos')c.equipos.forEach(e=>{const m=e.m||{};const con=c.funciones.filter(f=>(m[f.id]||[]).length);if(!con.length)return;const falta=c.funciones.filter(f=>!(m[f.id]||[]).length).map(f=>f.nombre.toLowerCase());
+    L2.push(`${e.nombre}: ${con.map(f=>`${m[f.id].map(refName).join(' y ')} (${f.nombre.toLowerCase()})`).join(', ')}${falta.length?` · falta ${falta.join(' y ')}`:''}`)});
+  if(c.tipo==='rutas')c.filas.forEach(f=>{if(!f.fecha&&!f.lugar)return;const van=quienesVan(r,f)||[];L2.push([f.fecha?fdate(f.fecha):'Sin día',bloqueLbl(r,f),f.lugar||'lugar por definir',(f.resp||[]).length?'responsable '+f.resp.map(refName).join(', '):'sin responsable',van.length?'van '+van.map(refName).join(', '):''].filter(Boolean).join(' · '))});
+  if(c.tipo==='materiales'){const ru=cuadroDe(r,'rutas');c.items.forEach(m=>{const enc=(m.enc||[]).map(refName).join(', ');const bits=[enc?'se encarga '+enc:'sin encargado',m.tenemos?'tenemos '+m.tenemos:'',m.cant?'cantidad '+m.cant:'',m.nota||''].filter(Boolean);
+    if(enc||m.tenemos||m.cant||m.nota||(m.carros||[]).length)L2.push(`${m.nombre}: ${bits.join(' · ')}`);(m.carros||[]).forEach(k=>{const f=ru&&ru.filas.find(x=>x.id===k.rutaId);L2.push(`${m.nombre}: carro de ${refName(k)}${f?' en la ruta '+rutaLbl(f):''}`)})})}
+  if(c.tipo==='lista')c.filas.forEach(f=>{const s=c.cols.map((h,ci)=>f[ci]?`${h}: ${f[ci]}`:'').filter(Boolean).join(' · ');if(s)L2.push(s)});
+  out.push({titulo:t.texto,tipo:c.tipo,lineas:L2})});return out}
+function rutasPorCrear(r){const out=[];(r.temas||[]).forEach(t=>{const c=t.cuadro;if(!c||c.tipo!=='rutas')return;c.filas.forEach(f=>{if(!f.fecha||!(f.lugar||'').trim())return;if(f.actividadId&&S.actividades[f.actividadId])return;out.push(f)})});return out}
+function rutasIncompletas(r){let n=0;(r.temas||[]).forEach(t=>{const c=t.cuadro;if(c&&c.tipo==='rutas')c.filas.forEach(f=>{if((f.fecha||f.lugar||(f.resp||[]).length)&&(!f.fecha||!(f.lugar||'').trim()))n++})});return n}
+function crearActividadesDeRutas(r){const eq=cuadroDe(r,'equipos'),mat=cuadroDe(r,'materiales');let n=0;
+  rutasPorCrear(r).forEach(f=>{const b=bloqueLbl(r,f);const van=quienesVan(r,f)||[];const cid=LABEL2ID[f.lugar]||'';const lugar=cid?corrName(cid):f.lugar.trim();
+   const roles=(f.resp||[]).map(x=>Object.assign({id:uid('rol'),rol:'Responsable de la ruta'},x.personaId?{personaId:x.personaId}:{personaId:'',nombre:x.nombre}));
+   const conF=van.filter(x=>x.funcion);const nEq=new Set(conF.map(x=>x.equipo)).size;
+   if(conF.length)conF.forEach(x=>roles.push(Object.assign({id:uid('rol'),rol:x.funcion+(nEq>1?' · '+x.equipo:'')},x.personaId?{personaId:x.personaId}:{personaId:'',nombre:x.nombre})));
+   else if(eq)eq.funciones.forEach(fu=>roles.push({id:uid('rol'),rol:fu.nombre,personaId:''}));
+   const mats=[];if(mat)mat.items.forEach(m=>{const car=(m.carros||[]).filter(k=>k.rutaId===f.id);const enc=(m.enc||[])[0];if(!enc&&!m.tenemos&&!m.cant&&!m.nota&&!car.length)return;if(m.carros&&m.carros.length&&!car.length&&!m.tenemos&&!m.cant)return;
+     mats.push({id:uid('mt'),item:[m.nombre,m.tenemos,car.length?'carro de '+car.map(refName).join(', '):''].filter(Boolean).join(' · '),cant:parseFloat(m.cant)||1,porPersona:false,unidad:'',costo:0,fuente:m.tenemos||car.length?'tenemos':'compra',responsableId:enc&&enc.personaId||'',listo:false,nota:[m.nota,enc&&!enc.personaId?'Se encarga '+enc.nombre:''].filter(Boolean).join(' · ')})});
+   const a={id:uid('a'),nombre:lugar||'Ruta',tipo:'equipo',estado:'planificada',desde:f.fecha,hasta:'',hora:bloqueHora(b),lugar:f.lugar.trim(),corrId:cid,
+    objetivo:`Salió de la reunión «${r.titulo||'Reunión'}»${r.fecha?' del '+fshort(r.fecha).toLowerCase():''}${b?'. Bloque '+b:''}.`+(eq&&eq.funciones.length?' Funciones del equipo: '+eq.funciones.map(fu=>fu.nombre+(fu.desc?' ('+fu.desc+')':'')).join('; ')+'.':''),
+    roles,participantes:van.map(x=>Object.assign(x.personaId?{personaId:x.personaId}:{nombre:x.nombre},{confirmado:false})),momentos:[],itinerario:[],materiales:mats,ideas:[],evaluacion:{},reunionId:r.id};
+   put('actividades',a,0);f.actividadId=a.id;n++});
+  if(n)put('reuniones',r,0);return n}
+function previewActs(r,{cerrar=false}={}){const xs=rutasPorCrear(r);const inc=rutasIncompletas(r);
+  openModal(`<header><h2>${cerrar?'Terminar la reunión':'Crear actividades de las rutas'}</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header>
+   ${xs.length?`<p>Se ${xs.length===1?'creará':'crearán'} <b>${pl(xs.length,'actividad','actividades')}</b> en la agenda, una por ruta:</p><ul>${xs.map(f=>{const b=bloqueLbl(r,f);const van=quienesVan(r,f)||[];return `<li><b>${fshort(f.fecha)}${b?', '+esc(b):''}</b> · ${esc(f.lugar)}${(f.resp||[]).length?' · responsable '+esc(f.resp.map(refName).join(', ')):''}${van.length?' · '+pl(van.length,'persona','personas'):''}</li>`}).join('')}</ul>
+   <p class="small muted">Cada una con su hora, lugar, responsable, quiénes van según el cuadro de horarios, las funciones del cuadro de equipos y los materiales.</p>`:'<p>No hay rutas con día y lugar para convertir en actividades.</p>'}
+   ${inc?`<p class="small muted">${inc===1?'1 ruta no tiene':inc+' rutas no tienen'} día o lugar y no se ${inc===1?'crea':'crean'}.</p>`:''}
+   <div class="foot"><button class="btn" data-a="closeModal">Cancelar</button><div class="row">${cerrar?`<button class="btn" data-a="doCloseReu" data-id="${r.id}" data-c="0">Terminar sin crearlas</button>`:''}${xs.length?`<button class="btn pri" data-a="${cerrar?'doCloseReu':'doCrearActs'}" data-id="${r.id}" data-c="1">Sí, crear ${pl(xs.length,'actividad','actividades')}${cerrar?' y terminar':''}</button>`:''}</div></div>`)}
+async function cerrarReu(r){r.estado='terminada';r.minuta={generada:new Date().toISOString(),resumen:minutaResumen(r)};put('reuniones',r,0);render();toast('Reunión terminada. Minuta generada.');await saveFile(`Minuta-${r.fecha||today()}-${slug(r.titulo)}.pdf`,minutaPdf(r).blob())}
+function resumenPdf(r){const P=PDF('Lo que quedó definido',`${r.titulo||'Reunión'} · ${r.fecha?flong(r.fecha):''}`);
+  P.kv([['Reunión',r.titulo||''],['Fecha',r.fecha?flong(r.fecha):''],['Hora',tm(r.hora)],['Lugar',r.lugar||'']]);
+  cuadroResumen(r).forEach(x=>{P.h(x.titulo||'Tema');if(x.lineas.length)P.bullets(x.lineas);else P.p('Nada escrito.',{muted:true})});
+  const ts=tasksOf('reunion',r.id);if(ts.length)P.h('Acuerdos').table(['Acuerdo','Responsable','Fecha'],ts.map(t=>[t.titulo,pname(t.responsableId)||'Sin asignar',t.fecha?fdate(t.fecha):'-']),[55,25,15]);return P}
+function resumenHTML(r){const cr=cuadroResumen(r);const xs=rutasPorCrear(r);const hechas=(r.temas||[]).reduce((s,t)=>s+(t.cuadro&&t.cuadro.tipo==='rutas'?t.cuadro.filas.filter(f=>f.actividadId&&S.actividades[f.actividadId]).length:0),0);
+  return `<div class="qres">${cr.map(x=>`<div class="qrc"><h4>${esc(x.titulo||'Tema')}</h4>${x.lineas.length?`<ul>${x.lineas.map(l=>`<li>${esc(l)}</li>`).join('')}</ul>`:'<span class="qnote">Nada escrito todavía.</span>'}</div>`).join('')||'<span class="qnote">Todavía no hay temas.</span>'}</div>
+   <div class="qfin"><b>Para llevarse</b><span class="small">${xs.length?`Las rutas con día y lugar se pueden pasar a la agenda: ${xs.length===1?'se creará 1 actividad':'se crearán '+xs.length+' actividades'}, cada una con su hora, responsable, quiénes van y materiales. Antes de crearlas te muestro la lista.`:hechas?`Las rutas ya están en la agenda (${pl(hechas,'actividad','actividades')}).`:'Cuando haya rutas con día y lugar, aquí se pasan a la agenda.'}</span>
+    <div class="row"><button class="btn" data-a="resPdf" data-id="${r.id}">Descargar resumen PDF</button>${xs.length?`<button class="btn pri" data-a="crearActs" data-id="${r.id}">Crear ${pl(xs.length,'actividad','actividades')}</button>`:''}</div></div>`}
+function renderPanel(){const host=$('#panelHost');const P=UI.panel;const r=P&&S.reuniones[P.id];if(!r){if(P)UI.panel=null;host.innerHTML='';document.body.classList.remove('panel-on');return}
+  document.body.classList.add('panel-on');const steps=panelSteps(r);const i=Math.max(0,Math.min(P.i,steps.length-1));P.i=i;const st=steps[i];
+  const sc=host.querySelector('.pstage');const keep=sc&&host.dataset.i===String(i)?sc.scrollTop:0;host.dataset.i=i;
+  const c=st.t&&st.t.cuadro;const F=p=>`reuniones|${r.id}|${p}`;
+  const stage=st.resumen||(c&&c.tipo==='resumen')?`<span class="pkick">Tema ${i+1} · Se arma solo con lo que se escribió</span>${st.t?`<input class="ptitle" data-f="${F('temas.'+st.ti+'.texto')}" value="${esc(st.t.texto)}" aria-label="Tema">`:'<h2 class="ptitle">Resumen</h2>'}<p class="qnote" style="font-size:17px;margin:0">Esto es lo que quedó definido en la reunión.</p>${resumenHTML(r)}`
+   :`<span class="pkick">Tema ${i+1}${c?' · '+(CUADROS[c.tipo]||''):''}</span><input class="ptitle" data-f="${F('temas.'+st.ti+'.texto')}" value="${esc(st.t.texto)}" aria-label="Tema">
+     <textarea class="plead" data-f="${F('temas.'+st.ti+'.notas')}" placeholder="Lo que se habla de este tema" aria-label="Lo que se habló">${esc(st.t.notas||'')}</textarea>
+     ${c?cuadroHTML(r,st.ti):`<div class="qtipos"><span class="qnote">¿Este tema lleva un cuadro?</span>${Object.entries(CUADROS).filter(([k])=>k!=='resumen').map(([k,v])=>`<button data-a="qTipo" data-id="${r.id}" data-t="${st.ti}" data-k="${k}">+ ${v}</button>`).join('')}</div>`}`;
+  host.innerHTML=`<div class="rpanel" role="dialog" aria-modal="true" aria-label="Panel de la reunión"><div class="ptop"><span class="pt-t"><b>${esc(r.titulo||'Reunión')}</b>${r.fecha?' · '+fshort(r.fecha):''}${r.hora?' · '+tm(r.hora):''}</span>
+    <div class="psteps">${steps.map((s,j)=>`<button class="${j===i?'on':''} ${s.t&&s.t.ok?'done':''}" data-a="panelGo" data-i="${j}" title="${esc(s.titulo)}${s.t?' · arrastra para cambiar el orden':''}" ${s.t?`draggable="true" data-drag-tema="${s.ti}" data-drop-tema="${s.ti}" data-rid="${r.id}"`:''}><i>${s.t&&s.t.ok?'✓':j+1}</i><span>${esc(s.titulo)}</span></button>`).join('')}</div></div>
+   <div class="pstage">${stage}</div>
+   <div class="pbot"><span class="row"><button class="btn" data-a="panelClose">✕ Salir</button><button class="btn" data-a="panelFull">${document.fullscreenElement?'Salir de pantalla completa':'⛶ Pantalla completa'}</button></span>
+    <span class="row">${st.t?`<label class="pok"><input type="checkbox" data-f="${F('temas.'+st.ti+'.ok')}" data-t="bool" data-rr ${st.t.ok?'checked':''}> Tema tratado</label>`:''}<button class="btn" data-a="panelGo" data-i="${i-1}" ${i?'':'disabled'}>◀ Anterior</button><button class="btn pri" data-a="panelGo" data-i="${i+1}" ${i<steps.length-1?'':'disabled'}>Siguiente ▶</button></span></div></div>`;
+  const ns=host.querySelector('.pstage');if(ns)ns.scrollTop=keep}
+document.addEventListener('keydown',e=>{if(!UI.panel||!$('#modal').hidden)return;const a=document.activeElement;if(a&&a.matches('input,textarea,select'))return;const r=S.reuniones[UI.panel.id];if(!r)return;const n=panelSteps(r).length;
+  if(e.key==='ArrowRight'&&UI.panel.i<n-1){UI.panel.i++;renderPanel()}else if(e.key==='ArrowLeft'&&UI.panel.i>0){UI.panel.i--;renderPanel()}});
+document.addEventListener('fullscreenchange',()=>{if(UI.panel)renderPanel()});
+
 /* ---------- Drawer (editar otra pestaña sin salir) ---------- */
 function renderDrawer(){const host=$('#drawerHost');const d=UI.drawer;if(!d){host.innerHTML='';return}
   let inner='';if(d.k==='act'&&S.actividades[d.id])inner=actDetail(S.actividades[d.id]);else if(d.k==='reu'&&S.reuniones[d.id])inner=reuDetail(S.reuniones[d.id]);else{UI.drawer=null;host.innerHTML='';return}
@@ -1584,7 +1802,7 @@ function openDrawer(k,id,secs){UI.drawer={k,id};if(k==='act')UI.asec=secs||{basi
 function openModal(html){const m=$('#modal');m.innerHTML=`<div class="box" role="dialog" aria-modal="true">${html}</div>`;m.hidden=false;const f=m.querySelector('input:not([type=hidden]),select,textarea');if(f)f.focus()}
 function closeModal(){$('#modal').hidden=true;$('#modal').innerHTML=''}
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
-document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('#modal').hidden)closeModal();else if(!$('#fabmenu').hidden)$('#fabmenu').hidden=true;else if(UI.drawer){UI.drawer=null;renderDrawer()}});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('#modal').hidden)closeModal();else if(!$('#fabmenu').hidden)$('#fabmenu').hidden=true;else if(UI.panel){UI.panel=null;renderPanel()}else if(UI.drawer){UI.drawer=null;renderDrawer()}});
 function taskModal(t){const isNew=!S.tareas[t.id];const o=t.origen||{tipo:'libre'};
   const reus=L('reuniones').sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')).slice(0,30),acts=L('actividades').sort((a,b)=>(b.desde||'').localeCompare(a.desde||'')),vis=L('visitas').sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,30);
   openModal(`<header><h2>${isNew?'Nueva tarea':'Editar tarea'}</h2><button class="x" data-a="closeModal" aria-label="Cerrar">×</button></header>
@@ -1826,7 +2044,29 @@ const A={
  selReu:el=>{const id=el.dataset.id;if(UI.reu===id){UI.reu=null;render();return}UI.reu=id;UI.rsec=reuSecs(S.reuniones[id]);render();showCard(id)},
  togAtt:el=>{const r=S.reuniones[el.dataset.id];const x=r.asistentes[+el.dataset.i];x.presente=!x.presente;put('reuniones',r);render()},
  addAllTeam:el=>{const r=S.reuniones[el.dataset.id];r.asistentes=r.asistentes||[];L('personas').filter(p=>tieneRol(p,'c0')).forEach(p=>{if(!r.asistentes.some(a=>a.personaId===p.id))r.asistentes.push({personaId:p.id,presente:false})});put('reuniones',r);render()},
- closeReu:async el=>{const r=S.reuniones[el.dataset.id];r.estado='terminada';r.minuta={generada:new Date().toISOString(),resumen:minutaResumen(r)};put('reuniones',r,0);render();toast('Reunión terminada. Minuta generada.');await saveFile(`Minuta-${r.fecha||today()}-${slug(r.titulo)}.pdf`,minutaPdf(r).blob())},
+ closeReu:el=>{const r=S.reuniones[el.dataset.id];if(rutasPorCrear(r).length)previewActs(r,{cerrar:true});else cerrarReu(r)},
+ doCloseReu:el=>{const r=S.reuniones[el.dataset.id];closeModal();if(el.dataset.c==='1'){const n=crearActividadesDeRutas(r);toast(pl(n,'actividad creada','actividades creadas'))}cerrarReu(r)},
+ doCrearActs:el=>{const r=S.reuniones[el.dataset.id];closeModal();const n=crearActividadesDeRutas(r);toast(`${pl(n,'actividad creada','actividades creadas')} en la agenda`);render()},
+ crearActs:el=>{const r=S.reuniones[el.dataset.id];previewActs(r)},
+ resPdf:el=>{const r=S.reuniones[el.dataset.id];saveFile(`Definido-${r.fecha||today()}-${slug(r.titulo)}.pdf`,resumenPdf(r).blob())},
+ temaMove:el=>{const i=+el.dataset.i;moverTema(el.dataset.id,i,i+(+el.dataset.d))},
+ panelOpen:el=>{UI.panel={id:el.dataset.id,i:+el.dataset.i||0};UI.drawer=null;render()},
+ panelClose:()=>{UI.panel=null;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});render()},
+ panelGo:el=>{const i=+el.dataset.i;if(!UI.panel||isNaN(i)||i<0)return;UI.panel.i=i;renderPanel();const s=$('.pstage');if(s)s.scrollTop=0},
+ panelFull:()=>{const d=document.documentElement;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});else if(d.requestFullscreen)d.requestFullscreen().catch(()=>toast('Este navegador no deja usar pantalla completa'));else toast('Este navegador no deja usar pantalla completa')},
+ qTipo:el=>{const r=S.reuniones[el.dataset.id];const t=r.temas[+el.dataset.t];if(!t||t.cuadro)return;t.cuadro=nuevoCuadro(el.dataset.k);put('reuniones',r,0);render()},
+ qQuitar:el=>{const r=S.reuniones[el.dataset.id];const t=r.temas[+el.dataset.t];if(!t||!t.cuadro)return;if(!confirm('¿Quitar el cuadro de este tema? Se borra lo que tenga escrito.'))return;delete t.cuadro;put('reuniones',r,0);render()},
+ qDel:el=>{const r=S.reuniones[el.dataset.id];const arr=getPath(r,el.dataset.p);if(!Array.isArray(arr))return;arr.splice(+el.dataset.i,1);put('reuniones',r);render()},
+ qPush:el=>{const r=S.reuniones[el.dataset.id];const c=r.temas[+el.dataset.t].cuadro;const k=el.dataset.k;
+   if(k==='bloque')c.bloques.push({id:uid('b'),label:'Nuevo bloque'});else if(k==='funcion')c.funciones.push({id:uid('f'),nombre:'Nueva función',desc:''});
+   else if(k==='equipo')c.equipos.push({id:uid('e'),nombre:'Equipo '+(c.equipos.length+1),m:{}});else if(k==='ruta')c.filas.push({id:uid('ru'),fecha:'',lugar:'',bloqueId:'',resp:[]});
+   else if(k==='item')c.items.push({id:uid('mt'),nombre:'Otro material',enc:[],tenemos:'',cant:'',nota:''});else if(k==='fila')c.filas.push(c.cols.map(()=>''));
+   else if(k==='col'){c.cols.push('Columna '+(c.cols.length+1));c.filas.forEach(f=>f.push(''))}
+   put('reuniones',r);render()},
+ qPop:el=>{const r=S.reuniones[el.dataset.id];const c=r.temas[+el.dataset.t].cuadro;const k=el.dataset.arr,i=+el.dataset.i;const arr=c[k];if(!arr)return;
+   const it=arr[i];const lleno=k==='bloques'?Object.keys(c.celdas||{}).some(x=>x.startsWith(it.id+'_')&&c.celdas[x].length):k==='equipos'?Object.values(it.m||{}).some(x=>x.length):k==='filas'&&c.tipo==='rutas'?(it.lugar||(it.resp||[]).length):k==='items'?((it.enc||[]).length||it.tenemos||it.nota):false;
+   if(lleno&&!confirm('Esto ya tiene datos escritos. ¿Quitarlo de todos modos?'))return;
+   arr.splice(i,1);if(k==='bloques')Object.keys(c.celdas||{}).forEach(x=>{if(x.startsWith(it.id+'_'))delete c.celdas[x]});if(k==='cols')c.filas.forEach(f=>f.splice(i,1));put('reuniones',r);render()},
  reopenReu:el=>{const r=S.reuniones[el.dataset.id];r.estado='programada';put('reuniones',r,0);render()},
  reuPdf:el=>{const r=S.reuniones[el.dataset.id];saveFile(`Minuta-${r.fecha||today()}-${slug(r.titulo)}.pdf`,minutaPdf(r).blob())},
  actPdf:el=>{const a=S.actividades[el.dataset.id];saveFile(`Ficha-${a.desde||'sin-fecha'}-${slug(a.nombre)}.pdf`,actPdf(a).blob())},
@@ -1835,6 +2075,7 @@ const A={
  tf:el=>{UI.tf[el.dataset.k]=el.dataset.v;if(UI.view!=='tareas')go('tareas');else render()},
  tfResp:el=>{UI.tf={estado:'abiertas',origen:'todas',resp:el.dataset.id,q:''};go('tareas')},
  est:el=>{UI.est=el.dataset.v;UI.estQ='';UI.estN=60;render()},
+
  estC:el=>{UI.estC=el.dataset.v;UI.estN=60;render()},
  openConv:el=>openDrawer('act',el.dataset.id,{conv:true}),
  cOpen:el=>{UI.cOpen=UI.cOpen===el.dataset.k?null:el.dataset.k;render()},
@@ -1901,7 +2142,7 @@ const SUB={
  addIdea:(f,fd)=>{const o=S[f.dataset.col][f.dataset.id];const tx=fd.get('texto').trim(),au=fd.get('autor').trim();(o.ideas=o.ideas||[]).push({texto:tx,autor:au});put(f.dataset.col,o);put('ideas',{id:uid('i'),texto:tx,autor:au,fecha:today(),origen:{tipo:f.dataset.col==='actividades'?'actividad':'reunion',id:o.id},estado:'nueva'},300);render();const i=document.querySelector(`form[data-a-submit="addIdea"][data-id="${f.dataset.id}"] input[name=texto]`);if(i)i.focus()},
  addAtt:(f,fd)=>addNames('reuniones',f.dataset.id,'asistentes','presente',true,fd.get('nombres'),'addAtt'),
  addPart:(f,fd)=>addNames('actividades',f.dataset.id,'participantes','confirmado',false,fd.get('nombres'),'addPart'),
- addTopic:(f,fd)=>{const r=S.reuniones[f.dataset.id];(r.temas=r.temas||[]).push({id:uid('tm'),texto:fd.get('texto').trim(),ok:false,notas:'',actividadId:''});put('reuniones',r);render();const i=document.querySelector(`form[data-a-submit="addTopic"][data-id="${f.dataset.id}"] input`);if(i)i.focus()},
+ addTopic:(f,fd)=>{const r=S.reuniones[f.dataset.id];(r.temas=r.temas||[]).push(Object.assign({id:uid('tm'),texto:fd.get('texto').trim(),ok:false,notas:'',actividadId:''},fd.get('tipo')?{cuadro:nuevoCuadro(fd.get('tipo'))}:{}));put('reuniones',r);render();const i=document.querySelector(`form[data-a-submit="addTopic"][data-id="${f.dataset.id}"] input`);if(i)i.focus()},
  setLider:(f,fd)=>{const code=f.dataset.c,cid=f.dataset.id;const n=fd.get('nombre').trim();let p=L('personas').find(x=>norm(x.nombre)===norm(n));
    if(!p){p={id:uid('p'),nombre:n,grupo:'lider',circuito:code,telefono:'',provincia:(GEOI.get(cid)||{}).p||'',habilidades:[],ultimoContacto:''};put('personas',p,0)}else{let ch=false;if(p.grupo==='simpatizante'){p.grupo='lider';delete p.roles;ch=true}else if(!tieneRol(p,'lider')){p.roles=[...rolesOf(p),'lider'];ch=true}if(!p.circuito){p.circuito=code;ch=true}if(ch)put('personas',p,0)}
    const c=S.circuitos['c'+code]||{id:'c'+code,codigo:code,lideres:{}};c.lideres=c.lideres||{};c.lideres[cid]=p.id;put('circuitos',c,0);render()},
@@ -1912,6 +2153,9 @@ const SUB={
    if(r){(r.temas=r.temas||[]).push(tema);put('reuniones',r,0);UI.rsec={temas:true};go('reuniones',{reu:r.id,reuFilter:'todas'});setTimeout(()=>showCard(r.id),150);toast('Quedó como tema de esa reunión')}
    else{r=createReu(shortTx(i.texto),fd.get('fecha')||'',{temas:[tema]});toast('La idea ya es una reunión: ponle día y quiénes van')}
    i.destino={tipo:'reunion',id:r.id};put('ideas',i,0)},
+ qAdd:(f,fd)=>{const r=S.reuniones[f.dataset.id];const p=f.dataset.p;const ns=splitNames(fd.get('n'));if(!r||!ns.length)return false;let arr=getPath(r,p);if(!Array.isArray(arr)){setPath(r,p,[]);arr=getPath(r,p)}let n=0;
+   ns.forEach(x=>{const pp=findPersona(x);if(arr.some(y=>pp?y.personaId===pp.id:(!y.personaId&&norm(y.nombre)===norm(x))))return;arr.push(pp?{personaId:pp.id}:{nombre:x});n++});
+   if(n)put('reuniones',r);else toast('Ya estaba en la lista');render();const i=[...document.querySelectorAll('form[data-a-submit="qAdd"]')].find(x=>x.dataset.p===p);if(i)i.querySelector('input').focus()},
  cAdd:(f,fd)=>{const a=S.actividades[f.dataset.id];const lid=fd.get('lid');if(!a||!lid)return false;a.cuotas=a.cuotas||[];if(!a.cuotas.some(c=>c.liderId===lid))a.cuotas.push(cuotaNueva(a,lid));put('actividades',a);render()},
  addJur:(f,fd)=>{const a=S.actividades[f.dataset.id],lid=f.dataset.l;const ns=splitNames(fd.get('nombres'));if(!a||!ns.length)return;const list=a.participantes=a.participantes||[];let n=0;const otro=[];
    ns.forEach(x=>{const p=findPersona(x);const ya=list.find(y=>p?y.personaId===p.id:(!y.personaId&&norm(y.nombre)===norm(x)));
@@ -1947,6 +2191,8 @@ document.addEventListener('change',e=>{const el=e.target;
   if(el.dataset.tf==='resp'){UI.tf.resp=el.value;render()}
   if(el.dataset.grp){const p=S.personas[el.dataset.grp];if(p){const v=el.value;const ex=rolesOf(p).filter(r=>r!==p.grupo&&r!==v);p.grupo=v;if(v!=='simpatizante'&&ex.length)p.roles=[v,...ex];else delete p.roles;put('personas',p,0);toast(`${p.nombre||'La persona'} pasó a ${GRUPOS[v].toLowerCase()}`);render()}}
   if(el.dataset.ccirc&&el.value)cAddCirc(el.dataset.ccirc,el.value);
+  if(el.dataset.addteam&&el.value)addTeamToCell(el.dataset.rid,el.dataset.addteam,el.value);
+  if(el.dataset.qtipo&&el.value){const [rid,ti]=el.dataset.qtipo.split('|');const r=S.reuniones[rid];const t=r&&r.temas[+ti];if(t&&!t.cuadro){t.cuadro=nuevoCuadro(el.value);put('reuniones',r,0);render()}}
   if(el.dataset.impref)IMP.ref=el.value;
   if(el.dataset.imp){IMP.map[el.dataset.imp]=el.type==='checkbox'?el.checked:+el.value;impPreview()}
   if(el.id==='impFile'&&el.files[0])impFile(el.files[0]);
@@ -2007,6 +2253,7 @@ function minutaPdf(r){const att=r.asistentes||[];const name=a=>a.personaId?pname
   P.h(`Asistentes (${att.filter(a=>a.presente).length} de ${att.length})`).p(att.filter(a=>a.presente).map(name).join(', ')||'Sin registro');
   const aus=att.filter(a=>!a.presente);if(aus.length)P.p('Ausentes: '+aus.map(name).join(', '),{muted:true});
   (r.temas||[]).forEach((t,i)=>{if(i===0)P.h('Orden del día y lo que se habló');P.p(`${i+1}. ${t.texto}${t.ok?'':' (pendiente)'}${t.actividadId&&S.actividades[t.actividadId]?' · Actividad: '+S.actividades[t.actividadId].nombre:''}`,{bold:true,gap:.5});if(t.notas)P.p(t.notas,{indent:5})});
+  const def=cuadroResumen(r).filter(x=>x.tipo&&x.lineas.length);if(def.length){P.h('Lo que quedó definido');def.forEach(x=>{P.p(x.titulo,{bold:true,gap:.5});P.bullets(x.lineas)})}
   if(r.apuntes)P.h('Apuntes generales').p(r.apuntes);
   if((r.ideas||[]).length)P.h('Ideas').bullets(r.ideas.map(i=>i.texto+(i.autor?` (${i.autor})`:'')));
   const ts=tasksOf('reunion',r.id);if(ts.length)P.h('Acuerdos y responsables').table(['Acuerdo','Responsable','Fecha','Prioridad'],ts.map(t=>[t.titulo,pname(t.responsableId)||'Sin asignar',t.fecha?fdate(t.fecha):'-',PRIOS[t.prioridad]||'']),[48,22,15,12]);
